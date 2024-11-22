@@ -23,61 +23,137 @@
 						<div th:unless="${session.userSimple != null}")>
 							<a href="#" class="btn">로그인</a>
 						</div>
-	                    <div class="mypage">마이페이지</div>
-	                    <div class="shopping-cart">장바구니</div>
+	                    <a href="#" class="btn">마이페이지</a>
+	                    <a href="#" class="btn">장바구니</a>
                     </div>
                     <div class="input-group">
 					  <input type="text" class="form-control" id="keyword">					
 					  <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
 					</div>
                 </div>
-            </div>
-          
-            <div class="navbar">
-                <div class="nav">카테고리</div>
-                <div class="nav">카테고리</div>
-                <div class="nav">카테고리</div>
-                <div class="nav">카테고리</div>
-            </div>
+            </div>         
+            <nav class="category-nav bg-light py-2">
+		        <ul class="nav justify-content-around">
+		            <li class="nav-item">
+		                <a class="nav-link" href="#">카테고리</a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" href="#">카테고리</a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" href="#">카테고리</a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" href="#">카테고리</a>
+		            </li>
+		        </ul>
+	   	 	</nav>
         </header>
         <div class="banner">
-            <div class="left-button">&lt;</div>
-            <div class="banner-image">배너 이미지</div>
-            <div class="right-button">&gt;</div>
-        </div>
-        <div class="product-section">
-            <div class="category">
-                <h3>인기상품</h3>
-                <div class="product">Product</div>
-                <div class="product">Product</div>
-                <div class="product">Product</div>
+	        <img src="https://via.placeholder.com/1440x400" alt="배너 이미지" class="banner-image">
+	        <button class="btn left-button">&lt;</button>
+	        <button class="btn right-button">&gt;</button>
+	    </div>
+        <section class="contents bg-warning">
+            <div class="home-product bg-danger">
+                <h1>인기상품</h1>
+                <div class="d-flex">
+	                <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+	                   <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+	                   <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+                </div>
             </div>
-            <div class="category">
-                <h3>신상품</h3>
-                <div class="product">Product</div>
-                <div class="product">Product</div>
-                <div class="product">Product</div>
+            <div class="home-product bg-danger">
+                <h1>신상품</h1>
+                <div class="d-flex">
+	                <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+	                   <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+	                   <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+                </div>
             </div>
-            <div class="category">
-                <h3>MD추천</h3>
-                <div class="product">Product</div>
-                <div class="product">Product</div>
-                <div class="product">Product</div>
+            <div class="home-product bg-danger">
+                <h1>MD추천</h1>
+                <div class="d-flex">
+	                <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+	                   <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+	                   <div class="home-product-card col-4">
+	                	<div class="home-product-image">
+							<img src="" alt="상품 썸네일">	                	
+	                	</div>
+	                	<div>제목</div>
+	                	<div>가격</div>
+	                	<div>세일가격</div>
+	                </div>
+                </div>
             </div>
-        </div>
-        <div class="recently-viewed">
-            <h3>최근 본 상품</h3>
-            <div class="recent-products">
-                <div class="product">Product</div>
-                <div class="product">Product</div>
-                <div class="product">Product</div>
-            </div>
-            <div class="recent-buttons">
-                <button class="prev-button">△</button>
-                <button class="next-button">▽</button>
-            </div>
-        </div>
-        <footer class="footer">푸터</footer>
-    </div>
+	        <div class="recently-viewed text-center">
+	            <h3>최근 본 상품</h3>
+	            <button class="prev-button">△</button>
+	            <div>
+	                <div class="recent-products">Product</div>
+	                <div class="recent-products">Product</div>
+	                <div class="recent-products">Product</div>
+	            </div>      
+	            <button class="next-button">▽</button>
+	        </div>
+        </section>
+        <footer class="copyright bg-info d-flex justify-content-center align-items-center">2024 SBLAND. All Rights Reserved.</footer>
+     </div>
 </body>
 </html>

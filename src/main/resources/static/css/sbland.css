@@ -6,7 +6,6 @@
 
 header {
     background-color: #d9d9d9;
-    height: 200px;
 }
 
 .headertop-wrapper {
@@ -19,98 +18,89 @@ header {
     color: #333;
 }
 
-.user-ui {
-    gap: 20px;
-}
-
-.search-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-around;
-    background-color: #d9abd9;
-    padding: 10px 0;
-}
-
-.nav {
-    background-color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 16px;
+.category-nav {
+	
 }
 
 .banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f27173;
-    padding: 20px;
-    margin: 20px 0;
-}
-
-.left-button, .right-button {
-    background-color: #403aed;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
+    position: relative;
+    width: 100%;
+    height: 400px;
+    max-width: 1440px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 .banner-image {
-    flex: 1;
-    text-align: center;
+    width: 100%;
+    height: 400px;
+    display: block;
+}
+
+.left-button, .right-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
     color: white;
-    font-size: 20px;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 18px;
 }
 
-.product-section {
-    display: flex;
-    gap: 20px;
-    margin: 20px 0;
-    padding: 0 40px;
+.left-button {
+    left: 20px; /* 이미지 안쪽으로 위치 */
 }
 
-.category {
-    background-color: #dae35e;
-    border-radius: 10px;
-    padding: 20px;
-    flex: 1;
-    text-align: center;
+.right-button {
+    right: 20px; /* 이미지 안쪽으로 위치 */
 }
 
-.product {
-    background-color: #3fb8d3;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 5px;
-    color: white;
+.left-button:hover, .right-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
 }
+
+.contents {
+	min-height:600px;
+	width:900px;
+	margin: auto;
+	padding: 10px;
+}
+
+.home-product{
+	height: 300px;
+}
+
+.home-product-card {
+	height: 240px;
+}
+
+.home-product-image {
+	height: 150px;
+}
+
 
 .recently-viewed {
-    background-color: #c6ad54;
-    padding: 20px;
-    margin: 20px;
-    text-align: center;
-    border-radius: 10px;
+    position: fixed;
+    top: 20px;
+    right: 100px;
+    width: 200px;
+    top: calc(20px + 200px);
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 .recent-products {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+	height:100px;
 }
 
-.footer {
-    background-color: #25d5d5;
-    text-align: center;
+footer {
+    height:150px;
     padding: 20px;
-    color: white;
-    margin-top: 20px;
 }
