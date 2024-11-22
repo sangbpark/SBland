@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBLAND</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>	
+
+	<link rel="stylesheet" type="text/css" href="/css/sbland.css">
+</head>
+<body>
+    <div id="wrap">
+        <header>
+            <div class="headertop-wrapper d-flex">
+                <div class="logo col-3">SBLAND</div>
+                <div class="user-ui col-9">
+                	<div class="d-flex justify-content-end">
+	                    <div th:if="${session.userSimple != null}")>
+							<a href="#" class="btn">로그아웃</a>
+						</div>
+						<div th:unless="${session.userSimple != null}")>
+							<a href="#" class="btn">로그인</a>
+						</div>
+	                    <div class="mypage">마이페이지</div>
+	                    <div class="shopping-cart">장바구니</div>
+                    </div>
+                    <div class="input-group">
+					  <input type="text" class="form-control" id="keyword">					
+					  <button class="btn btn-outline-secondary" type="button" id="searchBtn">검색</button>
+					</div>
+                </div>
+            </div>
+          
+            <div class="navbar">
+                <div class="nav">카테고리</div>
+                <div class="nav">카테고리</div>
+                <div class="nav">카테고리</div>
+                <div class="nav">카테고리</div>
+            </div>
+        </header>
+        <div class="banner">
+            <div class="left-button">&lt;</div>
+            <div class="banner-image">배너 이미지</div>
+            <div class="right-button">&gt;</div>
+        </div>
+        <div class="product-section">
+            <div class="category">
+                <h3>인기상품</h3>
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+            </div>
+            <div class="category">
+                <h3>신상품</h3>
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+            </div>
+            <div class="category">
+                <h3>MD추천</h3>
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+            </div>
+        </div>
+        <div class="recently-viewed">
+            <h3>최근 본 상품</h3>
+            <div class="recent-products">
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+                <div class="product">Product</div>
+            </div>
+            <div class="recent-buttons">
+                <button class="prev-button">△</button>
+                <button class="next-button">▽</button>
+            </div>
+        </div>
+        <footer class="footer">푸터</footer>
+    </div>
+</body>
+</html>
