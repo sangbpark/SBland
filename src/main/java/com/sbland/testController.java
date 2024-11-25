@@ -10,4 +10,14 @@ public class testController {
 	public String test() {
 		return "homepage/homepage";
 	}
+	
+	@RequestMapping("/test2")
+	public String test2() {
+		return "user/signIn";
+	}
+	
+	@RequestMapping("/test3")
+	public String test3() {
+		return "user/signUp";
+	}
 }
