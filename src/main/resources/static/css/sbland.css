@@ -69,6 +69,20 @@ header {
 	padding: 10px;
 }
 
+.contents-mypage {
+	min-height:600px;
+	width:1170px;
+}
+
+.center-contents {
+	width:900px;
+	padding: 10px;
+}
+
+.left-contents {
+	width:270px;
+}
+
 .home-product{
 	height: 300px;
 }
@@ -80,7 +94,6 @@ header {
 .home-product-image {
 	height: 150px;
 }
-
 
 .recently-viewed {
     position: fixed;
@@ -98,6 +111,10 @@ header {
 
 .recent-products {
 	height:100px;
+}
+
+.orderCard{
+	height:150px;
 }
 
 footer {

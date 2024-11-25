@@ -20,4 +20,19 @@ public class testController {
 	public String test3() {
 		return "user/signUp";
 	}
+	
+	@RequestMapping("/test4")
+	public String test4() {
+		return "product/productList";
+	}
+	
+	@RequestMapping("/test5")
+	public String test5() {
+		return "user/shoppingCart";
+	}
+	
+	@RequestMapping("/test6")
+	public String test6() {
+		return "user/myPage";
+	}
 }

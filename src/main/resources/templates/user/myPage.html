@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<section layout:fragment="content" class="contents-mypage d-flex">
+	<div class="left-contents">
+		<nav class="mypage-menu d-flex align-items-center">
+            <ul class="nav nav-fill w-100">
+                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">주문목록</a></li>
+                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">취소/환불</a></li>
+                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">정보수정</a></li>
+                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">쿠폰</a></li>
+            </ul>
+        </nav>
+	</div>
+	<div class="center-contents">
+		<div id="orderList">
+			<div class="orderCard"></div>
+		</div>
+		<div id="pagination">
+			<nav aria-label="Page navigation">
+		        <ul class="pagination justify-content-center">
+		            <li class="page-item">
+		                <a class="page-link text-dark" href="#" aria-label="Previous">
+		                    <span>&lt;</span>
+		                </a>
+		            </li>
+		            
+		            <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
+		            <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+		            <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+		            <li class="page-item"><a class="page-link text-dark" href="#">4</a></li>
+		            <li class="page-item"><a class="page-link text-dark" href="#">5</a></li>
+		            
+		            <li class="page-item">
+		                <a class="page-link text-dark" href="#" aria-label="Next">
+		                    <span>&gt;</span>
+		                </a>
+		            </li>
+		        </ul>
+		    </nav>	
+		</div>
+	</div>
+	    <div class="recently-viewed text-center">
+         <h3>최근 본 상품</h3>
+         <button class="prev-button">△</button>
+         <div>
+             <div class="recent-products">Product</div>
+             <div class="recent-products">Product</div>
+             <div class="recent-products">Product</div>
+         </div>      
+         <button class="next-button">▽</button>
+    </div>
+</section>
+
+<th:block layout:fragment="script">
+    <script>
+
+    </script>
+</th:block>
