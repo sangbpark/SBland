@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: "classpath:api.yml"
   thymeleaf:
     cache: false
   datasource:
