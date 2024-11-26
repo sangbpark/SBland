@@ -1,5 +1,6 @@
 package com.sbland;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,12 @@ public class testController {
 	@ResponseBody
 	@RequestMapping("/test7")
 	public List<Map<String, Object>> test7() {
-		List<Map<String, Object>> result = es.getItemsBySeller("cataclysmcollectables");
+		List<Map<String, Object>> productList = es.getItems("warhammer", 0);
+		List<Map<String, Object>> result = new ArrayList<>();
+		for (Map<String, Object> product : productList) {
+			String userName = (String)((Map<String, Object>) product.get("seller")).get("username");
+			if (userName.equals("flipsidegaming")) result.add(product);
+		}
 		
 		return result;
 	}

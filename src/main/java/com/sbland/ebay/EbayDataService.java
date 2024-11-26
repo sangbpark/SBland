@@ -19,9 +19,9 @@ public class EbayDataService {
     private final RestTemplate restTemplate;
     private final EbayAuthService ebayAuthService;
 
-    public List<Map<String, Object>> getItemsBySeller(String sellerId) {
+    public List<Map<String, Object>> getItems(String keyword, int offset) {
         String accessToken = ebayAuthService.getAccessToken();
-        String url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=warhammer&filter=seller:" + sellerId;
+        String url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + keyword + "&limit=100&offset=" + offset;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
