@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,15 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class EbayDataService {
     private final RestTemplate restTemplate;
     private final EbayAuthService ebayAuthService;
-
-    public EbayDataService(RestTemplateBuilder restTemplateBuilder, EbayAuthService ebayAuthService) {
-        this.restTemplate = restTemplateBuilder.build();
-        this.ebayAuthService = ebayAuthService;
-    }
 
     public List<Map<String, Object>> getItemsBySeller(String sellerId) {
         String accessToken = ebayAuthService.getAccessToken();
