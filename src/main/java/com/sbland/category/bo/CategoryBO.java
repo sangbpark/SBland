@@ -16,9 +16,9 @@ public class CategoryBO {
 	private final CategoryRepository categoryRepository;
 	
 	@Transactional
-	public void addCategory(int depth, String name, List<Integer> parentIds) {
+	public void addCategory(int depth, String name, List<Integer> parentCode) {
 		if (depth == 0) {
-			CategoryEntity category = categoryRepository.findFirstByOrderByIdDesc().orElse(null);
+			CategoryEntity category = categoryRepository.findFirstByOrderByCodeDesc().orElse(null);
 			if (category == null) {
 				saveCategory(name, depth, 1, 2);
 				return;
@@ -27,27 +27,37 @@ public class CategoryBO {
 				saveCategory(name, depth, category.getRight_value() + 1, category.getRight_value() + 2);
 				return;
 			} else {
-				saveCategory(name, depth, category.getRight_value() + 2, category.getRight_value() + 3);
+				saveCategory(name, depth, category.getRight_value() + 3, category.getRight_value() + 4);
 				return;
 			}
 		}
-		CategoryEntity category = categoryRepository.findById(parentIds.get(parentIds.size() - 1)).orElse(null);
-		int id = category.getRight_value();
-		List<CategoryEntity> categorys = categoryRepository.findByIdGreaterThanOrderByIdDesc(id);
+		CategoryEntity category = categoryRepository.findByCode(parentCode.get(parentCode.size() - 1)).orElse(null);
+		int code = category.getRight_value();
+		List<CategoryEntity> categorys = categoryRepository.findByCodeGreaterThanOrderByCodeDesc(code);
 		if (categorys.isEmpty()) {
-			saveCategory(name, depth, id, id + 1);
-			for (int categoryId : parentIds) {
-				CategoryEntity pCategory = categoryRepository.findById(categoryId).orElse(null);
+			saveCategory(name, depth, code, code + 1);
+			for (int categoryCode : parentCode) {
+				CategoryEntity pCategory = categoryRepository.findByCode(categoryCode).orElse(null);
 				saveCategory(pCategory.toBuilder().right_value(pCategory.getRight_value() + 2).build());
-			}				
+			}
+			return;
+		}
+		
+		for (CategoryEntity temp : categorys) {
+			saveCategory(temp.toBuilder().code(temp.getCode() + 2).right_value(temp.getRight_value() + 2).build());
+		}
+		saveCategory(name, depth, code, code + 1);
+		for (int pCode : parentCode) {
+			category = categoryRepository.findByCode(pCode).orElse(null);
+			saveCategory(category.toBuilder().right_value(category.getRight_value() + 2).build());
 		}
 	};
 	
-	private void saveCategory(String name, int depth, int id, int rightValue) {
+	private void saveCategory(String name, int depth, int code, int rightValue) {
 		categoryRepository.save(CategoryEntity
 				.builder()
-				.id(id)
 				.name(name)
+				.code(code)
 				.depth(depth)
 				.right_value(rightValue)
 				.build());

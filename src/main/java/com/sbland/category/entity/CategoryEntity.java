@@ -6,13 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @ToString
-@Builder(toBuilder=true)
+@SuperBuilder(toBuilder = true)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +22,7 @@ public class CategoryEntity extends BaseEntity {
 	@Id
 	private int id;
 	private String name;
+	private int code;
 	private int right_value;
 	private int depth;
 

@@ -20,8 +20,9 @@ class CategoryBOTest {
 	@Test
 	void 카테고리테스트() {
 		List<Integer> result = new ArrayList<>();
-		result.add(5);
-		cb.addCategory(1, "테스트4", result);
+		result.add(47);
+		cb.addCategory(1, "테스트25", result);
+
 	}
 
 }

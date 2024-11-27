@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.sbland.category.entity.CategoryEntity;
 
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
-	public Optional<CategoryEntity> findFirstByOrderByIdDesc();
+	public Optional<CategoryEntity> findFirstByOrderByCodeDesc();
 	
-	public List<CategoryEntity> findByIdGreaterThanOrderByIdDesc(int id);
+	public Optional<CategoryEntity> findByCode(int code);
+	
+	public List<CategoryEntity> findByCodeGreaterThanOrderByCodeDesc(int code);
 }
