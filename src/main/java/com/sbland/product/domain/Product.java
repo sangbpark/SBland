@@ -1,4 +1,4 @@
-package com.sbland.product;
+package com.sbland.product.domain;
 
 import java.time.LocalDateTime;
 
