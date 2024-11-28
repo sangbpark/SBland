@@ -1,6 +1,5 @@
 package com.sbland;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbland.ebay.EbayDataService;
+
+import reactor.core.publisher.Flux;
 
 @Controller
 public class testController {
@@ -49,13 +50,15 @@ public class testController {
 	@ResponseBody
 	@RequestMapping("/test7")
 	public List<Map<String, Object>> test7() {
-		List<Map<String, Object>> productList = es.getItems("warhammer", 0);
-		List<Map<String, Object>> result = new ArrayList<>();
-		for (Map<String, Object> product : productList) {
-			String userName = (String)((Map<String, Object>) product.get("seller")).get("username");
-			if (userName.equals("flipsidegaming")) result.add(product);
-		}
 		
-		return result;
+	    return es.getItems("warhammer", 0)
+	        .flatMapMany(Flux::fromIterable)
+	        .filter(product -> {
+	            String userName = (String) ((Map<String, Object>) product.get("seller")).get("username");
+	            return "flipsidegaming".equals(userName);
+	        })
+	        .collectList()
+	        .block(); 
+		
 	}
 }

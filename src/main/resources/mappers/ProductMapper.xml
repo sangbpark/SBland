@@ -3,5 +3,21 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
  <mapper namespace="com.sbland.product.mapper.ProductMapper">
+ 	<insert id="insertProductList">
+ 		INSERT INTO `product`
+ 		(
+ 			`name`
+			,`description`
+			,`price`
+			,`status`
+			,`category_code`
+			,`updated_at`
+			,`created_at`
+ 		)
+ 		VALUES
+ 		<foreach collection="list" item="product" separator="">
+			(#{product.name}, #{product.description }, #{product.price}, #{product.status}, #{product.category_code}, NOW(), NOW())
+		</foreach>
+ 	</insert>
  
  </mapper>

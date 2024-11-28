@@ -4,36 +4,32 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Service
 public class EbayDataService {
-    private final RestTemplate restTemplate;
+    private final WebClient webClient;
     private final EbayAuthService ebayAuthService;
 
-    public List<Map<String, Object>> getItems(String keyword, int offset) {
-        String accessToken = ebayAuthService.getAccessToken();
-        String url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + keyword + "&limit=100&offset=" + offset;
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-
-        HttpEntity<Void> request = new HttpEntity<>(headers);
-
-        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, request, Map.class);
-
-        Map<String, Object> body = response.getBody();
-        if (body != null && body.containsKey("itemSummaries")) {
-            return (List<Map<String, Object>>) body.get("itemSummaries");
-        }
-        return Collections.emptyList();
+    public Mono<List<Map<String, Object>>> getItems(String keyword, int offset) {
+        return ebayAuthService.getAccessToken()
+                .flatMap(accessToken -> 
+                    webClient.get()
+                            .uri("https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + keyword + "&limit=100&offset=" + offset)
+                            .headers(headers -> headers.setBearerAuth(accessToken))
+                            .retrieve()
+                            .bodyToMono(Map.class)
+                            .map(response -> {
+                                if (response != null && response.containsKey("itemSummaries")) {
+                                    return (List<Map<String, Object>>) response.get("itemSummaries");
+                                }
+                                return Collections.emptyList();
+                            })
+                );
     }
 }

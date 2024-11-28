@@ -1,7 +1,9 @@
 package com.sbland.ebay;
 
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.core.publisher.Mono;
 
 public interface EbayAuth {
-    public String getAccessToken(String clientId, String clientSecret, RestTemplate restTemplate);
+    public Mono<String> getAccessToken(String clientId, String clientSecret, WebClient webClient);
 }

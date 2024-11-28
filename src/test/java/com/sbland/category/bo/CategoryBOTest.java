@@ -19,16 +19,18 @@ class CategoryBOTest {
 	
 	@Test
 	void 카테고리인서트테스트() {
-//		List<Integer> result = new ArrayList<>();
-//		result.add(47);
-//		cb.addCategory(1, "테스트25", result);
+		List<Integer> result = new ArrayList<>();
+		result.add(111);
+		cb.addCategory(0, "etc", null);
+		
+
 
 	}
 	
 	@Test
 	void 카테고리딜리트테스트() {
-		List<Integer> result = new ArrayList<>();
-		cb.deleteCategory(13, result);
+//		List<Integer> result = new ArrayList<>();
+//		cb.deleteCategory(13, result);
 
 	}
 }

@@ -27,7 +27,7 @@ public class CategoryBO {
 				saveCategory(name, depth, category.getRight_value() + 1, category.getRight_value() + 2);
 				return;
 			} else {
-				saveCategory(name, depth, category.getRight_value() + 3, category.getRight_value() + 4);
+				saveCategory(name, depth, category.getRight_value() + 1 + category.getDepth(), category.getRight_value() + 2 + category.getDepth());
 				return;
 			}
 		}
