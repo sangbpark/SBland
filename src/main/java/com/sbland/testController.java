@@ -1,7 +1,6 @@
 package com.sbland;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbland.ebay.EbayDataService;
+import com.sbland.product.domain.EbayProduct;
 
 import reactor.core.publisher.Flux;
 
@@ -49,14 +49,10 @@ public class testController {
 	
 	@ResponseBody
 	@RequestMapping("/test7")
-	public List<Map<String, Object>> test7() {
+	public List<EbayProduct> test7() {
 		
 	    return es.getItems("warhammer", 0)
 	        .flatMapMany(Flux::fromIterable)
-	        .filter(product -> {
-	            String userName = (String) ((Map<String, Object>) product.get("seller")).get("username");
-	            return "flipsidegaming".equals(userName);
-	        })
 	        .collectList()
 	        .block(); 
 		

@@ -7,6 +7,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.product.domain.EbayProduct;
+
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -15,8 +18,9 @@ import reactor.core.publisher.Mono;
 public class EbayDataService {
     private final WebClient webClient;
     private final EbayAuthService ebayAuthService;
+    private final ObjectMapper objectMapper;
 
-    public Mono<List<Map<String, Object>>> getItems(String keyword, int offset) {
+    public Mono<List<EbayProduct>> getItems(String keyword, int offset) {
         return ebayAuthService.getAccessToken()
                 .flatMap(accessToken -> 
                     webClient.get()
@@ -26,7 +30,14 @@ public class EbayDataService {
                             .bodyToMono(Map.class)
                             .map(response -> {
                                 if (response != null && response.containsKey("itemSummaries")) {
-                                    return (List<Map<String, Object>>) response.get("itemSummaries");
+                                	  List<Map<String, Object>> productList = (List<Map<String, Object>>) response.get("itemSummaries");
+                                      return productList.stream()
+                                    		  .filter(product -> {
+                                    			  					String userName = (String) ((Map<String, Object>) product.get("seller")).get("username");
+                                    			  					return "flipsidegaming".equals(userName);
+                                    			  				})
+                                              .map(product -> objectMapper.convertValue(product, EbayProduct.class))
+                                              .toList();
                                 }
                                 return Collections.emptyList();
                             })
