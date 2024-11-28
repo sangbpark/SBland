@@ -53,6 +53,27 @@ public class CategoryBO {
 		}
 	};
 	
+	@Transactional
+	public void deleteCategory(int code, List<Integer> parentCode) {
+		
+		CategoryEntity category = categoryRepository.findByCode(code).orElse(null);
+		int deleteScope = category.getRight_value();
+		int changeCode = category.getRight_value() - code + 1;		
+		List<CategoryEntity> categorys = categoryRepository.findByCodeGreaterThanOrderByCodeAsc(deleteScope);
+		categoryRepository.deleteByColumnValueBetween(code, deleteScope);
+		if (!categorys.isEmpty()) {
+			for (CategoryEntity temp : categorys) {
+				saveCategory(temp.toBuilder().code(temp.getCode() - changeCode).right_value(temp.getRight_value() - changeCode).build());
+			}
+		}
+		if (!parentCode.isEmpty()) {
+			for (int pCode : parentCode) {
+				category = categoryRepository.findByCode(pCode).orElse(null);
+				saveCategory(category.toBuilder().right_value(category.getRight_value() - changeCode).build());
+			}
+		}	
+	}
+	
 	private void saveCategory(String name, int depth, int code, int rightValue) {
 		categoryRepository.save(CategoryEntity
 				.builder()
