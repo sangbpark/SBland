@@ -2,8 +2,10 @@ package com.sbland.common.file;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.Channels;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -33,38 +35,36 @@ public class FileManager  {
 	}
 	
 	public MultipartFile imageDownload(String imageUrl) {
-		try {
-			InputStream inputStream = webClient.get()
-			        .uri(imageUrl)
-			        .retrieve()
-			        .bodyToFlux(DataBuffer.class)        
-			        .map(DataBuffer::asInputStream)     
-			        .reduce((is1, is2) -> {            
-			            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			            try {
-							IOUtils.copy(is1, outputStream);
-						} catch (IOException e) {
-							log.info("[파일 병합 실패] imageUrl:{}", imageUrl);
-							e.printStackTrace();
-						}
-			            try {
-							IOUtils.copy(is2, outputStream);
-						} catch (IOException e) {
-							log.info("[파일 병합 실패] imageUrl:{}", imageUrl);
-							e.printStackTrace();
-						}
-			            return new ByteArrayInputStream(outputStream.toByteArray());
-			        })
-			        .block();
-		  String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-		  String ContentType = "image/" + fileName.substring(fileName.lastIndexOf(".") + 1);
-   
-     
-          return new MockMultipartFile(fileName, fileName, ContentType, inputStream);
-		} catch (IOException e) {
-			log.info("[파일 다운받기 실패] imageUrl:{}", imageUrl);
-			e.printStackTrace();
-			return null;
-		}
+		
+	    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+	
+	        webClient.get()
+	            .uri(imageUrl)
+	            .retrieve()
+	            .bodyToFlux(DataBuffer.class)
+	            .map(DataBuffer::asInputStream)
+	            .doOnNext(inputStream -> {
+	                try (inputStream) {
+	                    inputStream.transferTo(outputStream); 
+	                } catch (Exception e) {
+	                	log.info("[파일 다운로드 실패] imageUrl:{}", imageUrl);
+	                }
+	            })
+	            .blockLast(); 
+
+	       
+	        byte[] imageBytes = outputStream.toByteArray();
+
+	     
+	        String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+	        String contentType = "image/" + fileName.substring(fileName.lastIndexOf(".") + 1);
+
+	      
+	        return new MockMultipartFile(fileName, fileName, contentType, imageBytes);
+
+	    } catch (Exception e) {
+	    	log.info("[파일 다운로드 실패] imageUrl:{}", imageUrl);
+	    	return null;
+	    }
 	}
 }
