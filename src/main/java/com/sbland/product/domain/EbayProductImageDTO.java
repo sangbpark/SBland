@@ -13,13 +13,10 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-	private Long id;
-	private String name;
-	private String description;
-	private int price;
-	private String status;
-	private Integer category_code;
-	private LocalDateTime updated_at;
-	private LocalDateTime created_at;
+public class EbayProductImageDTO {
+	private Long product_id;
+	private String product_name;
+	private String url;
+	private Boolean is_thumbnail;
+	private int position;
 }

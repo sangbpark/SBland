@@ -1,4 +1,4 @@
-package com.sbland.ebay;
+package com.sbland.ebay.bo;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +15,9 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Service
-public class EbayDataService {
+public class EbayDataBO {
     private final WebClient webClient;
-    private final EbayAuthService ebayAuthService;
+    private final EbayAuthBO ebayAuthService;
     private final ObjectMapper objectMapper;
 
     public Mono<List<EbayProduct>> getItems(String keyword, int offset) {

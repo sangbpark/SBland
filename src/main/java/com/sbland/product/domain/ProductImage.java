@@ -13,13 +13,12 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class ProductImage {
 	private Long id;
-	private String name;
-	private String description;
-	private int price;
-	private String status;
-	private Integer category_code;
+	private Long product_id;
+	private String url;
+	private Boolean is_thumbnail;
+	private int position;
 	private LocalDateTime updated_at;
 	private LocalDateTime created_at;
 }
