@@ -1,9 +1,12 @@
 package com.sbland.common.file;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,14 +34,31 @@ public class FileManager  {
 	
 	public MultipartFile imageDownload(String imageUrl) {
 		try {
-		  byte[] imageBytes = webClient.get()
-                  .uri(imageUrl)
-                  .retrieve()
-                  .bodyToMono(byte[].class)
-                  .block();
+			InputStream inputStream = webClient.get()
+			        .uri(imageUrl)
+			        .retrieve()
+			        .bodyToFlux(DataBuffer.class)        
+			        .map(DataBuffer::asInputStream)     
+			        .reduce((is1, is2) -> {            
+			            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			            try {
+							IOUtils.copy(is1, outputStream);
+						} catch (IOException e) {
+							log.info("[파일 병합 실패] imageUrl:{}", imageUrl);
+							e.printStackTrace();
+						}
+			            try {
+							IOUtils.copy(is2, outputStream);
+						} catch (IOException e) {
+							log.info("[파일 병합 실패] imageUrl:{}", imageUrl);
+							e.printStackTrace();
+						}
+			            return new ByteArrayInputStream(outputStream.toByteArray());
+			        })
+			        .block();
 		  String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
 		  String ContentType = "image/" + fileName.substring(fileName.lastIndexOf(".") + 1);
-          InputStream inputStream = new ByteArrayInputStream(imageBytes);
+   
      
           return new MockMultipartFile(fileName, fileName, ContentType, inputStream);
 		} catch (IOException e) {

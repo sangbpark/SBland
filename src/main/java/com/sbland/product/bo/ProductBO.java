@@ -23,8 +23,10 @@ public class ProductBO {
 				.description(description)
 				.price(price)
 				.status(status)
-				.category_code(price)
+				.category_code(categoryCode)
 				.build();
-		return productMapper.insertProduct(product);
+		productMapper.insertProduct(product);
+		Long id = product.getId();
+		return id;
 	}
 }

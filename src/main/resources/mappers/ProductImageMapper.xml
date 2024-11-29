@@ -4,7 +4,7 @@
 
  <mapper namespace="com.sbland.product.mapper.ProductImageMapper">
  	<insert id="insertProductImageList">
- 		INSERT INTO `product-image`
+ 		INSERT INTO `product_image`
  		(
 			`product_id`
 			,`url`
@@ -14,7 +14,7 @@
 			,`created_at`
  		)
  		VALUES
- 		<foreach collection="imageList" item="image" separator=",">
+ 		<foreach collection="list" item="image" separator=",">
 	 		(
 	 			#{image.product_id}
 	 			,#{image.url}

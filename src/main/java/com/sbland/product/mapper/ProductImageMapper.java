@@ -8,5 +8,5 @@ import com.sbland.product.domain.ProductImage;
 
 @Mapper
 public interface ProductImageMapper {
-	public int insertProductImageList(List<ProductImage> imageList);
+	public int insertProductImageList(List<ProductImage> list);
 }

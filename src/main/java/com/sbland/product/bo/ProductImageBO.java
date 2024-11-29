@@ -21,18 +21,18 @@ public class ProductImageBO {
 	
 	public int addProductImage(List<EbayProductImageDTO> ebayProductImageDTOList) {
 
-		List<ProductImage> imageList = new ArrayList<>();
+		List<ProductImage> list = new ArrayList<>();
 		for (EbayProductImageDTO epd : ebayProductImageDTOList) {
 			MultipartFile file = fileManager.imageDownload(epd.getUrl());
 			ProductImage productImage = ProductImage
 										.builder()
-										.id(epd.getProduct_id())
+										.product_id(epd.getProduct_id())
 										.url(fileManager.uploadFile(file, epd.getProduct_name(), "product"))
 										.is_thumbnail(epd.getIs_thumbnail())
 										.position(epd.getPosition())
 										.build();
-			imageList.add(productImage);
+			list.add(productImage);
 		}
-		return productImageMapper.insertProductImageList(imageList);
+		return productImageMapper.insertProductImageList(list);
 	}
 }
