@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder= true)
 public abstract class BaseEntity {
 	@CreationTimestamp
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 	@UpdateTimestamp
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }

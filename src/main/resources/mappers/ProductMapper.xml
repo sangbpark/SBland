@@ -21,10 +21,18 @@
  			,#{description}
  			,#{price}
  			,#{status}
- 			,#{category_code}
+ 			,#{categoryCode}
  			, NOW()
  			, NOW()
  		)
  	</insert>
- 
+ 	<delete id="deleteProductListById">
+ 		DELETE 
+ 		FROM
+ 			`product`
+ 		WHERE id In 
+ 			<foreach collection="list" item="id" open="(" separator="," close=")">
+ 				#{id}
+ 			</foreach>
+ 	</delete>
  </mapper>

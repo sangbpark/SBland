@@ -9,4 +9,7 @@ import com.sbland.product.domain.ProductImage;
 @Mapper
 public interface ProductImageMapper {
 	public int insertProductImageList(List<ProductImage> list);
+	public int deleteProductImageById(Long id);
+	public List<Long> findProductImageIsNull();
+	public int deleteProductImageByUrlIsNull();
 }

@@ -23,10 +23,14 @@ public class ProductBO {
 				.description(description)
 				.price(price)
 				.status(status)
-				.category_code(categoryCode)
+				.categoryCode(categoryCode)
 				.build();
 		productMapper.insertProduct(product);
 		Long id = product.getId();
 		return id;
+	}
+	
+	public int deleteProductListById(List<Long> idList) {
+		return productMapper.deleteProductListById(idList);
 	}
 }

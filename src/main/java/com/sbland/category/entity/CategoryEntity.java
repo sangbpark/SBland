@@ -23,7 +23,7 @@ public class CategoryEntity extends BaseEntity {
 	private int id;
 	private String name;
 	private int code;
-	private int right_value;
+	private int rightValue;
 	private int depth;
 
 }

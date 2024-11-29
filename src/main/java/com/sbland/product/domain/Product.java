@@ -19,7 +19,7 @@ public class Product {
 	private String description;
 	private int price;
 	private String status;
-	private Integer category_code;
-	private LocalDateTime updated_at;
-	private LocalDateTime created_at;
+	private Integer categoryCode;
+	private LocalDateTime updatedAt;
+	private LocalDateTime createdAt;
 }

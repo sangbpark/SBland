@@ -15,10 +15,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ProductImage {
 	private Long id;
-	private Long product_id;
+	private Long productId;
 	private String url;
-	private Boolean is_thumbnail;
+	private Boolean isThumbnail;
 	private int position;
-	private LocalDateTime updated_at;
-	private LocalDateTime created_at;
+	private LocalDateTime updatedAt;
+	private LocalDateTime createdAt;
 }

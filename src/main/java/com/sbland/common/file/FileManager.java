@@ -1,13 +1,7 @@
 package com.sbland.common.file;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.channels.Channels;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;

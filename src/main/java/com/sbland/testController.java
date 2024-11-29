@@ -66,8 +66,8 @@ public class testController {
 	@ResponseBody
 	@RequestMapping("/test7")
 	public void test7() {
-		for (int i = 100; i <= 10000; i += 100) {
-			List<EbayProduct> ebayProductList = es.getItems("warhammer", i)
+		
+			List<EbayProduct> ebayProductList = es.getItems("warhammer", 0)
 		        .flatMapMany(Flux::fromIterable)
 		        .collectList()
 		        .block(); 
@@ -78,24 +78,24 @@ public class testController {
 				List<EbayProductImageDTO> ebayProductImageDTOList = new ArrayList<>();
 				EbayProductImageDTO epd = EbayProductImageDTO
 										.builder()
-										.product_id(id)
-										.is_thumbnail(true)
+										.productId(id)
+										.isThumbnail(true)
 										.position(0)
-										.product_name((String)temp.title())
+										.productName((String)temp.title())
 										.url((String)temp.thumbnailImages().get(0).get("imageUrl"))
 										.build();
 				ebayProductImageDTOList.add(epd);
 				EbayProductImageDTO epd2 = EbayProductImageDTO
 										.builder()
-										.product_id(id)
-										.is_thumbnail(false)
+										.productId(id)
+										.isThumbnail(false)
 										.position(1)
-										.product_name((String)temp.title())
+										.productName((String)temp.title())
 										.url((String)temp.image().get("imageUrl"))
 										.build();
 				ebayProductImageDTOList.add(epd2);
 				productImageBO.addProductImage(ebayProductImageDTOList);
 			}
 		}
-	}
+	
 }

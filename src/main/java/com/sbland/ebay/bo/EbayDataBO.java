@@ -24,7 +24,7 @@ public class EbayDataBO {
         return ebayAuthService.getAccessToken()
                 .flatMap(accessToken -> 
                     webClient.get()
-                            .uri("https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + keyword + "&limit=100&offset=" + offset)
+                            .uri("https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + keyword + "&limit=1&offset=" + offset)
                             .headers(headers -> headers.setBearerAuth(accessToken))
                             .retrieve()
                             .bodyToMono(Map.class)

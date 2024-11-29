@@ -26,13 +26,25 @@ public class ProductImageBO {
 			MultipartFile file = fileManager.imageDownload(epd.getUrl());
 			ProductImage productImage = ProductImage
 										.builder()
-										.product_id(epd.getProduct_id())
-										.url(fileManager.uploadFile(file, epd.getProduct_name(), "product"))
-										.is_thumbnail(epd.getIs_thumbnail())
+										.productId(epd.getProductId())
+										.url(fileManager.uploadFile(file, epd.getProductName(), "product"))
+										.isThumbnail(epd.getIsThumbnail())
 										.position(epd.getPosition())
 										.build();
 			list.add(productImage);
 		}
 		return productImageMapper.insertProductImageList(list);
+	}
+	
+	public int deleteProductImageById(Long id) {
+		return productImageMapper.deleteProductImageById(id);
+	}
+	
+	public List<Long> findProductImageIsNull() {
+		return productImageMapper.findProductImageIsNull();
+	}
+	
+	public int deleteProductImageByUrlIsNull() {
+		return productImageMapper.deleteProductImageByUrlIsNull();
 	}
 }
