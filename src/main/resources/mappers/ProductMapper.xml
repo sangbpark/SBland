@@ -35,4 +35,44 @@
  				#{id}
  			</foreach>
  	</delete>
+ 	<select id="findProductByCategoryCodeIsNull"
+ 			resultType="com.sbland.product.domain.Product">
+ 		SELECT
+ 			`id`
+ 			,`name`
+			,`description`
+			,`price`
+			,`status`
+			,`category_code`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product`
+		WHERE 
+			`category_code` IS NULL
+ 	
+ 	</select>
+ 	<update id="updateProductById">
+ 		UPDATE `product` 
+ 		SET
+ 			<if test="name != null">
+ 			`name` = #{name}
+ 			</if>
+ 			<if test="description != null">
+			`description` = #{description}
+			</if>
+			<if test="price != null">
+			`price` = #{price}
+			</if>
+			<if test="status != null">
+			`status` = #{status}
+			</if>
+			<if test="categoryCode != null">
+			`category_code` = #{categoryCode}
+			</if>
+		WHERE
+			`id` = #{id}
+ 		
+ 		
+ 	</update>
  </mapper>

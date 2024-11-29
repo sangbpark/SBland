@@ -53,6 +53,10 @@ public class CategoryBO {
 		}
 	};
 	
+	public List<CategoryEntity> getCategoryAll() {
+		return categoryRepository.findAll();
+	}
+	
 	@Transactional
 	public void deleteCategory(int code, List<Integer> parentCode) {
 		

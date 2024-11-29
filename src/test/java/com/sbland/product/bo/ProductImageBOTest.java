@@ -19,13 +19,19 @@ class ProductImageBOTest {
 	ProductBO productBO;
 
 
+//	@Test
+//	void 프로덕트널찾기테스트() {
+//		List<Long> idList = new ArrayList<>();
+//		idList = productImageBO.findProductImageIsNull();
+//		int pCount = productBO.deleteProductListById(idList);
+//		int piCount = productImageBO.deleteProductImageByUrlIsNull();
+//		log.info("[테스트] idList:{} pCount:{} piCount:{}",idList, pCount, piCount);
+//	}
+	
+
 	@Test
-	void 프로덕트널찾기테스트() {
-		List<Long> idList = new ArrayList<>();
-		idList = productImageBO.findProductImageIsNull();
-		int pCount = productBO.deleteProductListById(idList);
-		int piCount = productImageBO.deleteProductImageByUrlIsNull();
-		log.info("[테스트] idList:{} pCount:{} piCount:{}",idList, pCount, piCount);
+	void 카테고리분류테스트() {
+		productBO.categoryMatch();
 	}
 
 }
