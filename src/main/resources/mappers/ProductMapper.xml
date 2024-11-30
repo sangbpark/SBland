@@ -93,4 +93,21 @@
  				#{id}
  			</foreach>
  	</select>
+ 	 	<select id="selectProductByCreatedAt"
+ 			resultType="com.sbland.product.domain.Product">
+ 		SELECT
+ 			`id`
+ 			,`name`
+			,`description`
+			,`price`
+			,`status`
+			,`category_code`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product`
+		ORDER BY `created_at` 
+		LIMIT #{count}
+			
+ 	</select>
  </mapper>

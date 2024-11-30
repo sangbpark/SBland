@@ -38,4 +38,19 @@ public class HomepageBO {
 			    .collect(Collectors.toList());
 		return productThumbnailCardDTOList;
 	}
+	
+	public List<ProductThumbnailCardDTO> getRecentProductTop3(){
+		List<Product> productList = productBO.getProductByCreatedAt(3);
+		List<Long> idList = productList.stream()
+				.map(product -> product.getId())
+				.collect(Collectors.toList());
+		List<ProductImage> productImageList = productImageBO.getProductThumbnailByproductIdIn(idList);
+		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
+			    .map(product -> {
+			    	ProductThumbnailCardDTO dto = objectMapper.convertValue(product, ProductThumbnailCardDTO.class);
+			    	return dto.toBuilder().ThumbnailImage(productImageList.get(productList.indexOf(product)).getUrl()).build();			    	 
+			    })
+			    .collect(Collectors.toList());
+		return productThumbnailCardDTOList;
+	}
 }

@@ -18,8 +18,10 @@ public class HomepageController {
 
 	@GetMapping("/")
 	public String Homepage(Model model) {
-		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = homepageBO.getBestProductTop3();
-		model.addAttribute("productThumbnailCardDTOList", productThumbnailCardDTOList);
+		List<ProductThumbnailCardDTO> bestProductThumbnailCardDTOList = homepageBO.getBestProductTop3();
+		List<ProductThumbnailCardDTO> recentProductThumbnailCardDTOList = homepageBO.getRecentProductTop3();
+		model.addAttribute("bestProductThumbnailCardDTOList", bestProductThumbnailCardDTOList);
+		model.addAttribute("recentProductThumbnailCardDTOList", recentProductThumbnailCardDTOList);
 		return "homepage/homepage";
 	}
 }

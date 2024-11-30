@@ -24,4 +24,6 @@ public interface ProductMapper {
 								@Param("categoryCode") Integer categoryCode);
 	
 	public List<Product> selectProductByIdIn(List<Long> idList);
+	
+	public List<Product> selectProductByCreatedAt(int count);
 }
