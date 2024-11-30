@@ -1,7 +1,6 @@
 package com.sbland.product.bo;
 
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductBO {
 	private final ProductMapper productMapper;
 	private final CategoryBO  categoryBO;
+	private final ProductRankBO productRankBO;
 	
 
 	public Long addProduct(String name, String description, int price, String status, Integer categoryCode) {
@@ -73,4 +73,11 @@ public class ProductBO {
 		}
 	}
 	
+	public void test() {
+		List<Long> idList = productMapper.findProductByCategoryCodeIsNull()
+				.stream()
+				.map(product -> product.getId())
+				.collect(Collectors.toList());
+		productRankBO.addProductRankList(idList);
+	}
 }

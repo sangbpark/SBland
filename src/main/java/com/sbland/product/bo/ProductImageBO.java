@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sbland.common.file.FileManager;
-import com.sbland.product.domain.EbayProductImageDTO;
 import com.sbland.product.domain.ProductImage;
+import com.sbland.product.dto.EbayProductImageDTO;
 import com.sbland.product.mapper.ProductImageMapper;
 
 import lombok.RequiredArgsConstructor;

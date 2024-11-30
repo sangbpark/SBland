@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbland.product.domain.EbayProduct;
+import com.sbland.product.dto.EbayProductDTO;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
@@ -20,7 +20,7 @@ public class EbayDataBO {
     private final EbayAuthBO ebayAuthService;
     private final ObjectMapper objectMapper;
 
-    public Mono<List<EbayProduct>> getItems(String keyword, int offset) {
+    public Mono<List<EbayProductDTO>> getItems(String keyword, int offset) {
         return ebayAuthService.getAccessToken()
                 .flatMap(accessToken -> 
                     webClient.get()
@@ -36,7 +36,7 @@ public class EbayDataBO {
                                     			  					String userName = (String) ((Map<String, Object>) product.get("seller")).get("username");
                                     			  					return "flipsidegaming".equals(userName);
                                     			  				})
-                                              .map(product -> objectMapper.convertValue(product, EbayProduct.class))
+                                              .map(product -> objectMapper.convertValue(product, EbayProductDTO.class))
                                               .toList();
                                 }
                                 return Collections.emptyList();

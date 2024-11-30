@@ -1,4 +1,4 @@
-package com.sbland.product.domain;
+package com.sbland.product.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,9 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EbayProductImageDTO {
+public class ProductThumbnailCardDTO {
 	private Long productId;
+	private String ThumbnailImage;
 	private String productName;
-	private String url;
-	private Boolean isThumbnail;
-	private int position;
+	private int productPrice; 
 }

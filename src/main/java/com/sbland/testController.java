@@ -14,8 +14,8 @@ import com.sbland.ebay.bo.EbayDataBO;
 import com.sbland.exrate.bo.ExRateBO;
 import com.sbland.product.bo.ProductBO;
 import com.sbland.product.bo.ProductImageBO;
-import com.sbland.product.domain.EbayProduct;
-import com.sbland.product.domain.EbayProductImageDTO;
+import com.sbland.product.dto.EbayProductDTO;
+import com.sbland.product.dto.EbayProductImageDTO;
 
 import reactor.core.publisher.Flux;
 
@@ -67,11 +67,11 @@ public class testController {
 	@RequestMapping("/test7")
 	public void test7() {
 		
-			List<EbayProduct> ebayProductList = es.getItems("warhammer", 0)
+			List<EbayProductDTO> ebayProductList = es.getItems("warhammer", 0)
 		        .flatMapMany(Flux::fromIterable)
 		        .collectList()
 		        .block(); 
-			for (EbayProduct temp : ebayProductList) {
+			for (EbayProductDTO temp : ebayProductList) {
 				Long id = productBO.addProduct((String)temp.title()
 						, null, exRateBO.calculateExRate(new BigDecimal ((String)temp.price().get("value"))
 						, (String) temp.price().get("currency")), "판매중", null);

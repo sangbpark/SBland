@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.sbland.product.mapper.ProductRankMapper">
+ 	<insert id="InsertProductRankList">
+ 		INSERT INTO `product_rank` 
+ 		(
+	 		`product_id`
+			,`total_count`
+			,`updated_at`
+			,`created_at`
+ 		)
+ 		VALUES
+ 		<foreach collection="list" item="product" separator="," >
+ 			(#{product.productId}, #{product.totalCount}, NOW(), NOW())
+ 		</foreach>
+ 	</insert>
+ 
+ </mapper>
