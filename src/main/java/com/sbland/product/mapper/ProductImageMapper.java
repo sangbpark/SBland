@@ -12,4 +12,5 @@ public interface ProductImageMapper {
 	public int deleteProductImageById(Long id);
 	public List<Long> findProductImageIsNull();
 	public int deleteProductImageByUrlIsNull();
+	public List<ProductImage> selectProductThumbnailByproductIdIn(List<Long> idList);
 }

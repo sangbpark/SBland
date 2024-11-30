@@ -29,5 +29,16 @@ class ProductRankBOTest {
 	void 상품랭크테스트2() {
 		productBO.test();
 	}
+	
+	@Test
+	void 상품랭크업데이트테스트() {
+		productRankBO.updateProductRankByProductId(28L, 20);
+	}
+	
+	@Transactional
+	@Test
+	void 상품초기설정테스트() {
+		productRankBO.initialUpdateProductRankALL();
+	}
 
 }

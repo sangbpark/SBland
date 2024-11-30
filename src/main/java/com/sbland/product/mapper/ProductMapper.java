@@ -22,4 +22,6 @@ public interface ProductMapper {
 								@Param("price") Integer price,
 								@Param("status") String status,
 								@Param("categoryCode") Integer categoryCode);
+	
+	public List<Product> selectProductByIdIn(List<Long> idList);
 }

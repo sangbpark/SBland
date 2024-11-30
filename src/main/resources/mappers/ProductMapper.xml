@@ -71,8 +71,26 @@
 			`category_code` = #{categoryCode}
 			</if>
 		WHERE
-			`id` = #{id}
- 		
- 		
+			`id` = #{id}		
  	</update>
+ 	
+ 	<select id="selectProductByIdIn"
+ 			resultType="com.sbland.product.domain.Product">
+ 		SELECT
+ 			`id`
+ 			,`name`
+			,`description`
+			,`price`
+			,`status`
+			,`category_code`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product`
+		WHERE 
+			`id` IN 
+			<foreach collection="list" item="id" open="(" separator="," close=")">
+ 				#{id}
+ 			</foreach>
+ 	</select>
  </mapper>

@@ -16,5 +16,33 @@
  			(#{product.productId}, #{product.totalCount}, NOW(), NOW())
  		</foreach>
  	</insert>
- 
+ 	<update id="updateProductRankByProductId">
+ 		UPDATE
+ 			`product_rank`
+ 		SET
+ 			`total_count` = #{totalCount}
+ 			,`updated_at` = NOW()
+ 		WHERE
+ 			`product_id` = #{productId}
+ 	</update>
+ 	<select id="selectProductRankAll" resultType="com.sbland.product.domain.ProductRank">
+ 		SELECT
+ 			`product_id`
+			,`total_count`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product_rank`	
+ 	</select>
+ 	<select id="selectProductRanklistTop" resultType="com.sbland.product.domain.ProductRank">
+ 		SELECT
+ 			`product_id`
+			,`total_count`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product_rank`
+		ORDER BY `total_count` DESC 
+		LIMIT #{count}	
+ 	</select>
  </mapper>

@@ -47,4 +47,8 @@ public class ProductImageBO {
 	public int deleteProductImageByUrlIsNull() {
 		return productImageMapper.deleteProductImageByUrlIsNull();
 	}
+	
+	public List<ProductImage> getProductThumbnailByproductIdIn(List<Long> idList) { 
+		return productImageMapper.selectProductThumbnailByproductIdIn(idList);
+	}
 }

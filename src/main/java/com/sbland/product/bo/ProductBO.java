@@ -73,6 +73,10 @@ public class ProductBO {
 		}
 	}
 	
+	public List<Product> getProductByIdIn(List<Long> idList) {
+		return productMapper.selectProductByIdIn(idList);
+	}
+	
 	public void test() {
 		List<Long> idList = productMapper.findProductByCategoryCodeIsNull()
 				.stream()
