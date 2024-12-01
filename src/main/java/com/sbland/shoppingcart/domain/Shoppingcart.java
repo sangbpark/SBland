@@ -1,4 +1,4 @@
-package com.sbland.product.domain;
+package com.sbland.shoppingcart.domain;
 
 import java.time.LocalDateTime;
 
@@ -13,12 +13,10 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductImage {
-	private Long id;
+public class Shoppingcart {
+	private Long userId;
 	private Long productId;
-	private String url;
-	private boolean isThumbnail;
-	private int position;
+	private int quantity;
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;
 }

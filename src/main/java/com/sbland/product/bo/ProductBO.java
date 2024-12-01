@@ -81,6 +81,9 @@ public class ProductBO {
 		return productMapper.selectProductByCreatedAt(count);
 	}
 	
+	public Product getProductById(Long id) {
+		return productMapper.selectProductById(id);
+	}
 	public void test() {
 		List<Long> idList = productMapper.findProductByCategoryCodeIsNull()
 				.stream()

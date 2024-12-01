@@ -66,4 +66,19 @@
  			</foreach>
  			AND `is_thumbnail` = true
  	</select>
+ 	<select id="selectProductImageByProductId" resultType="com.sbland.product.domain.ProductImage">
+ 		SELECT
+ 			`id`
+			,`product_id`
+			,`url`
+			,`is_thumbnail`
+			,`position`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product_image`
+		WHERE
+			`product_id` = #{id}
+		ORDER BY `position`
+ 	</select>
  </mapper>

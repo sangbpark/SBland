@@ -26,4 +26,6 @@ public interface ProductMapper {
 	public List<Product> selectProductByIdIn(List<Long> idList);
 	
 	public List<Product> selectProductByCreatedAt(int count);
+	
+	public Product selectProductById(Long id);
 }

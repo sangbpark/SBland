@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<section layout:fragment="content" class="contents">
+	<div id="productDetailHeader" class="d-flex">
+		<div class="productDetailThumbnailImage border col-6 d-flex justify-content-center py-1" >
+			<img th:src="${productDetailCardDTO.url[0].url}" alt="상품 썸네일 이미지">
+		</div>
+		<div class="prodcutDetailMenu border col-6">
+			<div class="productDetailTite" th:text="${productDetailCardDTO.name}">제목</div>
+			<div class="productDetailPrice text-right" th:text="|${productDetailCardDTO.price}원|">가격</div>
+			<div class="ProductSalePrice text-right">세일가격</div>
+			<hr>
+			<div class="ProductQuantity d-flex justify-content-between">
+			    <div class="quantityControl">
+			        <button type="button" id="decreaseBtn">-</button>
+			        <input type="text" value="1" id="quantityInput">
+			        <button type="button" id="increaseBtn">+</button>
+			    </div>
+   				<span id="productTotalPrice"  th:text="|${productDetailCardDTO.price}원|">18,900원</span>
+			</div>
+			<hr>
+			<div id="buyMenus" class="d-flex justify-content-around">
+				<button id="directPaymentBtn" class="btn btn-outline-success col-5 p-1">바로결제</button>
+				<button id="shoppingcartBtn" class="btn btn-success col-5 p-1">장바구니</button>
+			</div>
+		</div>
+	</div>
+	<div class="productImage d-flex border justify-content-center" th:each="productImage, status : ${productDetailCardDTO.url}">
+		<div th:if="${status.index > 0}">
+			<img th:src="${productImage.url}" alt="상품 본문 이미지">
+		</div>
+	</div>
+</section>
+
+<th:block layout:fragment="script">
+    <script>
+		$(document).ready(function() {
+			$("#decreaseBtn").on("click", function() {
+				const quantity = parseInt($("#quantityInput").val(), 10);
+				if (quantity == 1) {
+					alert("구매수량은 최소 1개 입니다.");
+					return;
+				}
+				$("#quantityInput").val(quantity - 1);
+				updateTotalPrice(quantity - 1);
+			});
+			
+			$("#increaseBtn").on("click", function() {
+				const quantity = parseInt($("#quantityInput").val(), 10);
+				if (quantity >= 5) {
+					alert("구매수량은 최대 5개 입니다.");
+					$("#quantityInput").val(5);
+					return;
+				}
+				$("#quantityInput").val(quantity + 1);
+				updateTotalPrice(quantity + 1);
+			});
+			
+			$("#quantityInput").on("change", function() {
+				const quantity = parseInt($("#quantityInput").val(), 10);
+				if (quantity >= 5) {
+					alert("구매수량은 최대 5개 입니다.");
+					$("#quantityInput").val(5);
+					updateTotalPrice(5);
+					return;
+				}
+				
+				if (quantity < 1) {
+					alert("구매수량은 최소 1개 입니다.");
+					$("#quantityInput").val(1);
+					updateTotalPrice(1);
+					return;
+				}
+				updateTotalPrice(quantity);
+			});
+			
+			 function updateTotalPrice(quantity) {
+				 	const price =  parseInt($(".productDetailPrice").text(), 10);
+			        const totalPrice = price * quantity;
+			        $("#productTotalPrice").text(totalPrice + "원"); 
+			 }
+		});
+    </script>
+</th:block>

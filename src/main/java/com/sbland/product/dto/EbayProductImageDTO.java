@@ -15,6 +15,6 @@ public class EbayProductImageDTO {
 	private Long productId;
 	private String productName;
 	private String url;
-	private Boolean isThumbnail;
+	private boolean isThumbnail;
 	private int position;
 }

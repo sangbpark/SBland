@@ -133,3 +133,22 @@ img {
     overflow: hidden;      
     text-overflow: ellipsis; 
 }
+
+
+#productDetailHeader {
+	height: 310px;
+}
+
+.productDetailTite{
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.productDetailPrice {
+	font-size: 30px;
+}
+
+.ProductSalePrice {
+	font-size: 30px;
+}
+

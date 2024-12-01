@@ -70,6 +70,7 @@
 			<if test="categoryCode != null">
 			`category_code` = #{categoryCode}
 			</if>
+			`updated_at` = NOW()
 		WHERE
 			`id` = #{id}		
  	</update>
@@ -93,7 +94,7 @@
  				#{id}
  			</foreach>
  	</select>
- 	 	<select id="selectProductByCreatedAt"
+ 	<select id="selectProductByCreatedAt"
  			resultType="com.sbland.product.domain.Product">
  		SELECT
  			`id`
@@ -109,5 +110,21 @@
 		ORDER BY `created_at` 
 		LIMIT #{count}
 			
+ 	</select>
+ 	<select id="selectProductById"
+ 			resultType="com.sbland.product.domain.Product">
+ 		SELECT
+ 			`id`
+ 			,`name`
+			,`description`
+			,`price`
+			,`status`
+			,`category_code`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product`
+		WHERE
+			`id` = #{id}		
  	</select>
  </mapper>

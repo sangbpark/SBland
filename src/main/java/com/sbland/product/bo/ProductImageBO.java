@@ -28,7 +28,7 @@ public class ProductImageBO {
 										.builder()
 										.productId(epd.getProductId())
 										.url(fileManager.uploadFile(file, epd.getProductName(), "product"))
-										.isThumbnail(epd.getIsThumbnail())
+										.isThumbnail(epd.isThumbnail())
 										.position(epd.getPosition())
 										.build();
 			list.add(productImage);
@@ -50,5 +50,9 @@ public class ProductImageBO {
 	
 	public List<ProductImage> getProductThumbnailByproductIdIn(List<Long> idList) { 
 		return productImageMapper.selectProductThumbnailByproductIdIn(idList);
+	}
+	
+	public List<ProductImage> getProductImageByProductId(Long id) {
+		return productImageMapper.selectProductImageByProductId(id);
 	}
 }
