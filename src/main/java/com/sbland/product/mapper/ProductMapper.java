@@ -13,7 +13,7 @@ public interface ProductMapper {
 	
 	public int deleteProductListById(List<Long> idList);
 	
-	public List<Product> findProductByCategoryCodeIsNull();
+	public List<Product> selectProductByCategoryCodeIsNull();
 
 	public int updateProductById(
 								@Param("id") Long id,
@@ -28,4 +28,6 @@ public interface ProductMapper {
 	public List<Product> selectProductByCreatedAt(int count);
 	
 	public Product selectProductById(Long id);
+	
+	public List<Product> selectProductAll();
 }

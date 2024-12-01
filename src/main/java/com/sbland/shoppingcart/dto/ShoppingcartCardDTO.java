@@ -1,4 +1,4 @@
-package com.sbland.product.dto;
+package com.sbland.shoppingcart.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,10 +14,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductThumbnailCardDTO {
-	private Long id;
+public class ShoppingcartCardDTO {
+	private Long userId;
+	private Long productId;
 	private String ThumbnailImage;
 	private String name;
-	private int price; 
-	private int quantity;
+	private int price;
+	private int productCount;
 }

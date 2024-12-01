@@ -1,4 +1,4 @@
-package com.sbland.homepage.bo;
+package com.sbland.product.bo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,21 +6,20 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbland.product.bo.ProductBO;
-import com.sbland.product.bo.ProductImageBO;
-import com.sbland.product.bo.ProductRankBO;
 import com.sbland.product.domain.Product;
 import com.sbland.product.domain.ProductImage;
+import com.sbland.product.domain.ProductStock;
 import com.sbland.product.dto.ProductThumbnailCardDTO;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class HomepageBO {
+public class ProductThumbnailCardDTOBO {
 	private final ProductBO productBO;
 	private final ProductRankBO productRankBO;
 	private final ProductImageBO productImageBO;
+	private final ProductStockBO productStockBO;
 	private final ObjectMapper objectMapper;
 	
 	public List<ProductThumbnailCardDTO> getBestProductTop3(){
@@ -53,4 +52,17 @@ public class HomepageBO {
 			    .collect(Collectors.toList());
 		return productThumbnailCardDTOList;
 	}
+	
+	public ProductThumbnailCardDTO getProductThumbnailCardDTOByProductId(Long productId) {
+		Product product = productBO.getProductById(productId);
+		ProductImage productImage = productImageBO.getProductImageByProductId(productId)
+				.stream()
+				.filter(findProductImage -> findProductImage.isThumbnail())
+				.findFirst()
+				.orElse(null);
+		ProductStock productStock = productStockBO.getProductStockByProductId(productId);
+		ProductThumbnailCardDTO ProductThumbnailCardDTO = objectMapper.convertValue(product, ProductThumbnailCardDTO.class);
+		return ProductThumbnailCardDTO.toBuilder().ThumbnailImage(productImage.getUrl()).quantity(productStock.getQuantity()).build();
+	}
+	
 }

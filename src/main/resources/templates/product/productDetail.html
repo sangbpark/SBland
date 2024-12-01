@@ -12,19 +12,25 @@
 			<div class="productDetailTite" th:text="${productDetailCardDTO.name}">제목</div>
 			<div class="productDetailPrice text-right" th:text="|${productDetailCardDTO.price}원|">가격</div>
 			<div class="ProductSalePrice text-right">세일가격</div>
-			<hr>
-			<div class="ProductQuantity d-flex justify-content-between">
-			    <div class="quantityControl">
-			        <button type="button" id="decreaseBtn">-</button>
-			        <input type="text" value="1" id="quantityInput">
-			        <button type="button" id="increaseBtn">+</button>
-			    </div>
-   				<span id="productTotalPrice"  th:text="|${productDetailCardDTO.price}원|">18,900원</span>
+			<div th:if="${productDetailCardDTO.quantity > 0}">
+				<hr>
+				<div class="ProductQuantity d-flex justify-content-between">
+				    <div class="quantityControl">
+				        <button type="button" id="decreaseBtn">-</button>
+				        <input type="text" value="1" id="countInput">
+				        <button type="button" id="increaseBtn">+</button>
+				    </div>
+				    <span id="productQuantity" th:data-quantity="${productDetailCardDTO.quantity}" th:text="|재고:${productDetailCardDTO.quantity}|"></span>
+	   				<span id="productTotalPrice"  th:text="|${productDetailCardDTO.price}원|">18,900원</span>
+				</div>
+				<hr>
+				<div id="buyMenus" class="d-flex justify-content-around">
+					<button id="directPaymentBtn" class="btn btn-outline-success col-5 p-1">바로결제</button>
+					<button id="shoppingcartBtn" class="btn btn-success col-5 p-1">장바구니</button>
+				</div>
 			</div>
-			<hr>
-			<div id="buyMenus" class="d-flex justify-content-around">
-				<button id="directPaymentBtn" class="btn btn-outline-success col-5 p-1">바로결제</button>
-				<button id="shoppingcartBtn" class="btn btn-success col-5 p-1">장바구니</button>
+			<div th:unless="${productDetailCardDTO.quantity > 0}" class="d-flex justify-content-center">
+				<span class="productSoldOutText">sold out</span>
 			</div>
 		</div>
 	</div>
@@ -33,53 +39,78 @@
 			<img th:src="${productImage.url}" alt="상품 본문 이미지">
 		</div>
 	</div>
+	<div class="recently-viewed text-center">
+         <h3>최근 본 상품</h3>
+         <button class="prev-button">△</button>
+         <div>
+             <div class="recent-products">Product</div>
+             <div class="recent-products">Product</div>
+             <div class="recent-products">Product</div>
+         </div>      
+         <button class="next-button">▽</button>
+    </div>
 </section>
 
 <th:block layout:fragment="script">
     <script>
 		$(document).ready(function() {
+			
 			$("#decreaseBtn").on("click", function() {
-				const quantity = parseInt($("#quantityInput").val(), 10);
-				if (quantity == 1) {
+				const count = parseInt($("#countInput").val(), 10);
+				if (count == 1) {
 					alert("구매수량은 최소 1개 입니다.");
 					return;
 				}
-				$("#quantityInput").val(quantity - 1);
-				updateTotalPrice(quantity - 1);
+				if (count)
+				$("#countInput").val(count - 1);
+				updateTotalPrice(count - 1);
 			});
 			
 			$("#increaseBtn").on("click", function() {
-				const quantity = parseInt($("#quantityInput").val(), 10);
-				if (quantity >= 5) {
+				const count = parseInt($("#countInput").val(), 10);
+				const productQuantity = parseInt($("#productQuantity").data("quantity"), 10);
+				if (count >= 5) {
 					alert("구매수량은 최대 5개 입니다.");
-					$("#quantityInput").val(5);
+					$("#countInput").val(5);
 					return;
 				}
-				$("#quantityInput").val(quantity + 1);
-				updateTotalPrice(quantity + 1);
+				if (count + 1 > productQuantity) {
+					alert("재고가 부족합니다.");
+					$("#countInput").val(productQuantity);
+					updateTotalPrice(productQuantity);
+					return;
+				}
+				$("#countInput").val(count + 1);
+				updateTotalPrice(count + 1);
 			});
 			
 			$("#quantityInput").on("change", function() {
-				const quantity = parseInt($("#quantityInput").val(), 10);
-				if (quantity >= 5) {
+				const count = parseInt($("#countInput").val(), 10);
+				const productQuantity = parseInt($("#productQuantity").data("quantity"), 10);
+				if (count >= 5) {
 					alert("구매수량은 최대 5개 입니다.");
-					$("#quantityInput").val(5);
+					$("#countInput").val(5);
 					updateTotalPrice(5);
 					return;
 				}
-				
-				if (quantity < 1) {
+				if (count > productQuantity) {
+					alert("재고가 부족합니다.");
+					$("#countInput").val(productQuantity);
+					updateTotalPrice(productQuantity);
+					return;
+				}
+				if (count < 1) {
 					alert("구매수량은 최소 1개 입니다.");
-					$("#quantityInput").val(1);
+					$("#countInput").val(1);
 					updateTotalPrice(1);
 					return;
 				}
-				updateTotalPrice(quantity);
+				updateTotalPrice(count);
 			});
 			
-			 function updateTotalPrice(quantity) {
+			 function updateTotalPrice(count) {
 				 	const price =  parseInt($(".productDetailPrice").text(), 10);
-			        const totalPrice = price * quantity;
+			        const totalPrice = price * count;
 			        $("#productTotalPrice").text(totalPrice + "원"); 
 			 }
 		});

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<section layout:fragment="content" class="contents">
+	<div id="orderList">
+		<div th:each="ShoppingcartCardDTO : ${ShoppingcartCardDTOList}" class="d-flex shoppingcartCard border">
+			<div class="col-1 border-right d-flex jsutify-content-center align-items-center h-100">
+			  <input type="checkbox" name="checkProduct"  th:value="${ShoppingcartCardDTO.productId}">
+			</div>
+			<div class="shoppingcartCard col-3 d-flex justify-content-center align-items-center border-right h-100">
+				<img th:src="${ShoppingcartCardDTO.ThumbnailImage}" alt="상품 썸네일">
+			</div>
+			<div class="col-5 border-right h-100 d-flex flex-column align-items-center">
+				<div class="shoppingcartTitle d-flex align-items-center" th:text="${ShoppingcartCardDTO.name}">상품 제목</div>
+				<div>
+		       		<button type="button" class="editOrderBtn btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal" th:data-product-count="${ShoppingcartCardDTO.productCount}" th:data-product-id="${ShoppingcartCardDTO.productId}">주문수정</button>
+				</div>
+			</div>
+		    <div class="col-2 border-right h-100 d-flex flex-column justify-content-center align-items-end">
+		    	<small class="productCount" th:text="|${ShoppingcartCardDTO.productCount}개|">상품 가격</small>
+		    	<small class="productPrice" th:text="|${ShoppingcartCardDTO.price}원|">상품 가격</small>
+		    	<small class="productTotalPrice" th:text="|total = ${ShoppingcartCardDTO.price * ShoppingcartCardDTO.productCount}원|">상품 가격</small>
+		    </div>		
+			<div class="col-1 h-100 d-flex jsutify-content-center align-items-center">
+				<button type="button" class="shoppingcartDelBtn btn btn-secondary" th:data-product-id="${ShoppingcartCardDTO.productId}">삭제</button>
+			</div>
+			
+		</div>
+	</div>
+	<div id="pagination">
+		<nav aria-label="Page navigation">
+	        <ul class="pagination justify-content-center">
+	            <li class="page-item">
+	                <a class="page-link text-dark" href="#" aria-label="Previous">
+	                    <span>&lt;</span>
+	                </a>
+	            </li>
+	            
+	            <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
+	            <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+	            <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+	            <li class="page-item"><a class="page-link text-dark" href="#">4</a></li>
+	            <li class="page-item"><a class="page-link text-dark" href="#">5</a></li>
+	            
+	            <li class="page-item">
+	                <a class="page-link text-dark" href="#" aria-label="Next">
+	                    <span>&gt;</span>
+	                </a>
+	            </li>
+	        </ul>
+	    </nav>
+	</div>
+    <div class="recently-viewed text-center">
+           <h3>주문예상금액</h3>
+           <div>
+               금액
+           </div>      
+           <button class="paymentButton btn btn-primary btn-block">결재</button>
+    </div>
+   	<div class="modal fade" id="modal">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content text-center">
+				<div class="py-3 d-flex">
+					<input id="modalProductCount" type="text">
+				</div>
+				<div class="py-3">
+					<a href="#" id="shoppingcartEditBtn">수정</a>
+				</div>
+				<div class="py-3 border-top">
+					<a href="#" data-dismiss="modal">취소</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<th:block layout:fragment="script">
+    <script>
+		$(document).ready(function() {	
+			$(".shoppingcartDelBtn").on("click",function() {
+				const prodcutId = $(this).data("product-id");
+		        $.ajax({
+                    type: "DELETE"
+                    ,url: "/shoppingcart/delete"
+                    ,data: {"productId":prodcutId}
+	                ,success: function (data) {
+	                	if (data.code == 200) {
+	                        alert("장바구니가 삭제되었습니다.");
+	                        location.reload();
+	                	} else if (data.code == 500) {
+	                		alert(data.message);
+	                		location.reload();
+	                	}
+	                }
+                    , error: function (e) {
+                        alert("장바구니 삭제중 오류가 발생했습니다.");
+                    }
+              });
+			});
+			$(".editOrderBtn").on("click", function() {
+				const prodcutId = $(this).data("product-id");
+				const productCount = $(this).data("product-count")
+				$("#modal").data("product-id", prodcutId);
+				$("#modal").data("product-count", productCount);
+				$("#modalProductCount").val(productCount);
+				
+			});
+					
+			$("#shoppingcartEditBtn").on("click", function(e) {
+				const count = parseInt($("#modalProductCount").val(), 10);
+				const prodcutId = $("#modal").data("product-id");
+				if (count > 5) {
+					alert("구매수량은 최대 5개 입니다.");
+					$("#countInput").val(5);
+					return;
+				}
+				if (count < 1) {
+					alert("구매수량은 최소 1개 입니다.");
+					$("#countInput").val(1);
+					return;
+				}
+				$.ajax({
+					url:"/product/productQuantity"
+					, data: {"productId":prodcutId}
+					, success: function(data) {
+						if(data.code == 200) {
+							if(data.data == 0){
+								alert("재고가 없습니다.")
+								const prodcutId = $("#modal").data("product-id");
+						        $.ajax({
+				                    type: "DELETE"
+				                    ,url: "/shoppingcart/delete"
+				                    ,data: {"productId":prodcutId}
+					                ,success: function (data) {
+					                	if (data.code == 200) {
+					                        alert("장바구니가 삭제되었습니다.");
+					                        location.reload();
+					                	} else if (data.code == 500) {
+					                		alert(data.message);
+					                		location.reload();
+					                	}
+				                    }
+				                    , error: function (e) {
+				                        alert("장바구니 삭제중 오류가 발생했습니다.");
+				                    }
+				              });
+							} else if (data.data >= count) {
+								const count = parseInt($("#modalProductCount").val(), 10);
+								const prodcutId = $("#modal").data("product-id");
+								console.log(count);
+								console.log(prodcutId);
+						         $.ajax({
+					                    type: "POST"
+					                    ,url: "/shoppingcart/update"
+					                    ,data: {"productId":prodcutId, "productCount":count}
+						                ,success: function (data) {
+						                	if (data.code == 200) {
+						                        alert("장바구니가 수정되었습니다.");
+						                        location.reload();
+						                	} else if (data.code == 500) {
+						                		alert(data.message);
+						                		location.reload();
+						                	}
+					                    }
+					                    , error: function (e) {
+					                        alert("장바구니 수정중 오류가 발생했습니다.");
+					                    }
+					              });
+							} else if (data.data < count){
+								alert("남은 재고는 " + data.data + "개 입니다.")
+							}
+						} else if (data.code == 500) {
+							alert(data.message);
+						}
+					}
+					, error: function(e) {
+						alert("장바구니 수정에 실패했습니다.");
+					}
+				});	
+				
+			});
+			
+		});
+    </script>
+</th:block>

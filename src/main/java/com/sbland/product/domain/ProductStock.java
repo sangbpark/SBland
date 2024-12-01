@@ -1,4 +1,4 @@
-package com.sbland.shoppingcart.domain;
+package com.sbland.product.domain;
 
 import java.time.LocalDateTime;
 
@@ -13,10 +13,9 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Shoppingcart {
-	private Long userId;
+public class ProductStock {
 	private Long productId;
-	private int productCount;
+	private int quantity;
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;
 }

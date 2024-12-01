@@ -45,7 +45,7 @@ public class ProductBO {
 	}
 	
 	public void categoryMatch() {
-		List<Product> productList = productMapper.findProductByCategoryCodeIsNull();
+		List<Product> productList = productMapper.selectProductByCategoryCodeIsNull();
 		Map<String, Integer> categoryMap = categoryBO
 				.getCategoryAll()
 				.stream()
@@ -85,10 +85,18 @@ public class ProductBO {
 		return productMapper.selectProductById(id);
 	}
 	public void test() {
-		List<Long> idList = productMapper.findProductByCategoryCodeIsNull()
+		List<Long> idList = productMapper.selectProductByCategoryCodeIsNull()
 				.stream()
 				.map(product -> product.getId())
 				.collect(Collectors.toList());
 		productRankBO.addProductRankList(idList);
+	}
+	
+	public List<Long> getProductIdAll() {
+		List<Long> productId = productMapper.selectProductAll()
+				.stream()
+				.map(product -> product.getId())
+				.collect(Collectors.toList());
+		return productId;
 	}
 }

@@ -127,4 +127,19 @@
 		WHERE
 			`id` = #{id}		
  	</select>
+ 	
+ 	 	<select id="selectProductAll"
+ 			resultType="com.sbland.product.domain.Product">
+ 		SELECT
+ 			`id`
+ 			,`name`
+			,`description`
+			,`price`
+			,`status`
+			,`category_code`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product`		
+ 	</select>
  </mapper>

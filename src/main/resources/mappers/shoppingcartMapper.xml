@@ -3,5 +3,67 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
  <mapper namespace="com.sbland.shoppingcart.mapper.ShoppingcartMapper">
- 
+ 	<insert id="insertShoppingcart">
+ 		INSERT INTO `shoppingcart`	
+ 		(
+ 			`user_id`
+			,`product_id`
+			,`product_count`
+			,`updated_at`
+			,`created_at`
+ 		)
+ 		VALUES
+ 		(
+ 			#{userId}
+ 			,#{productId}
+ 			,#{productCount}
+ 			,NOW()
+ 			,NOW()
+ 		)		
+ 	</insert>
+ 	<select id="selectShoppingcartByUserId"
+ 			resultType="com.sbland.shoppingcart.domain.Shoppingcart">
+ 		SELECT
+ 			`user_id`
+			,`product_id`
+			,`product_count`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`shoppingcart`
+		WHERE
+			`user_id` = #{id}
+ 	
+ 	</select>
+ 	<select id="selectShoppingcartByUserIdAndProductId"
+ 			resultType="com.sbland.shoppingcart.domain.Shoppingcart">
+ 		SELECT
+ 			`user_id`
+			,`product_id`
+			,`product_count`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`shoppingcart`
+		WHERE
+			`user_id` = #{userId} AND `product_id` = #{productId}
+ 	
+ 	</select>
+ 	<update id="updateShoppingcart">
+ 		UPDATE
+ 			`shoppingcart`
+ 		SET
+ 			`product_count` = #{count}
+ 			,`updated_at` = NOW()
+ 		WHERE
+ 			`user_id` = #{userId} AND `product_id` = #{productId}
+ 	
+ 	</update>
+ 	<delete id="deleteShoppingcartByUserIdAndProductId">
+ 		DELETE 
+ 		FROM
+ 			`shoppingcart`
+ 		WHERE
+ 			`user_id` = #{userId} AND `product_id` = #{productId}
+ 	</delete>
  </mapper>
