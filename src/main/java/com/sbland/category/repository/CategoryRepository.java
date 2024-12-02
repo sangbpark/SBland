@@ -21,6 +21,8 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Intege
 	
 	public List<CategoryEntity> findByCodeGreaterThanOrderByCodeDesc(int code);
 	
+	public List<CategoryEntity> findAllByOrderByCode();
+	
 	@Modifying
     @Query("DELETE FROM CategoryEntity e WHERE e.code BETWEEN :startValue AND :endValue")
     public void deleteByColumnValueBetween(@Param("startValue") int startValue, @Param("endValue") int endValue);

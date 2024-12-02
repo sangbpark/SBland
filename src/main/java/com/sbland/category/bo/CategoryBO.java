@@ -1,19 +1,27 @@
 package com.sbland.category.bo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.category.dto.CategoryDTO;
+import com.sbland.category.dto.CategoryRootDTO;
 import com.sbland.category.entity.CategoryEntity;
 import com.sbland.category.repository.CategoryRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CategoryBO {
 	private final CategoryRepository categoryRepository;
+	private final ObjectMapper objectMapper;
 	
 	@Transactional
 	public void addCategory(int depth, String name, List<Integer> parentCode) {
@@ -54,7 +62,7 @@ public class CategoryBO {
 	};
 	
 	public List<CategoryEntity> getCategoryAll() {
-		return categoryRepository.findAll();
+		return categoryRepository.findAllByOrderByCode();
 	}
 	
 	@Transactional
@@ -76,6 +84,42 @@ public class CategoryBO {
 				saveCategory(category.toBuilder().rightValue(category.getRightValue() - changeCode).build());
 			}
 		}	
+	}
+	
+	public CategoryEntity getCategoryByCode(int code) {
+		return categoryRepository.findByCode(code).orElse(null);
+	}
+	
+	public List<CategoryRootDTO> getCategoryMenu() { 
+		List<CategoryDTO> categoryDTOList = categoryRepository.findAllByOrderByCode()
+				.stream()
+				.map(categoryEntity -> objectMapper.convertValue(categoryEntity, CategoryDTO.class))
+				.collect(Collectors.toList());
+		List<CategoryRootDTO> categoryRootDTOList = new ArrayList<>();
+		for (int i = 0; i < categoryDTOList.size(); i++) {
+			if (categoryDTOList.get(i).getDepth() == 0) {				
+				CategoryDTO categoryDTO = categoryDTOList.get(i);
+				CategoryRootDTO categoryRootDTO = new CategoryRootDTO();
+				categoryRootDTO = objectMapper.convertValue(categoryDTO, CategoryRootDTO.class);
+				List<CategoryDTO> childCategoryDTOList = new ArrayList<>();
+				i++;
+				if (i < categoryDTOList.size()) {
+					while (true) {
+						childCategoryDTOList.add(categoryDTOList.get(i));
+						i++;
+						if (i >= categoryDTOList.size() || categoryDTOList.get(i).getDepth() == 0) {
+							i--;
+							break;
+						}
+					}
+				}
+				categoryRootDTOList.add(categoryRootDTO.toBuilder()
+						.childCategory(childCategoryDTOList)
+						.build());
+			}
+		}
+		
+		return categoryRootDTOList;
 	}
 	
 	private void saveCategory(String name, int depth, int code, int rightValue) {

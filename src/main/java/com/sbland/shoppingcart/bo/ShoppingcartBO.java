@@ -1,7 +1,6 @@
 package com.sbland.shoppingcart.bo;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -9,9 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
-import com.sbland.product.dto.ProductThumbnailCardDTO;
 import com.sbland.shoppingcart.domain.Shoppingcart;
-import com.sbland.shoppingcart.dto.ShoppingcartCardDTO;
 import com.sbland.shoppingcart.mapper.ShoppingcartMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -27,25 +24,14 @@ public class ShoppingcartBO {
 		return shoppingcartMapper.insertShoppingcart(userId, productId, productCount);
 	}
 	
-	public List<ShoppingcartCardDTO> getShoppingcartByUserId(Long id) {
-		List<ShoppingcartCardDTO> shoppingcartCardDTOList= shoppingcartMapper.selectShoppingcartByUserId(id)
-				.stream()
-				.map(shoppingcart -> {
-					ShoppingcartCardDTO shoppingcartCardDTO = objectMapper.convertValue(shoppingcart, ShoppingcartCardDTO.class);
-					Long productId = shoppingcart.getProductId();
-					ProductThumbnailCardDTO productThumbnailCardDTO = productThumbnailCardDTOBO.getProductThumbnailCardDTOByProductId(productId);
-					return shoppingcartCardDTO
-							.toBuilder()
-							.name(productThumbnailCardDTO.getName())
-							.ThumbnailImage(productThumbnailCardDTO.getThumbnailImage())
-							.price(productThumbnailCardDTO.getPrice())
-							.build();
-				})
-				.collect(Collectors.toList());
-		
-		return shoppingcartCardDTOList;
+	public List<Shoppingcart> getShoppingcartByUserId(Long id) {
+		List<Shoppingcart> shoppingcartList= shoppingcartMapper.selectShoppingcartByUserId(id);		
+		return shoppingcartList;
 	}
 	
+	public Shoppingcart getShoppingcartByUserIdAndProductId(Long userId, Long productId) {
+		return shoppingcartMapper.selectShoppingcartByUserIdAndProductId(userId, productId);
+	};
 	public Response updateShoppingcartByUserIdAndProductId(Long userId, Long productId, int count) {
 		Shoppingcart shoppingcart = shoppingcartMapper.selectShoppingcartByUserIdAndProductId(userId, productId);
 		if (shoppingcart == null) {

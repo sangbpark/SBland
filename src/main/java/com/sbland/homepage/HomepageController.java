@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class HomepageController {
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
 
+
 	@GetMapping("/")
 	public String Homepage(Model model) {
 		List<ProductThumbnailCardDTO> bestProductThumbnailCardDTOList = productThumbnailCardDTOBO.getBestProductTop3();

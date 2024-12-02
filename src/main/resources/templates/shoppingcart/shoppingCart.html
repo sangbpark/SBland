@@ -122,57 +122,21 @@
 					return;
 				}
 				$.ajax({
-					url:"/product/productQuantity"
-					, data: {"productId":prodcutId}
+					url:"/shoppingcart/productQuantity"
+					, data: {"productId":prodcutId, "productCount":count}
 					, success: function(data) {
 						if(data.code == 200) {
 							if(data.data == 0){
 								alert("재고가 없습니다.")
-								const prodcutId = $("#modal").data("product-id");
-						        $.ajax({
-				                    type: "DELETE"
-				                    ,url: "/shoppingcart/delete"
-				                    ,data: {"productId":prodcutId}
-					                ,success: function (data) {
-					                	if (data.code == 200) {
-					                        alert("장바구니가 삭제되었습니다.");
-					                        location.reload();
-					                	} else if (data.code == 500) {
-					                		alert(data.message);
-					                		location.reload();
-					                	}
-				                    }
-				                    , error: function (e) {
-				                        alert("장바구니 삭제중 오류가 발생했습니다.");
-				                    }
-				              });
+								location.reload();
 							} else if (data.data >= count) {
-								const count = parseInt($("#modalProductCount").val(), 10);
-								const prodcutId = $("#modal").data("product-id");
-								console.log(count);
-								console.log(prodcutId);
-						         $.ajax({
-					                    type: "POST"
-					                    ,url: "/shoppingcart/update"
-					                    ,data: {"productId":prodcutId, "productCount":count}
-						                ,success: function (data) {
-						                	if (data.code == 200) {
-						                        alert("장바구니가 수정되었습니다.");
-						                        location.reload();
-						                	} else if (data.code == 500) {
-						                		alert(data.message);
-						                		location.reload();
-						                	}
-					                    }
-					                    , error: function (e) {
-					                        alert("장바구니 수정중 오류가 발생했습니다.");
-					                    }
-					              });
+								alert("장바구니 수정 완료.")
+								location.reload();
 							} else if (data.data < count){
 								alert("남은 재고는 " + data.data + "개 입니다.")
+							} else if (data.code == 500) {
+								alert(data.message);
 							}
-						} else if (data.code == 500) {
-							alert(data.message);
 						}
 					}
 					, error: function(e) {

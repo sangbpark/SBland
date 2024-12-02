@@ -16,6 +16,7 @@ public interface ShoppingcartMapper {
 	
 	public List<Shoppingcart> selectShoppingcartByUserId(Long id);
 	
+	
 	public Shoppingcart selectShoppingcartByUserIdAndProductId(
 			@Param("userId") Long userId,
 			@Param("productId") Long productId);
