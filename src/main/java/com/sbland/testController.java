@@ -67,35 +67,35 @@ public class testController {
 	@RequestMapping("/test7")
 	public void test7() {
 		
-			List<EbayProductDTO> ebayProductList = es.getItems("warhammer", 0)
-		        .flatMapMany(Flux::fromIterable)
-		        .collectList()
-		        .block(); 
-			for (EbayProductDTO temp : ebayProductList) {
-				Long id = productBO.addProduct((String)temp.title()
-						, null, exRateBO.calculateExRate(new BigDecimal ((String)temp.price().get("value"))
-						, (String) temp.price().get("currency")), "판매중", null);
-				List<EbayProductImageDTO> ebayProductImageDTOList = new ArrayList<>();
-				EbayProductImageDTO epd = EbayProductImageDTO
-										.builder()
-										.productId(id)
-										.isThumbnail(true)
-										.position(0)
-										.productName((String)temp.title())
-										.url((String)temp.thumbnailImages().get(0).get("imageUrl"))
-										.build();
-				ebayProductImageDTOList.add(epd);
-				EbayProductImageDTO epd2 = EbayProductImageDTO
-										.builder()
-										.productId(id)
-										.isThumbnail(false)
-										.position(1)
-										.productName((String)temp.title())
-										.url((String)temp.image().get("imageUrl"))
-										.build();
-				ebayProductImageDTOList.add(epd2);
-				productImageBO.addProductImage(ebayProductImageDTOList);
-			}
+//			List<EbayProductDTO> ebayProductList = es.getItems("warhammer", 0)
+//		        .flatMapMany(Flux::fromIterable)
+//		        .collectList()
+//		        .block(); 
+//			for (EbayProductDTO temp : ebayProductList) {
+//				Long id = productBO.addProduct((String)temp.title()
+//						, null, exRateBO.calculateExRate(new BigDecimal ((String)temp.price().get("value"))
+//						, (String) temp.price().get("currency")), "판매중", null);
+//				List<EbayProductImageDTO> ebayProductImageDTOList = new ArrayList<>();
+//				EbayProductImageDTO epd = EbayProductImageDTO
+//										.builder()
+//										.productId(id)
+//										.isThumbnail(true)
+//										.position(0)
+//										.productName((String)temp.title())
+//										.url((String)temp.thumbnailImages().get(0).get("imageUrl"))
+//										.build();
+//				ebayProductImageDTOList.add(epd);
+//				EbayProductImageDTO epd2 = EbayProductImageDTO
+//										.builder()
+//										.productId(id)
+//										.isThumbnail(false)
+//										.position(1)
+//										.productName((String)temp.title())
+//										.url((String)temp.image().get("imageUrl"))
+//										.build();
+//				ebayProductImageDTOList.add(epd2);
+//				productImageBO.addProductImage(ebayProductImageDTOList);
+//			}
 		}
 	
 }

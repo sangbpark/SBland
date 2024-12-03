@@ -81,9 +81,14 @@ public class ProductBO {
 		return productMapper.selectProductByCreatedAt(count);
 	}
 	
+	public List<Product> getProductByCategoryCode(int code, int rightValue) {
+		return productMapper.selectProductByCategoryCode(code, rightValue);
+	}
+	
 	public Product getProductById(Long id) {
 		return productMapper.selectProductById(id);
 	}
+	
 	public void test() {
 		List<Long> idList = productMapper.selectProductByCategoryCodeIsNull()
 				.stream()

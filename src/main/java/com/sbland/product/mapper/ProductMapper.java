@@ -30,4 +30,8 @@ public interface ProductMapper {
 	public Product selectProductById(Long id);
 	
 	public List<Product> selectProductAll();
+	
+	public List<Product> selectProductByCategoryCode(
+			@Param("code") int code, 
+			@Param("rightValue") int rightValue);
 }

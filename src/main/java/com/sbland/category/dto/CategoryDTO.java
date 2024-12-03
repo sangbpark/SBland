@@ -1,5 +1,6 @@
 package com.sbland.category.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,4 +24,10 @@ public class CategoryDTO {
 	@Column(name ="right_value")
 	private int rightValue;
 	private int depth;
+	@Builder.Default
+	private List<CategoryDTO> childCategory = new ArrayList<>();
+	
+	public void addChildList(CategoryDTO childCategory) {
+		this.childCategory.add(childCategory);
+	}
 }

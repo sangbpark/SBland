@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.sbland.category.bo.CategoryBO;
-import com.sbland.category.dto.CategoryRootDTO;
+import com.sbland.category.dto.CategoryDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +19,8 @@ public class GlobalControllerAdvice {
 
 	   @ModelAttribute
 	    public void categoryList(Model model) {
-		   List<CategoryRootDTO> categoryDTOList = categoryBO.getCategoryMenu();
+		   List<CategoryDTO> categoryDTOListTree = categoryBO.getCategoryMenu();
 
-	        model.addAttribute("categoryDTOList", categoryDTOList);
+	        model.addAttribute("categoryDTOListTree", categoryDTOListTree);
 	    }
 }

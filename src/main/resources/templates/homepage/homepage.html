@@ -15,7 +15,7 @@
 	         <div class="d-flex">            
 	              <div th:each="bestProductThumbnailCardDTO : ${bestProductThumbnailCardDTOList}" class="home-product-card col-4">
 	              	<div class="home-product-image d-flex justify-content-center">
-						<img th:src="${bestProductThumbnailCardDTO.ThumbnailImage}" alt="상품 썸네일">	                	
+						<img th:src="${bestProductThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
 	              	</div>
 	              	<div class="productText" th:text="${bestProductThumbnailCardDTO.name}">제목</div>
 	              	<div th:text="|${bestProductThumbnailCardDTO.price}원|">가격</div>
@@ -28,7 +28,7 @@
              <div class="d-flex">
 	             <div th:each="recentProductThumbnailCardDTO : ${recentProductThumbnailCardDTOList}" class="home-product-card col-4">
 	              	<div class="home-product-image d-flex justify-content-center">
-					<img th:src="${recentProductThumbnailCardDTO.ThumbnailImage}" alt="상품 썸네일">	                	
+					<img th:src="${recentProductThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
 	              	</div>
 	              	<div class="productText" th:text="${recentProductThumbnailCardDTO.name}">제목</div>
 	              	<div th:text="${recentProductThumbnailCardDTO.price}">가격</div>

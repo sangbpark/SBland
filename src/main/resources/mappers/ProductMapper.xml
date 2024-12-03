@@ -126,9 +126,8 @@
 			`product`
 		WHERE
 			`id` = #{id}		
- 	</select>
- 	
- 	 	<select id="selectProductAll"
+ 	</select>	
+ 	<select id="selectProductAll"
  			resultType="com.sbland.product.domain.Product">
  		SELECT
  			`id`
@@ -141,5 +140,22 @@
 			,`created_at`
 		FROM
 			`product`		
+ 	</select>
+ 	<select id="selectProductByCategoryCode"
+ 			resultType="com.sbland.product.domain.Product">
+ 		SELECT
+ 			`id`
+ 			,`name`
+			,`description`
+			,`price`
+			,`status`
+			,`category_code`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product`
+		WHERE 
+			`category_code` BETWEEN #{code} AND #{rightValue} 
+		ORDER BY `created_at` 			
  	</select>
  </mapper>

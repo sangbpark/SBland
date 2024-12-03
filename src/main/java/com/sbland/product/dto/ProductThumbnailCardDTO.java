@@ -16,7 +16,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductThumbnailCardDTO {
 	private Long id;
-	private String ThumbnailImage;
+	private String thumbnailImage;
 	private String name;
 	private int price; 
 	private int quantity;

@@ -106,7 +106,7 @@ header {
     border-radius: 5px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 500;
 }
 
 .recent-products {
@@ -163,6 +163,47 @@ img {
 
 .shoppingcartTitle {
 	height: 90px;
+}
+
+.mainCategory{
+	position: relative;
+	width:200px;
+}
+
+.mainCategory:hover > .subCategory {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    margin: 0;
+    padding: 0.5rem 0;
+}
+
+.subCategory:hover {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    margin: 0;
+    padding: 0.5rem 0;
+}
+
+.subCategory {
+	display:none;
+	min-width:300px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.leafCategory {
+	width:400px;
+}
+
+.leafCategoryWrap {
+	display: flex;
 }
 
 
