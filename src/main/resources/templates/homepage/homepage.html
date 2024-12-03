@@ -12,8 +12,8 @@
     <section class="contents bg-warning">
          <div class="home-product bg-danger">
              <h1>인기상품</h1>
-	         <div class="d-flex">            
-	              <div th:each="bestProductThumbnailCardDTO : ${bestProductThumbnailCardDTOList}" class="home-product-card col-4">
+	         <div class="d-flex">           
+	              <div type="button" th:each="bestProductThumbnailCardDTO : ${bestProductThumbnailCardDTOList}" class="home-product-card col-4" th:data-product-id="${bestProductThumbnailCardDTO.id}">
 	              	<div class="home-product-image d-flex justify-content-center">
 						<img th:src="${bestProductThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
 	              	</div>
@@ -26,7 +26,7 @@
          <div class="home-product bg-danger">
              <h1>신상품</h1>
              <div class="d-flex">
-	             <div th:each="recentProductThumbnailCardDTO : ${recentProductThumbnailCardDTOList}" class="home-product-card col-4">
+	             <div type="button" th:each="recentProductThumbnailCardDTO : ${recentProductThumbnailCardDTOList}" class="home-product-card col-4" th:data-product-id="${recentProductThumbnailCardDTO.id}">
 	              	<div class="home-product-image d-flex justify-content-center">
 					<img th:src="${recentProductThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
 	              	</div>
@@ -80,6 +80,11 @@
    
 <th:block layout:fragment="script">
     <script>
-
+		$(document).ready(function() {
+			$(".home-product-card").on("click",function() {
+				const productId = $(this).data("product-id");
+				location.href="/product/product-view/" + productId;
+			})
+		});
     </script>
 </th:block>

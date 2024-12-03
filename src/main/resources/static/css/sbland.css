@@ -179,6 +179,17 @@ img {
     margin: 0;
     padding: 0.5rem 0;
 }
+.logo > a {
+	text-decoration: none;
+}
+
+.logo:hover > a {
+	color: black;
+}
+
+a{
+	color: black;
+}
 
 .subCategory:hover {
     display: block;

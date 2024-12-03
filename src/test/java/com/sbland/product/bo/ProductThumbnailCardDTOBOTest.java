@@ -18,7 +18,7 @@ class ProductThumbnailCardDTOBOTest {
 
 	@Test
 	void 카테고리상품리스트테스트() {
-		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productThumbnailCardDTOBO.getProductThumbnailCardDTOByCateogry(3, 4);
+		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productThumbnailCardDTOBO.getProductThumbnailCardDTOBySearch(3, 4, null, 20, null);
 		log.info("[테스트] productThumbnailCardDTOList:{}",productThumbnailCardDTOList.size());
 	}
 

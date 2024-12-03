@@ -81,10 +81,12 @@ public class ProductBO {
 		return productMapper.selectProductByCreatedAt(count);
 	}
 	
-	public List<Product> getProductByCategoryCode(int code, int rightValue) {
-		return productMapper.selectProductByCategoryCode(code, rightValue);
+	public List<Product> getProductBySearch(Integer code, Integer rightValue, String keyword, int count, Integer offset) {
+		return productMapper.selectProductBySearch(code, rightValue, keyword, count, offset);
 	}
-	
+	public int getProductSizeBySearch(Integer code, Integer rightValue, String keyword) {
+		return productMapper.selectProductSizeBySearch(code, rightValue, keyword);
+	}
 	public Product getProductById(Long id) {
 		return productMapper.selectProductById(id);
 	}

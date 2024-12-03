@@ -68,8 +68,8 @@ public class ProductThumbnailCardDTOBO {
 		return ProductThumbnailCardDTO.toBuilder().thumbnailImage(productImage.getUrl()).quantity(productStock.getQuantity()).build();
 	}
 	
-	public List<ProductThumbnailCardDTO> getProductThumbnailCardDTOByCateogry(int code, int rightValue) {
-		List<Product> productList = productBO.getProductByCategoryCode(code, rightValue);
+	public List<ProductThumbnailCardDTO> getProductThumbnailCardDTOBySearch(Integer code, Integer rightValue, String keyword, int count, Integer offset) {
+		List<Product> productList = productBO.getProductBySearch(code, rightValue, keyword, count, offset);
 		if (productList.isEmpty()) return null;
 		List<Long> idList = productList.stream()
 				.map(product -> product.getId())
@@ -84,4 +84,7 @@ public class ProductThumbnailCardDTOBO {
 		return productThumbnailCardDTOList;
 	}
 	
+	public int getProductThumbnailCardDTOSizeBySearch(Integer code, Integer rightValue, String keyword) {
+		return productBO.getProductSizeBySearch(code, rightValue, keyword);
+	}
 }

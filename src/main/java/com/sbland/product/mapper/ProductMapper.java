@@ -31,7 +31,16 @@ public interface ProductMapper {
 	
 	public List<Product> selectProductAll();
 	
-	public List<Product> selectProductByCategoryCode(
-			@Param("code") int code, 
-			@Param("rightValue") int rightValue);
+	public List<Product> selectProductBySearch(
+			@Param("code") Integer code, 
+			@Param("rightValue") Integer rightValue,
+			@Param("keyword") String keyword,
+			@Param("count") int count,
+			@Param("offset") Integer offset);
+	
+	public int selectProductSizeBySearch(
+			@Param("code") Integer code, 
+			@Param("rightValue") Integer rightValue,
+			@Param("keyword") String keyword
+			);
 }

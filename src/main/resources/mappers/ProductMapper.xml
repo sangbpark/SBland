@@ -141,7 +141,7 @@
 		FROM
 			`product`		
  	</select>
- 	<select id="selectProductByCategoryCode"
+ 	<select id="selectProductBySearch"
  			resultType="com.sbland.product.domain.Product">
  		SELECT
  			`id`
@@ -155,7 +155,30 @@
 		FROM
 			`product`
 		WHERE 
-			`category_code` BETWEEN #{code} AND #{rightValue} 
-		ORDER BY `created_at` 			
+			<if test="code != null">
+			`category_code` BETWEEN #{code} AND #{rightValue}
+			</if>
+			<if test="keyword != null">
+			MATCH(`name`, `description`) AGAINST(#{keyword});
+			</if> 
+		ORDER BY `created_at`
+		Limit #{count} 
+		<if test="offset != null"> 
+		OFFSET #{offset}
+		</if> 			
+ 	</select>
+ 	<select id="selectProductSizeBySearch"
+ 			resultType="int">
+ 		SELECT 
+ 			COUNT(*) 
+		FROM
+			`product`
+		WHERE 
+			<if test="code != null">
+			`category_code` BETWEEN #{code} AND #{rightValue}
+			</if>
+			<if test="keyword != null">
+			MATCH(`name`, `description`) AGAINST(#{keyword});
+			</if> 		
  	</select>
  </mapper>

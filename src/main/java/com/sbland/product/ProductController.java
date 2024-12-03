@@ -1,6 +1,5 @@
 package com.sbland.product;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -10,11 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sbland.common.pagination.bo.PaginationBO;
+import com.sbland.common.pagination.dto.PaginationDTO;
 import com.sbland.product.bo.ProductBO;
 import com.sbland.product.bo.ProductDetailBO;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
 import com.sbland.product.dto.ProductDetailCardDTO;
-import com.sbland.product.dto.ProductThumbnailCardDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +25,7 @@ public class ProductController {
 	private final ProductBO productBO;
 	private final ProductDetailBO productDetailBO;
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
+	private final PaginationBO paginationBO;
 	
 	@GetMapping("/product-view/{productId}")
 	public String productView(
@@ -38,12 +39,19 @@ public class ProductController {
 	@GetMapping("/product-list-view")
 	public String productListView(
 			Model model,
-			@RequestParam("code") int code,
-			@RequestParam("rightValue") int rightValue,
-			@RequestParam("keyword") Optional<String> keyword
-			) {
-		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productThumbnailCardDTOBO.getProductThumbnailCardDTOByCateogry(code, rightValue);
-		model.addAttribute("productThumbnailCardDTOList", productThumbnailCardDTOList);
+			@RequestParam("code") Optional<Integer> code,
+			@RequestParam("rightValue") Optional<Integer> rightValue,
+			@RequestParam("keyword") Optional<String> keyword,
+			@RequestParam("page") Optional<Integer> page,
+			@RequestParam("count") int count
+			) {		
+			
+		PaginationDTO aginationDTO = paginationBO.getProductThumbnailPaging(page.orElse(null), code.orElse(null), rightValue.orElse(null), keyword.orElse(null), count);
+		model.addAttribute("pageList", aginationDTO.getPageDTOList());
+		model.addAttribute("productThumbnailCardDTOList", aginationDTO.getProductThumbnailCardDTOList());
+		model.addAttribute("nowPage", aginationDTO.getNowPageDTO());
+		model.addAttribute("maxSize", aginationDTO.getMaxSize());
+
 		return "product/productList";
 	}
 }

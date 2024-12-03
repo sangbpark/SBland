@@ -5,7 +5,7 @@
       layout:decorate="~{layout/defaultLayout}">
 <section layout:fragment="content" class="contents">
 	<div id="productList" class="d-flex flex-wrap"> 
-        <div class="home-product-card col-3" th:each="productThumbnailCardDTO : ${productThumbnailCardDTOList}">
+        <div type="button" class="home-product-card col-3" th:each="productThumbnailCardDTO : ${productThumbnailCardDTOList}" th:data-product-id="${productThumbnailCardDTO.id}">
           	<div class="home-product-image">
 				<img th:src="${productThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
           	</div>
@@ -15,27 +15,25 @@
         </div>
 	</div>
 	<div id="pagination">
-		 <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link text-dark" href="#" aria-label="Previous">
-                    <span>&lt;</span>
-                </a>
-            </li>
-            
-            <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-            <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-            <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-            <li class="page-item"><a class="page-link text-dark" href="#">4</a></li>
-            <li class="page-item"><a class="page-link text-dark" href="#">5</a></li>
-            
-            <li class="page-item">
-                <a class="page-link text-dark" href="#" aria-label="Next">
-                    <span>&gt;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+		<nav aria-label="Page navigation">
+	        <ul class="pagination justify-content-center">
+	        	<th:block th:if="${pageList.isEmpty() != true}">
+		            <li class="page-item" th:if="${nowPage.page > 1}">
+		                <a class="page-link text-dark" th:href="@{/product/product-list-view(page=${nowPage.page - 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=20)}" aria-label="Previous">
+		                    <span>&lt;</span>
+		                </a>
+		            </li>		    
+		            <th:block th:each="page : ${pageList}">        
+		            	<li class="page-item"><a class="page-link text-dark" th:href="@{/product/product-list-view(page=${page.page},code=${page.code},rightValue=${page.rightValue},keyword=${page.keyword},count=20)}" th:text="${page.page}">1</a></li>		            
+		            </th:block>
+		            <li class="page-item" th:if="${nowPage.page < maxSize}">
+		                <a class="page-link text-dark" th:href="@{/product/product-list-view(page=${nowPage.page + 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=20)}" aria-label="Next">
+		                    <span>&gt;</span>
+		                </a>
+		            </li>
+	            </th:block>
+	        </ul>
+	    </nav>
 	</div>
     <div class="recently-viewed text-center">
          <h3>최근 본 상품</h3>
@@ -51,6 +49,11 @@
 
 <th:block layout:fragment="script">
     <script>
-
+	    $(document).ready(function() {
+			$(".home-product-card").on("click",function() {
+				const productId = $(this).data("product-id");
+				location.href="/product/product-view/" + productId;
+			})
+		});
     </script>
 </th:block>
