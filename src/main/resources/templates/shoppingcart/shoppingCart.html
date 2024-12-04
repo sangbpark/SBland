@@ -78,7 +78,10 @@
 
 <th:block layout:fragment="script">
     <script>
-		$(document).ready(function() {	
+		$(document).ready(function() {
+			
+			initializeHeaderEvent();
+			
 			$(".shoppingcartDelBtn").on("click",function() {
 				const prodcutId = $(this).data("product-id");
 		        $.ajax({

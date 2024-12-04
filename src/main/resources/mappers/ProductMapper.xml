@@ -155,17 +155,15 @@
 		FROM
 			`product`
 		WHERE 
-			<if test="code != null">
+			<if test="code != 0">
 			`category_code` BETWEEN #{code} AND #{rightValue}
 			</if>
-			<if test="keyword != null">
-			MATCH(`name`, `description`) AGAINST(#{keyword});
+			<if test="keyword.length >= 3">
+			MATCH(`name`, `description`) AGAINST(#{keyword} IN BOOLEAN MODE)
 			</if> 
 		ORDER BY `created_at`
 		Limit #{count} 
-		<if test="offset != null"> 
-		OFFSET #{offset}
-		</if> 			
+		OFFSET #{offset}			
  	</select>
  	<select id="selectProductSizeBySearch"
  			resultType="int">
@@ -174,11 +172,11 @@
 		FROM
 			`product`
 		WHERE 
-			<if test="code != null">
+			<if test="code != 0">
 			`category_code` BETWEEN #{code} AND #{rightValue}
 			</if>
-			<if test="keyword != null">
-			MATCH(`name`, `description`) AGAINST(#{keyword});
+			<if test="keyword.length >= 3">
+			MATCH(`name`, `description`) AGAINST(#{keyword} IN BOOLEAN MODE);
 			</if> 		
  	</select>
  </mapper>

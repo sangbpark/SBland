@@ -43,10 +43,10 @@ public class ProductController {
 			@RequestParam("rightValue") Optional<Integer> rightValue,
 			@RequestParam("keyword") Optional<String> keyword,
 			@RequestParam("page") Optional<Integer> page,
-			@RequestParam("count") int count
+			@RequestParam("count") Optional<Integer> count
 			) {		
 			
-		PaginationDTO aginationDTO = paginationBO.getProductThumbnailPaging(page.orElse(null), code.orElse(null), rightValue.orElse(null), keyword.orElse(null), count);
+		PaginationDTO aginationDTO = paginationBO.getProductThumbnailPaging(page.orElse(1), code.orElse(0), rightValue.orElse(0), keyword.orElse(""), count.orElse(20));
 		model.addAttribute("pageList", aginationDTO.getPageDTOList());
 		model.addAttribute("productThumbnailCardDTOList", aginationDTO.getProductThumbnailCardDTOList());
 		model.addAttribute("nowPage", aginationDTO.getNowPageDTO());

@@ -54,6 +54,7 @@
 <th:block layout:fragment="script">
     <script>
 		$(document).ready(function() {
+			initializeHeaderEvent();
 			
 			$("#decreaseBtn").on("click", function() {
 				const count = parseInt($("#countInput").val(), 10);
