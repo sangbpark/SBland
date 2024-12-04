@@ -22,7 +22,7 @@
 					</div>
 					
 					<input type="submit" class="btn btn-block btn-info" value="로그인">
-					<a class="btn btn-block btn-dark" href="/user/sign-up-view">회원가입</a>
+					<a class="btn btn-block btn-dark" href="/user/user-up-view">회원가입</a>
 				</form>
 			</div>
 		</div>
@@ -33,18 +33,20 @@
 		$(document).ready(function() {
 			$("#loginForm").on("submit", function(e) {
 				e.preventDefault();
-				let loginId = $("#loginId").val().trim();
-				let password = $("#password").val();
+				const loginId = $("#loginId").val().trim();
+				const password = $("#password").val();
 				
-				if (loginId.length < 4) {
-					alert("아이디를 입력하세요.");
-					return false;
-				}
-				
-				if (!password) {
-					alert("비밀번호를 입력하세요.");
-					return false;
-				}
+	    		   const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
+	    		   if (!loginIdRegex.test(loginId)) {
+	    		       alert("올바른 아이디를 입력하세요.");
+	    		       return;
+	    		   }
+	    		   
+	    		   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+	    		   if (!passwordRegex.test(password)) {
+	    		       alert("패스워드를 확인해 보세요.");
+	    		       return;
+	    		   }
 				
 				let url = $(this).attr("action");
 		
@@ -54,10 +56,13 @@
 				$.post(url, params)
 				.done(function(data) {
 					if (data.code == 200) {
-						location.href = "hompage/hompage";
-					} else {
-						alert(data.error_message);
+						location.href = "/";
+					} else if (data.code == 500){
+						alert(data.message);
 					}
+				})
+				.fail(function(e) {
+			        alert("요청 처리 중 에러가 발생했습니다: ");		       
 				});
 			});
 		});

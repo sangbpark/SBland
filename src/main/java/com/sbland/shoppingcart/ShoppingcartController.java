@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sbland.shoppingcart.bo.ShoppingcartBO;
 import com.sbland.shoppingcart.bo.ShoppingcartServiceBO;
 import com.sbland.shoppingcart.dto.ShoppingcartCardDTO;
+import com.sbland.user.dto.UserSessionDTO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ public class ShoppingcartController {
 	@GetMapping("/shoppingcart-list-view")
 	public String shoppingcartView(
 			Model model,
-			HttpSession session,
-			@RequestParam("userId") Long userId) {
-		List<ShoppingcartCardDTO> ShoppingcartCardDTOList = shoppingcartServiceBO.getShoppingcartByUserId(userId);
+			HttpSession session) {
+		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
+		List<ShoppingcartCardDTO> ShoppingcartCardDTOList = shoppingcartServiceBO.getShoppingcartByUserId(userSession.getId());
 		model.addAttribute("ShoppingcartCardDTOList", ShoppingcartCardDTOList);
 		return "shoppingcart/shoppingCart";
 	}

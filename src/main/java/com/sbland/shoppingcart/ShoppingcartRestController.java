@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.shoppingcart.bo.ShoppingcartBO;
 import com.sbland.shoppingcart.bo.ShoppingcartServiceBO;
+import com.sbland.user.dto.UserSessionDTO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,8 @@ public class ShoppingcartRestController {
 	public Response deleteShoppingcart(
 			@RequestParam("productId") Long ProductId,
 			HttpSession session) {
-		Response response = shoppingcartBO.deleteShoppingcartByUserIdAndProductId(1L, ProductId);
+		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
+		Response response = shoppingcartBO.deleteShoppingcartByUserIdAndProductId(userSession.getId(), ProductId);
 		return response;
 	}
 	
@@ -45,8 +46,17 @@ public class ShoppingcartRestController {
 			@RequestParam("productId") Long productId,
 			@RequestParam("productCount") int productCount,
 			HttpSession session) {
-		
-		return shoppingcartServiceBO.shoppingcartEdit(1L, productId, productCount);
+		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
+		return shoppingcartServiceBO.shoppingcartEdit(userSession.getId(), productId, productCount);
+	}
+	
+	@PostMapping("/insert")
+	public Response addShoppingcart(
+			@RequestParam("productId") Long productId,
+			@RequestParam("productCout") int count,
+			HttpSession session) {
+		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
+		return shoppingcartBO.addShoppingcart(userSession.getId(), productId, count);		
 	}
 	
 }

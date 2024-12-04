@@ -12,7 +12,9 @@ import com.sbland.shoppingcart.domain.Shoppingcart;
 import com.sbland.shoppingcart.mapper.ShoppingcartMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ShoppingcartBO {
@@ -20,8 +22,22 @@ public class ShoppingcartBO {
 	private final ObjectMapper objectMapper;
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
 	
-	public int addShoppingcart(Long userId, Long productId, int productCount) {
-		return shoppingcartMapper.insertShoppingcart(userId, productId, productCount);
+	public Response addShoppingcart(Long userId, Long productId, int productCount) {
+		int result = shoppingcartMapper.insertShoppingcart(userId, productId, productCount);
+		if (result == 1) {
+			return Response
+					.builder()
+					.code(HttpStatusCode.OK.getCodeValue())
+					.message("장바구니 저장 성공")
+					.build();
+		} else {
+			log.info("[장바구니] 인설트 실패 userId:{} productId:{}",userId,productId);
+			return Response
+					.builder()
+					.code(HttpStatusCode.FAIL.getCodeValue())
+					.message("장바구니에 상품을 담지 못했습니다.")
+					.build();
+		}
 	}
 	
 	public List<Shoppingcart> getShoppingcartByUserId(Long id) {

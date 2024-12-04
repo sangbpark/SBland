@@ -14,7 +14,7 @@
 				</div>
 				
 				<div class="ml-3 mb-3">
-					<div id="idCheckLength" class="small text-danger d-none">ID를 4자 이상 입력해주세요.</div>
+					<div id="idCheck" class="small text-danger d-none">ID는 4자 이상 50자 미만이며, 특수문자와 공백 없이 입력해야 합니다.</div>
 					<div id="idCheckDuplicated" class="small text-danger d-none">이미 사용중인 ID입니다.</div>
 					<div id="idCheckOk" class="small text-success d-none">사용 가능한 ID 입니다.</div>
 				</div>
@@ -26,7 +26,7 @@
 	
 				<span class="sign-up-subject">Confirm password</span>
 				<div class="m-3">
-					<input type="password" id="confirmPassword" name="confirmPassword" class="form-control col-6" placeholder="비밀번호를 입력하세요">
+					<input type="password" id="confirmPassword" class="form-control col-6" placeholder="비밀번호를 입력하세요">
 				</div>
 	
 				<span class="sign-up-subject">Name</span>
@@ -74,6 +74,114 @@
 	            yearRange: "1900:+0",  
 	            maxDate: new Date()    
 	        });
+    	   
+			$("#loginIdCheckBtn").on("click", function() {
+				$("#idCheck").addClass("d-none");
+				$("#idCheckDuplicated").addClass("d-none");
+				$("#idCheckOk").addClass("d-none");
+				const loginId = $("#loginId").val().trim();
+				
+				const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
+    		    if (!loginIdRegex.test(loginId)) {
+    			    $("#idCheck").removeClass("d-none");
+    		        return;
+    		    }
+			
+				
+				$.ajax({
+					url:"/user/is-duplicate-id"
+					, data:{"loginId":loginId}
+					, success:function(data) {
+						if (data.code == 200) {
+							if (data.data) {
+								$("#idCheckDuplicated").removeClass("d-none");		
+							} else {
+								$("#idCheckOk").removeClass("d-none");
+							}
+							
+						} else if (data.code == 500) {
+							alert(data.message);
+						}
+					}
+					, error:function(e) {
+						alert("중복확인에 실패했습니다.");
+					}
+				});
+			});
+			
+    	   $("#signUpForm").on("submit", function(e) {
+    		   e.preventDefault();
+    		   const loginId = $("#loginId").val().trim();
+    		   const password = $("#password").val().trim();
+    		   const confirmPassword = $("#confirmPassword").val().trim();
+    		   const name = $("#name").val().trim();
+    		   const email = $("#email").val().trim();
+    		   const birthday = $("#birthday").val().trim();
+    		   const gender = $("input[name='gender']:checked").val();
+    		   
+    		   const consonantRegex = /[ㄱ-ㅎ]/
+    		   
+   			   if ($("#idCheckOk").hasClass("d-none")) {
+				   alert("아이디 중복확인을 해주세요.");
+				   return;
+			   }
+    		   
+    		   const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
+    		   if (!loginIdRegex.test(loginId)) {
+    		       alert("ID는 4자 이상 50자 미만이며, 특수문자와 공백 없이 입력해야 합니다.");
+    		       return;
+    		   }
+    		   
+    		   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    		   if (!passwordRegex.test(password)) {
+    		       alert("비밀번호는 영어, 숫자, 특수문자를 포함하고 8자 이상이어야 합니다.");
+    		       return;
+    		   }
+
+    		   if (password !== confirmPassword) {
+    		       alert("비밀번호와 확인용 비밀번호가 일치하지 않습니다.");
+    		       return;
+    		   }
+    		   
+    		   const nameRegex = /^[a-zA-Z가-힣\s]{2,30}$/;
+    		   if (name.length < 2 || name.length >= 30 || !nameRegex.test(name) || consonantRegex.test(name)) {
+    		       alert("이름은 2자 이상 30자 미만이며, 특수문자 없고 자음이 없이 입력해야 합니다.");
+    		       return;
+    		   }
+    		   
+    		   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    		   if (!emailRegex.test(email)) {
+    		       alert("유효한 이메일 주소를 입력하세요.");
+    		       return;
+    		   }
+    		   
+    		   if (!birthday) {
+    			   alert("생년월일을 입력하세요.");
+    		       return;
+    		   }
+    		   
+    		   if (!gender) {
+    			   alert("성별을 입력하세요.");
+    		       return;
+    		   }
+    		   
+    		   const url = $(this).attr("action");
+    			
+			   const params = $(this).serialize();
+    		   
+			   $.post(url, params) 
+				.done(function(data) { 
+					if (data.code == 200) {
+						alert("가입을 환영합니다. " + data.data + "님 로그인 해주세요.");
+						location.href = "/user/user-in-view";
+					} else {
+						alert(data.error_message);
+					}
+				})
+				.fail(function(e) {
+			        alert("요청 처리 중 에러가 발생했습니다: ");		       
+				});
+    	   });
 	    }) 
     </script>
 </th:block>
