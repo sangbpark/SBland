@@ -65,15 +65,14 @@ public class PaginationBO {
 	
 	public PaginationDTO<ProductThumbnailCardDTO> getPaging(Integer page, Integer code, Integer rightValue, String keyword, int count) {
 		String plusKeyword = "";
-		List<String> stopword = List.of("a", "about", "an", "are", "as", "at", "be", "by"
+		Set<String> stopword = new HashSet<>( List.of("a", "about", "an", "are", "as", "at", "be", "by"
 				, "com", "de", "en", "for", "from", "how", "i", "in", "is", "it", "la", "of"
 				, "on", "or", "that", "the", "this", "to", "was", "what", "when", "where"
-				, "who", "will", "with", "und", "the", "www");
-		Set<String> stopwordSet = new HashSet<>(stopword);
+				, "who", "will", "with", "und", "the", "www"));
 		if (keyword.length() >= 3) {
 			plusKeyword = Arrays
 					.stream(keyword.split("\\s+"))
-					.filter(key -> !stopwordSet.contains(key))
+					.filter(key -> !stopword.contains(key))
 					.map(key -> "+" + key + "*")
 					.collect(Collectors.joining(" "));
 		}
