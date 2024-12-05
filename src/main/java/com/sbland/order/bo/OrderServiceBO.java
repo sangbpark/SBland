@@ -39,21 +39,31 @@ public class OrderServiceBO {
 
 	private Response<List<OrderDTO>> getOrderDTOByOrderIdList(Long userId, int count, int offset) {
 		List<Order> orderList = orderBO.getOrderByUserId(userId, count, offset).getData();
+		if (orderList.isEmpty()) {
+			return Response.<List<OrderDTO>>builder()
+							.code(HttpStatusCode.OK.getCodeValue())
+							.message("주문명세서를 가져오는데 성공했습니다.")
+							.data(null)
+							.build();
+		}
+								
 		List<OrderDTO> orderDTOList = orderList
 				.stream()
 				.map(order -> objectMapper.convertValue(order, OrderDTO.class))
 				.collect(Collectors.toList());
+		
 		orderDTOList.replaceAll(orderDTO -> {
-			return orderDTO
-					.toBuilder()
-					.orderDetailDTOList(orderDetailServiceBO.getOrderDetailDTO(orderDTO.getId()))
-					.build();
-		});
-		orderDTOList
-		.stream()
-		.sorted((orderDTO1, orderDTO2) 
-				-> orderDTO2.getCreatedAt().compareTo(orderDTO1.getCreatedAt()))
-		.collect(Collectors.toList());
+								return orderDTO
+										.toBuilder()
+										.orderDetailDTOList(orderDetailServiceBO.getOrderDetailDTO(orderDTO.getId()))
+										.build();
+								});
+		
+		orderDTOList.stream()
+					.sorted((orderDTO1, orderDTO2) 
+							-> orderDTO2.getCreatedAt().compareTo(orderDTO1.getCreatedAt()))
+					.collect(Collectors.toList());
+		
 		return Response
 				.<List<OrderDTO>>builder()
 				.code(HttpStatusCode.OK.getCodeValue())
@@ -62,7 +72,7 @@ public class OrderServiceBO {
 				.build();
 	}
 		
-	public Response<List<OrderDTO>> getOrderDTOByUserId(Long userId, int count, int offset) {
+	public Response<List<OrderDTO>> getResponseOrderDTOListByUserId(Long userId, int count, int offset) {
 		return getOrderDTOByOrderIdList(userId, count, offset);
 	}
 	

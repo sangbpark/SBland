@@ -2,7 +2,9 @@ package com.sbland.common.pagination.bo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -63,10 +65,16 @@ public class PaginationBO {
 	
 	public PaginationDTO<ProductThumbnailCardDTO> getPaging(Integer page, Integer code, Integer rightValue, String keyword, int count) {
 		String plusKeyword = "";
+		List<String> stopword = List.of("a", "about", "an", "are", "as", "at", "be", "by"
+				, "com", "de", "en", "for", "from", "how", "i", "in", "is", "it", "la", "of"
+				, "on", "or", "that", "the", "this", "to", "was", "what", "when", "where"
+				, "who", "will", "with", "und", "the", "www");
+		Set<String> stopwordSet = new HashSet<>(stopword);
 		if (keyword.length() >= 3) {
 			plusKeyword = Arrays
-					.stream(keyword.split(" "))
-					.map(key -> "+" + key)
+					.stream(keyword.split("\\s+"))
+					.filter(key -> !stopwordSet.contains(key))
+					.map(key -> "+" + key + "*")
 					.collect(Collectors.joining(" "));
 		}
 		List<PageDTO> pageDTOList = getPageList(count, code, rightValue, keyword, plusKeyword);
@@ -99,21 +107,21 @@ public class PaginationBO {
 		if (pageDTOList.size() > 0) {
 			if (pageDTOList.size() < page) {
 				PageDTO nowPageDTO = pageDTOList.get(pageDTOList.size() - 1);
-				List<OrderDTO> productThumbnailCardDTOList = orderServiceBO.getOrderDTOByUserId(userId, count, offset).getData();
-				return getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
+				List<OrderDTO> orderDTOList = orderServiceBO.getResponseOrderDTOListByUserId(userId, count, offset).getData();
+				return getPaginationDTO(orderDTOList, pageDTOList, nowPageDTO);
 			} 
-			List<OrderDTO> productThumbnailCardDTOList = orderServiceBO.getOrderDTOByUserId(userId, count, offset).getData();
+			List<OrderDTO> orderDTOList = orderServiceBO.getResponseOrderDTOListByUserId(userId, count, offset).getData();
 			PageDTO nowPageDTO = pageDTOList.get(page - 1);
-			return getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
+			return getPaginationDTO(orderDTOList, pageDTOList, nowPageDTO);
 		}
 		
-		List<OrderDTO> productThumbnailCardDTOList = orderServiceBO.getOrderDTOByUserId(userId, count, offset).getData();
+		List<OrderDTO> orderDTOList = orderServiceBO.getResponseOrderDTOListByUserId(userId, count, offset).getData();
 		PageDTO nowPageDTO = PageDTO
 				.builder()
 				.page(page)
 				.pageItemsCount(count)			
 				.build();			
-		return  getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
+		return  getPaginationDTO(orderDTOList, pageDTOList, nowPageDTO);
 	}
 
 	private <T> PaginationDTO<T> getPaginationDTO(List<T> pageItemsList, List<PageDTO> pageDTOList, PageDTO nowPageDTO) {		
