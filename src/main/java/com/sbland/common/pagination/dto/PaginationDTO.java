@@ -15,9 +15,9 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaginationDTO {
+public class PaginationDTO<T> {
 	private List<PageDTO> pageDTOList;
-	private List<ProductThumbnailCardDTO> ProductThumbnailCardDTOList;
+	private List<T> paginationItems;
 	private PageDTO nowPageDTO;
 	private Integer maxSize;
 	

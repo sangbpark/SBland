@@ -16,7 +16,27 @@
 	</div>
 	<div class="center-contents">
 		<div id="orderList">
-			<div class="orderCard"></div>
+			<div class="orderCard p-3 border" th:each="orderDTO : ${orderDTOList}">
+				<h2 th:text="|주문번호: ${orderDTO.id} 주문날짜: ${#temporals.format(orderDTO.createdAt, 'yyyy-MM-dd')} ${orderDTO.status}|"></h2>
+				<div class="orderDetail d-flex border" th:each="orderDetailDTO : ${orderDTO.orderDetailDTOList}">
+					<div class="orderDetailImage">
+						<img th:src="${orderDetailDTO.url}" alt="상품썸네일">
+					</div>
+					<div>
+						<div class="p-2 orderProductNameWrap">
+							<span class="orderProductName" th:text="${orderDetailDTO.name}"></span>
+						</div>
+						<div class="p-2 d-flex align-items-end">
+							<span th:text="|${orderDetailDTO.totalPrice}원 ${orderDetailDTO.productCount}개|"></span>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex">
+					<div>배송지: </div>
+					<div class="px-1" th:text="${orderDTO.shippingAddress}"></div>
+				</div>
+				<div th:text="|금액: ${orderDTO.totalPrice}원 배송비: ${orderDTO.deliveryfee} 총금액: ${orderDTO.totalPrice + orderDTO.deliveryfee}원|"></div>
+			</div>
 		</div>
 		<div id="pagination">
 			<nav aria-label="Page navigation">

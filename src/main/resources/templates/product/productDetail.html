@@ -115,7 +115,7 @@
 				$.ajax({
 					type:"POST"
 					, url:"/shoppingcart/insert"
-					, data: {"prodcutId":productId,"productCount":productCount}
+					, data: {"productId":productId,"productCount":productCount}
 					, success: function(data) {
 						if (data.code == 200) {
 							alert("장바구니에 상품을 담았습니다.");

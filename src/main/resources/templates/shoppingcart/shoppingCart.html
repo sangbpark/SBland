@@ -6,8 +6,8 @@
 <section layout:fragment="content" class="contents">
 	<div id="orderList">
 		<div th:each="ShoppingcartCardDTO : ${ShoppingcartCardDTOList}" class="d-flex shoppingcartCard border">
-			<div class="col-1 border-right d-flex jsutify-content-center align-items-center h-100">
-			  <input type="checkbox" name="checkProduct"  th:value="${ShoppingcartCardDTO.productId}">
+			<div class="col-1 border-right d-flex justify-content-center align-items-center h-100">
+			  <input type="checkbox" name="checkProduct"  th:value="${ShoppingcartCardDTO.productId}" th:data-product-total-price="${ShoppingcartCardDTO.price * ShoppingcartCardDTO.productCount}">
 			</div>
 			<div class="shoppingcartCard col-3 d-flex justify-content-center align-items-center border-right h-100">
 				<img th:src="${ShoppingcartCardDTO.ThumbnailImage}" alt="상품 썸네일">
@@ -31,10 +31,10 @@
 	</div>
     <div class="recently-viewed text-center">
            <h3>주문예상금액</h3>
-           <div>
+           <div id="totalPaymentPrice">
                금액
            </div>      
-           <button class="paymentButton btn btn-primary btn-block">결재</button>
+           <button id="paymentBtn" class="btn btn-primary btn-block">주문하기</button>
     </div>
    	<div class="modal fade" id="modal">
 		<div class="modal-dialog modal-dialog-centered modal-sm">
@@ -58,6 +58,15 @@
 		$(document).ready(function() {
 			
 			initializeHeaderEvent();
+			$("input[name=checkProduct]").on("click" ,function(){
+				
+				let totalPrice = 0;
+				$("input[name=checkProduct]:checked").each(function() {
+					totalPrice += $(this).data("product-total-price");
+				});
+				
+				$("#totalPaymentPrice").text(totalPrice + "원");
+			})
 			
 			$(".shoppingcartDelBtn").on("click",function() {
 				const prodcutId = $(this).data("product-id");

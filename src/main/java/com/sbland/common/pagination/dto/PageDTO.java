@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PageDTO {
 	private int page;
-	private int pageProductCount;
+	private int pageItemsCount;
 	private Integer code;
 	private Integer rightValue;
 	private String keyword;

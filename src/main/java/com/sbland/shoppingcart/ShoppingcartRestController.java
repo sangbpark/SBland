@@ -53,7 +53,7 @@ public class ShoppingcartRestController {
 	@PostMapping("/insert")
 	public Response addShoppingcart(
 			@RequestParam("productId") Long productId,
-			@RequestParam("productCout") int count,
+			@RequestParam("productCount") int count,
 			HttpSession session) {
 		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
 		return shoppingcartBO.addShoppingcart(userSession.getId(), productId, count);		

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.sbland.common.pagination.dto.PageDTO;
 import com.sbland.common.pagination.dto.PaginationDTO;
+import com.sbland.order.bo.OrderBO;
+import com.sbland.order.bo.OrderServiceBO;
+import com.sbland.order.dto.OrderDTO;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
 import com.sbland.product.dto.ProductThumbnailCardDTO;
 
@@ -18,8 +21,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PaginationBO {
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
+	private final OrderBO orderBO;
+	private final OrderServiceBO orderServiceBO;
 	
-	public List<PageDTO> getPageList(int count, Integer code, Integer rightValue, String keyword, String plusKeyword) {
+	private List<PageDTO> getPageList(int count, Integer code, Integer rightValue, String keyword, String plusKeyword) {
 		List<PageDTO> pageList = new ArrayList<>();
 		int size = productThumbnailCardDTOBO.getProductThumbnailCardDTOSizeBySearch(code, rightValue, plusKeyword);
 		if (size == 0) return pageList;
@@ -29,7 +34,7 @@ public class PaginationBO {
 			PageDTO pageDTO = PageDTO
 					.builder()
 					.page(i)
-					.pageProductCount(count)
+					.pageItemsCount(count)
 					.code(code)
 					.rightValue(rightValue)
 					.keyword(keyword)
@@ -39,7 +44,24 @@ public class PaginationBO {
 		return pageList;
 	}
 	
-	public PaginationDTO getProductThumbnailPaging(Integer page, Integer code, Integer rightValue, String keyword, int count) {
+	private List<PageDTO> getPageList(Long userId, int count) {
+		List<PageDTO> pageList = new ArrayList<>();
+		int size = orderBO.getOrderListSizeByUserId(userId);
+		if (size == 0) return pageList;
+		int pageCount = (int)Math.ceil((double)size / count);
+		if (pageCount == 0 || pageCount == 1) return pageList;
+		for (int i = 1; i <= pageCount; i++) {
+			PageDTO pageDTO = PageDTO
+					.builder()
+					.page(i)
+					.pageItemsCount(count)
+					.build();
+			pageList.add(pageDTO);					
+		}
+		return pageList;
+	}
+	
+	public PaginationDTO<ProductThumbnailCardDTO> getPaging(Integer page, Integer code, Integer rightValue, String keyword, int count) {
 		String plusKeyword = "";
 		if (keyword.length() >= 3) {
 			plusKeyword = Arrays
@@ -52,7 +74,7 @@ public class PaginationBO {
 		if (pageDTOList.size() > 0) {
 			if (pageDTOList.size() < page) {
 				PageDTO nowPageDTO = pageDTOList.get(pageDTOList.size() - 1);
-				List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productThumbnailCardDTOBO.getProductThumbnailCardDTOBySearch(nowPageDTO.getCode(), nowPageDTO.getRightValue(), plusKeyword, nowPageDTO.getPageProductCount(), offset);
+				List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productThumbnailCardDTOBO.getProductThumbnailCardDTOBySearch(nowPageDTO.getCode(), nowPageDTO.getRightValue(), plusKeyword, nowPageDTO.getPageItemsCount(), offset);
 				return getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
 			} 
 			List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productThumbnailCardDTOBO.getProductThumbnailCardDTOBySearch(code, rightValue, plusKeyword, count, offset);
@@ -65,14 +87,36 @@ public class PaginationBO {
 				.builder()
 				.page(page)
 				.code(code)
-				.pageProductCount(count)
+				.pageItemsCount(count)
 				.rightValue(rightValue)
 				.build();			
 		return  getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
 	}
+	
+	public PaginationDTO<OrderDTO> getPaging(Long userId, Integer page, int count) {
+		List<PageDTO> pageDTOList = getPageList(userId, count);
+		Integer offset = (page - 1) * count;	
+		if (pageDTOList.size() > 0) {
+			if (pageDTOList.size() < page) {
+				PageDTO nowPageDTO = pageDTOList.get(pageDTOList.size() - 1);
+				List<OrderDTO> productThumbnailCardDTOList = orderServiceBO.getOrderDTOByUserId(userId, count, offset).getData();
+				return getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
+			} 
+			List<OrderDTO> productThumbnailCardDTOList = orderServiceBO.getOrderDTOByUserId(userId, count, offset).getData();
+			PageDTO nowPageDTO = pageDTOList.get(page - 1);
+			return getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
+		}
+		
+		List<OrderDTO> productThumbnailCardDTOList = orderServiceBO.getOrderDTOByUserId(userId, count, offset).getData();
+		PageDTO nowPageDTO = PageDTO
+				.builder()
+				.page(page)
+				.pageItemsCount(count)			
+				.build();			
+		return  getPaginationDTO(productThumbnailCardDTOList, pageDTOList, nowPageDTO);
+	}
 
-
-	public PaginationDTO getPaginationDTO(List<ProductThumbnailCardDTO> productThumbnailCardDTOList, List<PageDTO> pageDTOList, PageDTO nowPageDTO) {		
+	private <T> PaginationDTO<T> getPaginationDTO(List<T> pageItemsList, List<PageDTO> pageDTOList, PageDTO nowPageDTO) {		
 		if(pageDTOList.size() > 5 ) {
 			int offset = (nowPageDTO.getPage() / 5);
 			if (nowPageDTO.getPage() % 5 == 0) {
@@ -86,20 +130,23 @@ public class PaginationBO {
 								&&  page.getPage() <= endPage
 					)
 					.collect(Collectors.toList());
-			return PaginationDTO.builder()
+			return PaginationDTO
+					.<T>builder()
 					.pageDTOList(pageDTOLimit5List)
-					.ProductThumbnailCardDTOList(productThumbnailCardDTOList)
+					.paginationItems(pageItemsList)
 					.nowPageDTO(nowPageDTO)
 					.maxSize(pageDTOList.size())
 					.build();
 					
 		}
 		
-		return PaginationDTO.builder()
+		return PaginationDTO
+				.<T>builder()
 				.pageDTOList(pageDTOList)
-				.ProductThumbnailCardDTOList(productThumbnailCardDTOList)
+				.paginationItems(pageItemsList)
 				.nowPageDTO(nowPageDTO)
 				.maxSize(pageDTOList.size())
 				.build();
 	}
+	
 }

@@ -18,10 +18,6 @@ header {
     color: #333;
 }
 
-.category-nav {
-	
-}
-
 .banner {
     position: relative;
     width: 100%;
@@ -111,10 +107,6 @@ header {
 
 .recent-products {
 	height:100px;
-}
-
-.orderCard{
-	height:150px;
 }
 
 footer {
@@ -215,6 +207,18 @@ a{
 
 .leafCategoryWrap {
 	display: flex;
+}
+
+.orderDetailImage {
+	height: 150px;
+}
+
+.orderProductName{
+	font-size:25px;	
+}
+
+.orderProductNameWrap{
+	height:100px;
 }
 
 

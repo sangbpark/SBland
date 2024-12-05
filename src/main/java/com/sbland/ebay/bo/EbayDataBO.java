@@ -19,7 +19,7 @@ public class EbayDataBO {
     private final WebClient webClient;
     private final EbayAuthBO ebayAuthService;
     private final ObjectMapper objectMapper;
-
+    
     public Mono<List<EbayProductDTO>> getItems(String keyword, int offset) {
         return ebayAuthService.getAccessToken()
                 .flatMap(accessToken -> 

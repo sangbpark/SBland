@@ -87,4 +87,16 @@ public class ProductThumbnailCardDTOBO {
 	public int getProductThumbnailCardDTOSizeBySearch(Integer code, Integer rightValue, String keyword) {
 		return productBO.getProductSizeBySearch(code, rightValue, keyword);
 	}
+	
+	public List<ProductThumbnailCardDTO> getProductThumbnailCardDTOByProductIdToList(List<Long> productId) {
+		List<Product> productList = productBO.getProductByIdIn(productId);
+		List<ProductImage> productImageList = productImageBO.getProductThumbnailByproductIdIn(productId);
+		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
+			    .map(product -> {
+			    	ProductThumbnailCardDTO dto = objectMapper.convertValue(product, ProductThumbnailCardDTO.class);
+			    	return dto.toBuilder().thumbnailImage(productImageList.get(productList.indexOf(product)).getUrl()).build();			    	 
+			    })
+			    .collect(Collectors.toList());
+		return productThumbnailCardDTOList;
+	}
 }

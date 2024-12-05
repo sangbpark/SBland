@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.sbland.order.mapper.OrderMapper">
+ 	<select id="selectOrderByUserId"
+ 			resultType="com.sbland.order.domain.Order">
+ 		SELECT
+ 			`id`
+			,`user_id`
+			,`total_price`
+			,`deliveryfee`
+			,`status`
+			,`shipping_address`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`order`
+		WHERE
+			`user_id` = #{userId} 
+			ORDER BY `created_at` DESC 
+			Limit #{count} 
+			OFFSET #{offset}			
+ 	</select>
+ 	
+ 	<select id="selectOrderListSizeByUserId"
+ 			resultType="int">
+ 		SELECT
+ 			COUNT(1)
+		FROM
+			`order`
+		WHERE
+			`user_id` = #{userId}
+ 	</select>
+ 	
+ 	<select id="selectOrderById"
+ 			resultType="com.sbland.order.domain.Order">
+ 		SELECT
+ 			`id`
+			,`user_id`
+			,`total_price`
+			,`deliveryfee`
+			,`status`
+			,`shipping_address`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`order`
+		WHERE
+			`id` = #{id}
+ 	</select>
+ 	<insert id="insertOrder"
+ 			useGeneratedKeys="true" keyProperty="id">
+ 		INSERT INTO `order` 
+ 		(
+ 			`user_id`
+			,`total_price`
+			,`deliveryfee`
+			,`status`
+			,`shipping_address`
+			,`updated_at`
+			,`created_at`
+ 		)
+ 		VALUES
+ 		(
+ 			#{userId}
+ 			,#{totalPrice}
+ 			,#{deliveryfee}
+ 			,#{status}
+ 			,#{shippingAddress}
+ 			,NOW()
+ 			,NOW()
+ 		)		
+ 	</insert>
+ 
+ </mapper>

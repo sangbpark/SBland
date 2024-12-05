@@ -15,6 +15,7 @@ import com.sbland.product.bo.ProductBO;
 import com.sbland.product.bo.ProductDetailBO;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
 import com.sbland.product.dto.ProductDetailCardDTO;
+import com.sbland.product.dto.ProductThumbnailCardDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,11 +47,11 @@ public class ProductController {
 			@RequestParam("count") Optional<Integer> count
 			) {		
 			
-		PaginationDTO aginationDTO = paginationBO.getProductThumbnailPaging(page.orElse(1), code.orElse(0), rightValue.orElse(0), keyword.orElse(""), count.orElse(20));
-		model.addAttribute("pageList", aginationDTO.getPageDTOList());
-		model.addAttribute("productThumbnailCardDTOList", aginationDTO.getProductThumbnailCardDTOList());
-		model.addAttribute("nowPage", aginationDTO.getNowPageDTO());
-		model.addAttribute("maxSize", aginationDTO.getMaxSize());
+		PaginationDTO<ProductThumbnailCardDTO> paginationDTO = paginationBO.getPaging(page.orElse(1), code.orElse(0), rightValue.orElse(0), keyword.orElse(""), count.orElse(20));
+		model.addAttribute("pageList", paginationDTO.getPageDTOList());
+		model.addAttribute("productThumbnailCardDTOList", paginationDTO.getPaginationItems());
+		model.addAttribute("nowPage", paginationDTO.getNowPageDTO());
+		model.addAttribute("maxSize", paginationDTO.getMaxSize());
 
 		return "product/productList";
 	}
