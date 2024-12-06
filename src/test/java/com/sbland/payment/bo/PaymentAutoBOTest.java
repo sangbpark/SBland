@@ -1,5 +1,9 @@
 package com.sbland.payment.bo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +18,8 @@ class PaymentAutoBOTest {
 
 	@Test
 	void 포트원v2토큰테스트() {
-		String result = paymentAutoBO.getAccessToken().block();		
-		log.info("[테스트] result:{}", result);
+		Map<String,String> result = paymentAutoBO.getAccessToken().block();	
+		log.info("[dfasdf] result:{}",result.get("accessToken"));
 	}
 
 }
