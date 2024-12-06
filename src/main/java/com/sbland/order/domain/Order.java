@@ -15,8 +15,9 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Order {
 	private Long id;
+	private String merchantUid;
 	private Long userId;
-	private int totalPrice;
+	private int amount;
 	private int deliveryfee;
 	private String status;
 	private String shippingAddress;

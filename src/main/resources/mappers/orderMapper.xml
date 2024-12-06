@@ -7,8 +7,9 @@
  			resultType="com.sbland.order.domain.Order">
  		SELECT
  			`id`
+ 			,`merchant_uid`
 			,`user_id`
-			,`total_price`
+			,`amount`
 			,`deliveryfee`
 			,`status`
 			,`shipping_address`
@@ -37,8 +38,9 @@
  			resultType="com.sbland.order.domain.Order">
  		SELECT
  			`id`
+ 			,`merchant_uid`
 			,`user_id`
-			,`total_price`
+			,`amount`
 			,`deliveryfee`
 			,`status`
 			,`shipping_address`
@@ -53,8 +55,9 @@
  			useGeneratedKeys="true" keyProperty="id">
  		INSERT INTO `order` 
  		(
- 			`user_id`
-			,`total_price`
+ 			`merchant_uid`
+ 			,`user_id`
+			,`amount`
 			,`deliveryfee`
 			,`status`
 			,`shipping_address`
@@ -63,8 +66,9 @@
  		)
  		VALUES
  		(
- 			#{userId}
- 			,#{totalPrice}
+ 			#{merchantUid}
+ 			,#{userId}
+ 			,#{amount}
  			,#{deliveryfee}
  			,#{status}
  			,#{shippingAddress}

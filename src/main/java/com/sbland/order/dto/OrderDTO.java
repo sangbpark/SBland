@@ -22,7 +22,7 @@ import lombok.ToString;
 public class OrderDTO {
 	private Long id;
 	private Long userId;
-	private int totalPrice;
+	private int amount;
 	private int deliveryfee;
 	private String status;
 	private String shippingAddress;
