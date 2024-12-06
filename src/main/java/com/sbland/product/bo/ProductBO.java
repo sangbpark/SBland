@@ -1,7 +1,9 @@
 package com.sbland.product.bo;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -46,15 +48,11 @@ public class ProductBO {
 	
 	public void categoryMatch() {
 		List<Product> productList = productMapper.selectProductByCategoryCodeIsNull();
+		Set<String> rootCategory = new HashSet<>(List.of("toy", "warhammer 40k", "book", "warhammer age of sigmar"));
 		Map<String, Integer> categoryMap = categoryBO
 				.getCategoryAll()
 				.stream()
-				.filter(categoryEntity -> !categoryEntity.getName().equalsIgnoreCase("Toy")
-									   && !categoryEntity.getName().equalsIgnoreCase("warhammer 40k")
-									   && !categoryEntity.getName().equalsIgnoreCase("book")
-									   && !categoryEntity.getName().equalsIgnoreCase("warhammer age of sigmar")
-									   && !categoryEntity.getName().equalsIgnoreCase("Toy")
-									   )
+				.filter(categoryEntity -> rootCategory.contains(categoryEntity.getName().toLowerCase()))
 				.collect(Collectors.toMap( CategoryEntity -> CategoryEntity.getName().toLowerCase(), CategoryEntity::getCode));
 		for (Product product : productList) {
 			int categoryCode = categoryMap
