@@ -3,6 +3,8 @@ spring:
     import: "classpath:api.yml"
   thymeleaf:
     cache: false
+  cache:
+    type: redis
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/sb_sbland?characterEncoding=UTF-8
@@ -18,6 +20,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${redis.password}
 mybatis:
   mapper-locations: mappers/*Mapper.xml
   configuration:

@@ -27,12 +27,12 @@ public class PaymentAutoBO {
 	@Value("${portone.rest-api-secret}")
     private String apiSecret;
 	
-	public Mono<Map<String, String>> getAccessToken() {
+	public Mono<Map> getAccessToken() {
 	      return webClient.post()
 	              .uri(apiUrl + "/login/api-secret")
 	              .headers(headers -> {headers.setContentType(MediaType.APPLICATION_JSON);})
 	              .bodyValue(Map.of("apiSecret",apiSecret))
 	              .retrieve()
-	              .bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {});
+	              .bodyToMono(Map.class);
 	};
 }
