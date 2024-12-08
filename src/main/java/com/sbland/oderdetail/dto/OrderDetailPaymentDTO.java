@@ -14,11 +14,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderDetailDTO {
-	private Long id;
+public class OrderDetailPaymentDTO {
 	private Long productId;
-	private String name;
-	private String url;
 	private int productCount;
 	private int price;
 	private int totalPrice;

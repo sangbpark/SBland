@@ -19,7 +19,9 @@ class PaymentServiceBOTest {
 	@Test
 	void 캐시테스트() {
 		paymentServiceBO.getPortoneToken();															
-		paymentServiceBO.getPortoneToken();															
+		PortoneToken portoneToken = paymentServiceBO.getPortoneToken();
+		
+		log.info("[테스트] portoneToken:{}", portoneToken);
 	}
 
 }

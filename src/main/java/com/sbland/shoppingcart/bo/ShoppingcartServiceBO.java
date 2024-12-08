@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
+import com.sbland.common.uid.UidGenerator;
+import com.sbland.payment.bo.PaymentAutoBO;
 import com.sbland.product.bo.ProductStockBO;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
 import com.sbland.product.dto.ProductThumbnailCardDTO;
@@ -21,6 +23,8 @@ public class ShoppingcartServiceBO {
 	private final ProductStockBO productStockBO;
 	private final ShoppingcartBO shoppingcartBO;
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
+	private final PaymentAutoBO paymentAutoBO;
+	private final UidGenerator uidGenerator;
 	private final ObjectMapper objectMapper;
 	
 	public Response<Integer> shoppingcartEdit(Long userId, Long productId, int count) {
@@ -63,5 +67,13 @@ public class ShoppingcartServiceBO {
 				.collect(Collectors.toList());
 		
 		return shoppingcartCardDTOList;
+	}
+	
+	public String getMerchantUid () {
+		return uidGenerator.getMerchantUid();
+	};
+	
+	public String getImpKey() {
+		return paymentAutoBO.getImpKey();
 	}
 }

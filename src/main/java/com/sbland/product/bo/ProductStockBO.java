@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.product.domain.ProductStock;
+import com.sbland.product.dto.ProductStockDTO;
 import com.sbland.product.mapper.ProductStockMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ProductStockBO {
@@ -47,5 +50,18 @@ public class ProductStockBO {
 	
 	public ProductStock getProductStockByProductId(Long id) {
 		return productStockMapper.selectProductStockByProductId(id);
+	}
+	
+	public List<ProductStock> getProductStockListByProductId(List<Long> productIdList) {
+		return productStockMapper.selectProductStockListByProductId(productIdList);
+	}
+	
+	public int updateProductStock(List<ProductStockDTO> productStockList) {
+		try {
+		return productStockMapper.updateProductStock(productStockList);
+		} catch (IllegalStateException e) {
+			log.info("[재고] 재고가 부족함 error:{}",e.getMessage());
+			throw e;
+		}
 	}
 }

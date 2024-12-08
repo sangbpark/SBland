@@ -25,16 +25,25 @@
 		    </div>		
 			<div class="col-1 h-100 d-flex jsutify-content-center align-items-center">
 				<button type="button" class="shoppingcartDelBtn btn btn-secondary" th:data-product-id="${ShoppingcartCardDTO.productId}">삭제</button>
-			</div>
-			
+			</div>			
 		</div>
 	</div>
     <div class="recently-viewed text-center">
            <h3>주문예상금액</h3>
            <div id="totalPaymentPrice">
                금액
+           </div>
+           <div id="deliveryfee">
+               5000원
+           </div>  
+           <div id="orderPaymentPrice">
+               금액
            </div>      
-           <button id="paymentBtn" class="btn btn-primary btn-block">주문하기</button>
+           <button id="paymentBtn" class="btn btn-primary btn-block" 
+           th:data-merchant-uid="${merchantUid}"
+           th:data-imp-key="${impKey}"
+           th:data-buyer-name="${buyerName}"
+           >주문하기</button>
     </div>
    	<div class="modal fade" id="modal">
 		<div class="modal-dialog modal-dialog-centered modal-sm">
@@ -56,16 +65,77 @@
 <th:block layout:fragment="script">
     <script>
 		$(document).ready(function() {
-			
 			initializeHeaderEvent();
+		    const IMP = window.IMP; 
+		    IMP.init($("#paymentBtn").data("imp-key")); 
+
+	        $('#paymentBtn').click(function () {
+				const amount = parseInt($("#orderPaymentPrice").text(),10);
+				const deliveryfee = parseInt($("#deliveryfee").text(),10);
+				const merchantUid = $("#paymentBtn").data("merchant-uid");
+		        const buyerName = $("#paymentBtn").data("buyer-name");
+				let orderDetailMapList = [];
+				$("input[name=checkProduct]:checked").each(function() {
+			       const checkbox = $(this); 
+			       const productId = checkbox.val();
+			       const totalPrice = checkbox.data("product-total-price"); 
+			       const productCard = checkbox.closest('.shoppingcartCard');
+			       const productCount = productCard.find('.productCount').text().replace('개', '').trim();
+			       const productPrice = productCard.find('.productPrice').text().replace('원', '').trim();
+			       orderDetailMapList.push({
+			           productId: productId,
+			           productCount: parseInt(productCount, 10),
+			           productPrice: parseInt(productPrice, 10),
+			           totalPrice: parseInt(totalPrice, 10)
+			       });
+			    });
+				if (amount <= 0) {
+					alert("장바구니 정보를 확인해주세요");
+					return;
+				};
+				if (orderDetailMapList == null || orderDetailMapList.length === 0) {
+					alert("장바구니 정보를 확인해주세요");
+					return;
+				};
+
+	            IMP.request_pay({
+	                pg:'html5_inicis',
+	                pay_method: 'card',
+	                merchant_uid: merchantUid,
+	                name: 'SBLAND 상품 결제',
+	                amount: amount,
+	                buyer_name: buyerName,
+	            }, function (rsp) {
+	                if (rsp.success) {
+	        
+	                    $.post('/payment/verify', { 
+	                    	"impUid": rsp.imp_uid, 
+	                    	"merchantUid": rsp.merchant_uid,
+	                    	"deliveryfee": deliveryfee,
+	                    	"amount": amount,
+	                    	"orderDetailMapList": orderDetailMapList}, function (data) {
+	                        if (data.success) {
+	                            alert('결제가 완료되었습니다.');
+	                            location.href = '/payment/success';
+	                        } else {
+	                            alert('결제 검증에 실패했습니다.');
+	                        }
+	                    });
+	                } else {
+	                    alert('결제에 실패했습니다. 에러: ' + rsp.error_msg);
+	                }
+	            });
+	        });
+	        
 			$("input[name=checkProduct]").on("click" ,function(){
-				
 				let totalPrice = 0;
+				let deliveryfee = parseInt($("#deliveryfee").text(), 10);
 				$("input[name=checkProduct]:checked").each(function() {
 					totalPrice += $(this).data("product-total-price");
 				});
-				
 				$("#totalPaymentPrice").text(totalPrice + "원");
+				let orderPaymentPrice = totalPrice + deliveryfee;
+				$("#orderPaymentPrice").text(orderPaymentPrice + "원");
 			})
 			
 			$(".shoppingcartDelBtn").on("click",function() {
@@ -131,10 +201,8 @@
 					, error: function(e) {
 						alert("장바구니 수정에 실패했습니다.");
 					}
-				});	
-				
+				});				
 			});
-			
 		});
     </script>
 </th:block>

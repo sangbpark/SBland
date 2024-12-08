@@ -1,4 +1,5 @@
-package com.sbland.oderdetail.dto;
+
+package com.sbland.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,12 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderDetailDTO {
-	private Long id;
-	private Long productId;
-	private String name;
-	private String url;
+public class ProductStockDTO {
+	private Long prodcutId;
 	private int productCount;
-	private int price;
-	private int totalPrice;
 }

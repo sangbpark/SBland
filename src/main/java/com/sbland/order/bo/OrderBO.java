@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.common.uid.UidGenerator;
+import com.sbland.oderdetail.bo.OrderDetailBO;
+import com.sbland.oderdetail.domain.OrderDetail;
 import com.sbland.order.domain.Order;
 import com.sbland.order.mapper.OrderMapper;
 
@@ -18,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class OrderBO {
 	private final OrderMapper orderMapper;
-	private final UidGenerator uidGenerator;
 	
 	public Response<Order> getOrderById(Long id) {
 		Order order = orderMapper.selectOrderById(id);
@@ -60,18 +61,7 @@ public class OrderBO {
 		return orderMapper.selectOrderListSizeByUserId(userId);
 	}
 
-	public Response<Long> addOrder(Long userId, int totalPrice, int deliveryfee
-			, String status, String shippingAddress) {
-		
-		Order order = Order
-				.builder()
-				.merchantUid(uidGenerator.getMerchantUid())
-				.userId(userId)
-				.amount(totalPrice)
-				.deliveryfee(deliveryfee)
-				.status(status)
-				.shippingAddress(shippingAddress)
-				.build();
+	public Response<Long> addOrder(Order order) {	
 		int result = orderMapper.insertOrder(order);
 		
 		if (result == 1) {
@@ -82,12 +72,12 @@ public class OrderBO {
 					.data(order.getId())
 					.build();
 		} else {
-			log.info("[주문] db 인설트 실패 userId:{}", userId);
+			log.info("[주문] db 인설트 실패 userId:{}", order.getUserId());
 			return  Response
 					.<Long>builder()
 					.code(HttpStatusCode.FAIL.getCodeValue())
 					.message("주문 실패")
-					.data(order.getId())
+					.data(0L)
 					.build();
 		}
 	};

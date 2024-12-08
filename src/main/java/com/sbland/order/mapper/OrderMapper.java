@@ -19,6 +19,8 @@ public interface OrderMapper {
 	
 	public Order selectOrderById(Long id);
 	
+	public int deleteOrderByOrderId(Long id);
+	
 	public int selectOrderListSizeByUserId(Long userId);
 	
 }

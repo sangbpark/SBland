@@ -1,7 +1,6 @@
 package com.sbland.payment.dto;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -17,13 +16,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PortoneToken implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class PortoneToken {	
 	private String accessToken;
-	private String refreshToken;
-	private LocalDate accessDeadline;
-	private LocalDate refreshDeadline;
+	private LocalDateTime expiredAt;
+	private LocalDateTime now;
 }

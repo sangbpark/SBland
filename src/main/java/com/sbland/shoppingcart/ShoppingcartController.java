@@ -29,6 +29,8 @@ public class ShoppingcartController {
 		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
 		List<ShoppingcartCardDTO> ShoppingcartCardDTOList = shoppingcartServiceBO.getShoppingcartByUserId(userSession.getId());
 		model.addAttribute("ShoppingcartCardDTOList", ShoppingcartCardDTOList);
+		model.addAttribute("merchantUid", shoppingcartServiceBO.getMerchantUid());
+		model.addAttribute("impKey", shoppingcartServiceBO.getImpKey());
 		return "shoppingcart/shoppingCart";
 	}
 }

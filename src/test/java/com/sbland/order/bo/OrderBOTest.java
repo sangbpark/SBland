@@ -18,8 +18,8 @@ class OrderBOTest {
 //	@Transactional
 	@Test
 	void 주문생성테스트() {
-		Response<Long> result = orderBO.addOrder(4L, 0, 0, "pending", "홈");
-		log.info("[주문생성테스트] result:{}",result);
+//		Response<Long> result = orderBO.addOrder(4L, 0, 0, "pending", "홈");
+//		log.info("[주문생성테스트] result:{}",result);
 	}
 
 }

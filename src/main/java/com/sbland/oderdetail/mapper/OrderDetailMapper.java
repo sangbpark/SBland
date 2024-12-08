@@ -9,4 +9,6 @@ import com.sbland.oderdetail.domain.OrderDetail;
 @Mapper
 public interface OrderDetailMapper {
 	public List<OrderDetail> selectOrderDetailByOrderId(Long orderId);
+	
+	public int insertOrderDetail(List<OrderDetail> orderDetailList);
 }

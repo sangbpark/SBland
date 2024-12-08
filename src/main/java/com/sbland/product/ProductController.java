@@ -34,6 +34,7 @@ public class ProductController {
 			@PathVariable(name="productId") Long id) {
 		ProductDetailCardDTO productDetailCardDTO = productDetailBO.getProductDetailByProductId(id);
 		model.addAttribute("productDetailCardDTO", productDetailCardDTO);
+		model.addAttribute("merchantUid", productDetailBO.getMerchantUid());
 		return "product/productDetail";
 	}
 	

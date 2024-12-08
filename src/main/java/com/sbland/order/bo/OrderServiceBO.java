@@ -1,6 +1,7 @@
 package com.sbland.order.bo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
+import com.sbland.oderdetail.bo.OrderDetailBO;
 import com.sbland.oderdetail.bo.OrderDetailServiceBO;
+import com.sbland.oderdetail.domain.OrderDetail;
 import com.sbland.order.domain.Order;
 import com.sbland.order.dto.OrderDTO;
 
@@ -20,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class OrderServiceBO {
 	private final OrderBO orderBO;
+	private final OrderDetailBO orderDetailBO;
 	private final OrderDetailServiceBO orderDetailServiceBO;
 	private final ObjectMapper objectMapper;
 	
@@ -74,6 +78,41 @@ public class OrderServiceBO {
 		
 	public Response<List<OrderDTO>> getResponseOrderDTOListByUserId(Long userId, int count, int offset) {
 		return getOrderDTOByOrderIdList(userId, count, offset);
+	}
+	
+	public Response<Boolean> addOrderAndOrderDetail(Long userId, String merchantUid, int amount, int deliveryfee
+			, String status, String shippingAddress, List<Map<String,Object>> orderDetailMapList) {
+		Order order = Order
+				.builder()
+				.userId(userId)
+				.merchantUid(merchantUid)
+				.amount(amount)
+				.deliveryfee(deliveryfee)
+				.status(status)
+				.shippingAddress(shippingAddress)
+				.build();
+		Response<Long> response = orderBO.addOrder(order);
+		if (response.getData() == 0) {
+			Response<Boolean> newResponse = Response
+					.<Boolean>builder()
+					.code(response.getCode())
+					.message(response.getMessage())
+					.data(false)
+					.build();
+			return newResponse;
+		}
+		
+		List<OrderDetail> orderDetailList = orderDetailMapList
+				.stream()
+				.map(orderDetailMap -> objectMapper
+						.convertValue(orderDetailMap, OrderDetail.class)
+						.toBuilder()
+						.orderId(response.getData())
+						.build()
+				)
+				.collect(Collectors.toList());
+		
+		return orderDetailBO.addOrderDetail(orderDetailList);
 	}
 	
 }
