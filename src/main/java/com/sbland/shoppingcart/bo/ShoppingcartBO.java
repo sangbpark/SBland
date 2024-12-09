@@ -94,4 +94,8 @@ public class ShoppingcartBO {
 					.build();
 		}
 	};
+	
+	public int deleteShoppingcartByUserId(Long userId) {
+		return shoppingcartMapper.deleteShoppingcartByUserId(userId);
+	}
 }

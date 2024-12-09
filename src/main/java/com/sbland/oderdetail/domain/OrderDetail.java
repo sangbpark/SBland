@@ -18,7 +18,7 @@ public class OrderDetail {
 	private Long orderId;
 	private Long productId;
 	private int productCount;
-	private int price;
+	private int productPrice;
 	private int totalPrice;
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;

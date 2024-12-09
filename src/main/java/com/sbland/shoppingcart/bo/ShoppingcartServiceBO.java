@@ -76,4 +76,22 @@ public class ShoppingcartServiceBO {
 	public String getImpKey() {
 		return paymentAutoBO.getImpKey();
 	}
+	
+	public Response<Boolean> deleteShoppingcartByUserId(Long id) {
+		if (shoppingcartBO.deleteShoppingcartByUserId(id) > 0) {
+			return Response
+					.<Boolean>builder()
+					.code(HttpStatusCode.OK.getCodeValue())
+					.message("유저 장바구니 삭제 성공")
+					.data(true)
+					.build();
+		} else {
+			return Response
+					.<Boolean>builder()
+					.code(HttpStatusCode.FAIL.getCodeValue())
+					.message("유저 장바구니 삭제 실패")
+					.data(false)
+					.build();
+		}
+	}
 }

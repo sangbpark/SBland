@@ -7,7 +7,7 @@ spring:
     type: redis
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sb_sbland?characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/sb_sbland?characterEncoding=UTF-8&allowMultiQueries=true
     username: root
     password: ${mysql-db.password}
   jpa:

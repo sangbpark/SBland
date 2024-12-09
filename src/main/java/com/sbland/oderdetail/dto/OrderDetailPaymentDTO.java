@@ -17,6 +17,6 @@ import lombok.ToString;
 public class OrderDetailPaymentDTO {
 	private Long productId;
 	private int productCount;
-	private int price;
+	private int productPrice;
 	private int totalPrice;
 }

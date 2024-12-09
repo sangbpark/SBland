@@ -1,7 +1,6 @@
 package com.sbland.order.bo;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import com.sbland.common.reponse.Response;
 import com.sbland.oderdetail.bo.OrderDetailBO;
 import com.sbland.oderdetail.bo.OrderDetailServiceBO;
 import com.sbland.oderdetail.domain.OrderDetail;
+import com.sbland.oderdetail.dto.OrderDetailPaymentDTO;
 import com.sbland.order.domain.Order;
 import com.sbland.order.dto.OrderDTO;
 
@@ -80,8 +80,8 @@ public class OrderServiceBO {
 		return getOrderDTOByOrderIdList(userId, count, offset);
 	}
 	
-	public Response<Boolean> addOrderAndOrderDetail(Long userId, String merchantUid, int amount, int deliveryfee
-			, String status, String shippingAddress, List<Map<String,Object>> orderDetailMapList) {
+	public Response<Long> addOrderAndOrderDetail(Long userId, String merchantUid, int amount, int deliveryfee
+			, String status, String shippingAddress, List<OrderDetailPaymentDTO> orderDetailMapList) {
 		Order order = Order
 				.builder()
 				.userId(userId)
@@ -93,13 +93,12 @@ public class OrderServiceBO {
 				.build();
 		Response<Long> response = orderBO.addOrder(order);
 		if (response.getData() == 0) {
-			Response<Boolean> newResponse = Response
-					.<Boolean>builder()
+			return Response
+					.<Long>builder()
 					.code(response.getCode())
 					.message(response.getMessage())
-					.data(false)
+					.data(order.getId())
 					.build();
-			return newResponse;
 		}
 		
 		List<OrderDetail> orderDetailList = orderDetailMapList
@@ -112,7 +111,22 @@ public class OrderServiceBO {
 				)
 				.collect(Collectors.toList());
 		
-		return orderDetailBO.addOrderDetail(orderDetailList);
+		Response<Boolean> detailResonse = orderDetailBO.addOrderDetail(orderDetailList);
+		if (detailResonse.getData()) {
+			return Response
+					.<Long>builder()
+					.code(detailResonse.getCode())
+					.message(detailResonse.getMessage())
+					.data(order.getId())
+					.build();
+		} else {
+			return Response
+					.<Long>builder()
+					.code(detailResonse.getCode())
+					.message(detailResonse.getMessage())
+					.data(order.getId())
+					.build();
+		}
 	}
 	
 }

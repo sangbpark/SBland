@@ -12,9 +12,11 @@
 				,`order_id`
 				,`user_id`
 				,`amount`
-				,`payment_method`
+				,`pay_method`
 				,`status`
 				,`paid_at`
+				,`receipt_url`
+				,`card_name`
 				,`cancel_reason`
 				,`created_at`
 				,`updated_at`
@@ -26,18 +28,20 @@
  	<select id="selectPaymentByMerchantUid"
  			resultType="com.sbland.payment.domain.Payment">
  			SELECT
- 				`id`
+ 				,`id`
 				,`imp_uid`
 				,`merchant_uid`
 				,`order_id`
 				,`user_id`
 				,`amount`
-				,`payment_method`
+				,`pay_method`
 				,`status`
 				,`paid_at`
+				,`receipt_url`
+				,`card_name`
 				,`cancel_reason`
 				,`created_at`
-				,`updated_at`
+				,`updated_at
 			FROM
 				`payment`
 			WHERE
@@ -52,12 +56,14 @@
 				,`order_id`
 				,`user_id`
 				,`amount`
-				,`payment_method`
+				,`pay_method`
 				,`status`
 				,`paid_at`
+				,`receipt_url`
+				,`card_name`
 				,`cancel_reason`
 				,`created_at`
-				,`updated_at`
+				,`updated_at
 			FROM
 				`payment`
 			WHERE
@@ -66,28 +72,32 @@
  	<insert id="insertPayment">
  		INSERT INTO `payment` 
  		(
- 			`imp_uid`
-			,`merchant_uid`
-			,`order_id`
-			,`user_id`
-			,`amount`
-			,`payment_method`
-			,`status`
-			,`paid_at`
-			,`cancel_reason`
-			,`created_at`
-			,`updated_at`
+  				`imp_uid`
+				,`merchant_uid`
+				,`order_id`
+				,`user_id`
+				,`amount`
+				,`pay_method`
+				,`status`
+				,`paid_at`
+				,`receipt_url`
+				,`card_name`
+				,`cancel_reason`
+				,`created_at`
+				,`updated_at`
  		)
  		VALUES
- 		(
+		(
  			#{impUid}
  			,#{merchantUid}
  			,#{orderId}
  			,#{userId}
  			,#{amount}
- 			,#{paymentMethod}
+ 			,#{payMethod}
  			,#{status}
  			,#{paidAt}
+ 			,#{receiptUrl}
+ 			,#{cardName}
  			,#{cancelReason}
  			,NOW()
  			,NOW()

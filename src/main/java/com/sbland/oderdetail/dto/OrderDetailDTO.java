@@ -20,6 +20,6 @@ public class OrderDetailDTO {
 	private String name;
 	private String url;
 	private int productCount;
-	private int price;
+	private int productPrice;
 	private int totalPrice;
 }

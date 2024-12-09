@@ -16,6 +16,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductStockDTO {
-	private Long prodcutId;
+	private Long productId;
 	private int productCount;
 }

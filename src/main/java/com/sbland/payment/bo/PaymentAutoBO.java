@@ -1,14 +1,17 @@
 package com.sbland.payment.bo;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.sbland.payment.dto.PortoneToken;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,7 @@ public class PaymentAutoBO {
 	
 	@Value("${portone.imp-key}")
 	private String impKey;
+	
 	public Mono<Map> getAccessToken() {
 	      return webClient.post()
 	              .uri(apiUrl + "/users/getToken")
@@ -66,4 +70,23 @@ public class PaymentAutoBO {
 					.retrieve()
 			        .bodyToMono(Map.class);
 	};
+	
+	@CachePut(value = "portoneTokens", key = "'portoneToken'")
+	public PortoneToken updatePortoneToken() {
+	    Map<String, Object> responseData = getAccessToken().block();
+	    Map<String, Object> tokenMap = (Map<String, Object>) responseData.get("response");
+
+	    return PortoneToken
+	            .builder()
+	            .accessToken((String) tokenMap.get("access_token"))
+	            .expiredAt(LocalDateTime.ofInstant(
+	                    Instant.ofEpochSecond((Integer) tokenMap.get("expired_at")),
+	                    ZoneId.of("Asia/Seoul")
+	            ))
+	            .now(LocalDateTime.ofInstant(
+	                    Instant.ofEpochSecond((Integer) tokenMap.get("now")),
+	                    ZoneId.of("Asia/Seoul")
+	            ))
+	            .build();
+	}
 }

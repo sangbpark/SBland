@@ -66,4 +66,11 @@
  		WHERE
  			`user_id` = #{userId} AND `product_id` = #{productId}
  	</delete>
+ 	 	<delete id="deleteShoppingcartByUserId">
+ 		DELETE 
+ 		FROM
+ 			`shoppingcart`
+ 		WHERE
+ 			`user_id` = #{userId}
+ 	</delete>
  </mapper>

@@ -10,7 +10,7 @@
 			,`order_id`
 			,`product_id`
 			,`product_count`
-			,`price`
+			,`product_price`
 			,`total_price`
 			,`updated_at`
 			,`created_at`
@@ -20,13 +20,13 @@
 			`order_id` = #{orderId}	
  	</select>
 
- 	<insert id="">
+ 	<insert id="insertOrderDetail">
  		INSERT INTO `orderdetail` 
  		(
  			`order_id`
 			,`product_id`
 			,`product_count`
-			,`price`
+			,`product_price`
 			,`total_price`
 			,`updated_at`
 			,`created_at`
@@ -34,7 +34,7 @@
  		VALUES
  		<foreach collection="list" item="orderdetail" separator=",">
  			(#{orderdetail.orderId}, #{orderdetail.productId}, #{orderdetail.productCount}
- 			, #{orderdetail.price}, #{orderdetail.totalPrice}, NOW(), NOW())	
+ 			, #{orderdetail.productPrice}, #{orderdetail.totalPrice}, NOW(), NOW())	
  		</foreach>
  		
  	</insert>

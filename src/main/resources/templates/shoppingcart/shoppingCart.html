@@ -28,6 +28,9 @@
 			</div>			
 		</div>
 	</div>
+	<div>
+		<input type="text" id="shippingAddress" class="form-controll">
+	</div>
     <div class="recently-viewed text-center">
            <h3>주문예상금액</h3>
            <div id="totalPaymentPrice">
@@ -73,17 +76,18 @@
 				const amount = parseInt($("#orderPaymentPrice").text(),10);
 				const deliveryfee = parseInt($("#deliveryfee").text(),10);
 				const merchantUid = $("#paymentBtn").data("merchant-uid");
+				const shippingAddress = $("#shippingAddress").val();
 		        const buyerName = $("#paymentBtn").data("buyer-name");
 				let orderDetailMapList = [];
 				$("input[name=checkProduct]:checked").each(function() {
 			       const checkbox = $(this); 
-			       const productId = checkbox.val();
-			       const totalPrice = checkbox.data("product-total-price"); 
+			       const productId = parseInt(checkbox.val(),10);
+			       const totalPrice =  parseInt(checkbox.data("product-total-price"),10); 
 			       const productCard = checkbox.closest('.shoppingcartCard');
 			       const productCount = productCard.find('.productCount').text().replace('개', '').trim();
 			       const productPrice = productCard.find('.productPrice').text().replace('원', '').trim();
 			       orderDetailMapList.push({
-			           productId: productId,
+			           productId: parseInt(productId, 10),
 			           productCount: parseInt(productCount, 10),
 			           productPrice: parseInt(productPrice, 10),
 			           totalPrice: parseInt(totalPrice, 10)
@@ -104,25 +108,34 @@
 	                merchant_uid: merchantUid,
 	                name: 'SBLAND 상품 결제',
 	                amount: amount,
-	                buyer_name: buyerName,
+	                buyer_email:"qkrtkdqo94@naver.com",
+	                buyer_name: buyerName, 
 	            }, function (rsp) {
 	                if (rsp.success) {
-	        
-	                    $.post('/payment/verify', { 
-	                    	"impUid": rsp.imp_uid, 
-	                    	"merchantUid": rsp.merchant_uid,
-	                    	"deliveryfee": deliveryfee,
-	                    	"amount": amount,
-	                    	"orderDetailMapList": orderDetailMapList}, function (data) {
-	                        if (data.success) {
-	                            alert('결제가 완료되었습니다.');
-	                            location.href = '/payment/success';
-	                        } else {
-	                            alert('결제 검증에 실패했습니다.');
-	                        }
-	                    });
-	                } else {
-	                    alert('결제에 실패했습니다. 에러: ' + rsp.error_msg);
+	                	$.ajax({
+	                	    type: "POST",
+	                	    url: "/payment/verify",
+	                	    contentType: "application/json",
+	                	    data: JSON.stringify({
+	                	        impUid: rsp.imp_uid,
+	                	        merchantUid: rsp.merchant_uid,
+	                	        deliveryfee: deliveryfee,
+	                	        shippingAddress: shippingAddress,
+	                	        amount: amount,
+	                	        orderDetailMapList: orderDetailMapList
+	                	    }),
+	                	    success: function (data) {
+	                	        if (data.success) {
+	                	            alert('결제가 완료되었습니다.');
+	                	            location.reload();
+	                	        } else {
+	                	            alert('결제 검증에 실패했습니다.');
+	                	        }
+	                	    },
+	                	    error: function (xhr, status, error) {
+	                	        console.error("에러 발생:", error);
+	                	    }
+	                	})
 	                }
 	            });
 	        });

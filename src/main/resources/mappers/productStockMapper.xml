@@ -44,7 +44,7 @@
  			</foreach>
  	</select>
  	<update id="updateProductStock" parameterType="list">
-	    <foreach item="item" index="index" collection="list" open="" separator=";" close="">
+	    <foreach item="item" index="index" collection="list" separator=";">
 	        UPDATE 
 	        	`product_stock`
 	        SET 

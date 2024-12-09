@@ -21,5 +21,10 @@ class PaymentAutoBOTest {
 		Map<String,String> result = paymentAutoBO.getAccessToken().block();	
 		log.info("[dfasdf] result:{}",result.get("accessToken"));
 	}
+	
+	@Test 
+	void 포트원검증테스트() {
+		paymentAutoBO.getVerify("imp_281342585137", null);
+	}
 
 }
