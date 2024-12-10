@@ -18,7 +18,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDTO {
 	private Long id;
 	private Long userId;

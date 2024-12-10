@@ -14,4 +14,8 @@ public class UidGenerator {
 	public String getMerchantUid() {
 		return uidGeneratorFactroy.getMerchantUidProvider().createUid("order");
 	}
+	
+	public String getEmailVerifyUid() {
+		return uidGeneratorFactroy.getMerchantUidProvider().createUid("email");
+	}
 }

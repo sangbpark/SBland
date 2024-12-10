@@ -1,5 +1,7 @@
 package com.sbland.cofig;
 
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +15,9 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import lombok.RequiredArgsConstructor;
 
 
 
@@ -56,8 +55,18 @@ public class RedisCacheConfig {
         .disableCachingNullValues()
         .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
         .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)));
+
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(configuration)
+                .withCacheConfiguration("EmailVerifyDTO", RedisCacheConfiguration.defaultCacheConfig()
+			        .disableCachingNullValues()
+			        .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+			        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)))
+			        .entryTtl(Duration.ofMinutes(5L))
+			     )
                 .build();
     }
+    
+    
+    
 }

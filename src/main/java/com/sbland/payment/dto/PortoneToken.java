@@ -16,7 +16,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PortoneToken {	
 	@JsonProperty("access_token")
 	private String accessToken;

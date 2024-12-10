@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.sbland.payment.PaymentRestController;
 import com.sbland.payment.dto.PortoneToken;

@@ -16,7 +16,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	
 	private final PermissionInterceptor interceptor;
 	
-	// 인터셉터 설정
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry

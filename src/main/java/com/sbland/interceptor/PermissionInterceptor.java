@@ -22,7 +22,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
 			HttpServletResponse response, Object handler){
 		
 		String uri = request.getRequestURI();
-		log.info("[@@@@@@@@@@@ preHandle] uri:{}" , uri);
 		
 		HttpSession session = request.getSession();
 		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
@@ -62,7 +61,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
 				response.sendRedirect("/");
 			} catch (IOException e) {
 				log.info("[preHandle] user리다이렉트 실패 error:{}",e.getMessage());
-				return false;
 			}			
 			return false;
 		}
@@ -72,7 +70,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
 				response.sendRedirect("/");
 			} catch (IOException e) {
 				log.info("[preHandle] user리다이렉트 실패 error:{}",e.getMessage());
-				return false;
 			}			
 			return false;
 		}
