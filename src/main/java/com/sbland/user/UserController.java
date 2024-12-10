@@ -31,7 +31,7 @@ public class UserController {
 		return "user/signIn";
 	}
 	
-	@GetMapping("/user/mypage-view")
+	@GetMapping("/user/protect/mypage-view")
 	public String myPage(
 			@RequestParam("page") Optional<Integer> page,
 			Model model,

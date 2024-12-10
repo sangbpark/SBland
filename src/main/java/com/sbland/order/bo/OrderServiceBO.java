@@ -1,5 +1,6 @@
 package com.sbland.order.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,15 +44,16 @@ public class OrderServiceBO {
 
 	private Response<List<OrderDTO>> getOrderDTOByOrderIdList(Long userId, int count, int offset) {
 		List<Order> orderList = orderBO.getOrderByUserId(userId, count, offset).getData();
+		List<OrderDTO> orderDTOList = new ArrayList<>();
 		if (orderList.isEmpty()) {
 			return Response.<List<OrderDTO>>builder()
 							.code(HttpStatusCode.OK.getCodeValue())
 							.message("주문명세서를 가져오는데 성공했습니다.")
-							.data(null)
+							.data(orderDTOList)
 							.build();
 		}
 								
-		List<OrderDTO> orderDTOList = orderList
+		orderDTOList = orderList
 				.stream()
 				.map(order -> objectMapper.convertValue(order, OrderDTO.class))
 				.collect(Collectors.toList());
