@@ -74,6 +74,7 @@
 		    IMP.init($("#paymentBtn").data("imp-key")); 
 
 	        $('#paymentBtn').click(function () {
+	        	$("#paymentBtn").attr("disabled", true);
 				const amount = parseInt($("#orderPaymentPrice").text(),10);
 				const deliveryfee = parseInt($("#deliveryfee").text(),10);
 				const merchantUid = $("#paymentBtn").data("merchant-uid");
@@ -97,10 +98,12 @@
 			    });
 				if (amount <= 0) {
 					alert("장바구니 정보를 확인해주세요");
+					$("#paymentBtn").attr("disabled", false);
 					return;
 				};
 				if (orderDetailMapList == null || orderDetailMapList.length === 0) {
 					alert("장바구니 정보를 확인해주세요");
+					$("#paymentBtn").attr("disabled", false);
 					return;
 				};
 
@@ -129,13 +132,16 @@
 	                	    success: function (data) {
 	                	        if (data.success) {
 	                	            alert('결제가 완료되었습니다.');
+	                	            $("#paymentBtn").attr("disabled", false);
 	                	            location.reload();
 	                	        } else {
 	                	            alert('결제 검증에 실패했습니다.');
+	                	            $("#paymentBtn").attr("disabled", false);
 	                	        }
 	                	    },
 	                	    error: function (xhr, status, error) {
 	                	        console.error("에러 발생:", error);
+	                	        $("#paymentBtn").attr("disabled", false);
 	                	    }
 	                	})
 	                }

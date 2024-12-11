@@ -88,11 +88,13 @@
 				$("#idCheck").addClass("d-none");
 				$("#idCheckDuplicated").addClass("d-none");
 				$("#idCheckOk").addClass("d-none");
+				$("#loginIdCheckBtn").attr("disabled", true);
 				const loginId = $("#loginId").val().trim();
 				
 				const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
     		    if (!loginIdRegex.test(loginId)) {
     			    $("#idCheck").removeClass("d-none");
+    			    $("#loginIdCheckBtn").attr("disabled", false);
     		        return;
     		    }
 			
@@ -103,17 +105,21 @@
 					, success:function(data) {
 						if (data.code == 200) {
 							if (data.data) {
-								$("#idCheckDuplicated").removeClass("d-none");		
+								$("#idCheckDuplicated").removeClass("d-none");	
+								$("#loginIdCheckBtn").attr("disabled", false);
 							} else {
 								$("#idCheckOk").removeClass("d-none");
+								$("#loginIdCheckBtn").attr("disabled", false);
 							}
 							
 						} else if (data.code == 500) {
 							alert(data.message);
+							$("#loginIdCheckBtn").attr("disabled", false);
 						}
 					}
 					, error:function(e) {
 						alert("중복확인에 실패했습니다.");
+						$("#loginIdCheckBtn").attr("disabled", false);
 					}
 				});
 			});
@@ -197,11 +203,13 @@
 				});
     	   });
     	   $("#emailCheckBtn").on("click", function() {
+    		   $(this).attr("disabled", true);
     		   const email = $("#email").val().trim();
     		   
     		   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     		   if (!emailRegex.test(email)) {
     		       alert("유효한 이메일 주소를 입력하세요.");
+    		       $(this).attr("disabled", false);
     		       return;
     		   }
     		   
@@ -211,10 +219,13 @@
     		   	    ,success: function(data) {
     		   		    if(data.code == 500) {
     		   			    alert(data.message);
+    		   				$("#emailCheckBtn").attr("disabled", false);
     		   		    }
+    		   		 	$("#emailCheckBtn").attr("disabled", false);
     		   	    }
     		   	    ,error:function(e) {
 						alert("이메일 발송에 실패했습니다.");
+						$("#emailCheckBtn").attr("disabled", false);
 					}
     		   })
     	   });
