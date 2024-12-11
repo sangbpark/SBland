@@ -45,7 +45,8 @@
            <button id="paymentBtn" class="btn btn-primary btn-block" 
            th:data-merchant-uid="${merchantUid}"
            th:data-imp-key="${impKey}"
-           th:data-buyer-name="${buyerName}"
+           th:data-buyer-name="${session.userSession.name}"
+           th:data-buyer-email="${session.userSession.email}"
            >주문하기</button>
     </div>
    	<div class="modal fade" id="modal">
@@ -78,6 +79,7 @@
 				const merchantUid = $("#paymentBtn").data("merchant-uid");
 				const shippingAddress = $("#shippingAddress").val();
 		        const buyerName = $("#paymentBtn").data("buyer-name");
+		        const buyerEmail = $("#paymentBtn").data("buyer-email")
 				let orderDetailMapList = [];
 				$("input[name=checkProduct]:checked").each(function() {
 			       const checkbox = $(this); 
@@ -108,7 +110,7 @@
 	                merchant_uid: merchantUid,
 	                name: 'SBLAND 상품 결제',
 	                amount: amount,
-	                buyer_email:"qkrtkdqo94@naver.com",
+	                buyer_email: buyerEmail,
 	                buyer_name: buyerName, 
 	            }, function (rsp) {
 	                if (rsp.success) {

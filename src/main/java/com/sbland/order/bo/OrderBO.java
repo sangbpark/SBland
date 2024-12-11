@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.sbland.common.keys.KeysGenerator;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
-import com.sbland.common.uid.UidGenerator;
 import com.sbland.oderdetail.bo.OrderDetailBO;
 import com.sbland.oderdetail.domain.OrderDetail;
 import com.sbland.order.domain.Order;

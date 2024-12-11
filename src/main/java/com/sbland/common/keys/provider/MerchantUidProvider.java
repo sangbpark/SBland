@@ -1,4 +1,4 @@
-package com.sbland.common.uid.provider;
+package com.sbland.common.keys.provider;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

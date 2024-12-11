@@ -39,6 +39,15 @@
 					<input type="text" id="email" name="email" class="form-control col-6" placeholder="이메일을 입력하세요">
 					<button type="button" id="emailCheckBtn" class="btn btn-success">이메일확인</button>
 				</div>
+				<div class="ml-3 mb-3">
+					<div id="emailCheck" class="small text-danger d-none">이메일 인증에 실패했습니다.</div>
+					<div id="emailCheckOk" class="small text-success d-none">사용 가능한 이메일입니다.</div>
+				</div>
+				<span class="sign-up-subject">이메일 인증번호</span>
+				<div class="m-3 d-flex">
+					<input type="text" id="emailVerify" name="emailVerify" class="form-control col-6" placeholder="인증번호를 입력하세요">
+					<button type="button" id="emailVerifBtn" class="btn btn-success">인증번호확인</button>
+				</div>
 				
 				<span class="sign-up-subject">생년월일</span>
 	            <div class="m-3">
@@ -126,6 +135,11 @@
 				   return;
 			   }
     		   
+   			   if ($("#emailCheckOk").hasClass("d-none")) {
+				   alert("이메일 인증을 해주세요.");
+				   return;
+			   }
+    		   
     		   const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
     		   if (!loginIdRegex.test(loginId)) {
     		       alert("ID는 4자 이상 50자 미만이며, 특수문자와 공백 없이 입력해야 합니다.");
@@ -181,6 +195,62 @@
 				.fail(function(e) {
 			        alert("요청 처리 중 에러가 발생했습니다: ");		       
 				});
+    	   });
+    	   $("#emailCheckBtn").on("click", function() {
+    		   const email = $("#email").val().trim();
+    		   
+    		   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    		   if (!emailRegex.test(email)) {
+    		       alert("유효한 이메일 주소를 입력하세요.");
+    		       return;
+    		   }
+    		   
+    		   $.ajax({
+    			    url: "/email/verify-send"
+    			    ,data: {"email":email}
+    		   	    ,success: function(data) {
+    		   		    if(data.code == 500) {
+    		   			    alert(data.message);
+    		   		    }
+    		   	    }
+    		   	    ,error:function(e) {
+						alert("이메일 발송에 실패했습니다.");
+					}
+    		   })
+    	   });
+    	   $("#emailVerifBtn").on("click", function() {
+			   $("#emailCheck").addClass("d-none");
+			   $("#emailCheckOk").addClass("d-none");
+    		   const email = $("#email").val().trim();
+    		   const salt = $("#emailVerify").val().trim();
+    		   
+    		   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    		   if (!emailRegex.test(email)) {
+    		       alert("유효한 이메일 주소를 입력하세요.");
+    		       return;
+    		   }
+    		   
+    		   if (salt.length != 12) {
+    			   alert("유효한 이메일 인증번호를 입력하세요.");
+    		       return;
+    		   }
+    		   
+    		   $.ajax({
+    			    url: "/email/verify"
+    			    ,data: {"email":email, "salt":salt}
+    		   	    ,success: function(data) {
+    		   	    	if (data.code == 200) {
+    		   	    		alert("이메일 인증에 성공했습니다.");
+    		   	    	 	$("#emailCheckOk").removeClass("d-none");
+    		   	    	} else if (data.code == 500) {
+    		   			    alert(data.message);
+    		   				$("#emailCheck").removeClass("d-none");
+    		   		    }
+    		   	    }
+    		   	    ,error:function(e) {
+						alert("이메일 인증을 오류로 실패했습니다.");
+					}
+    		   })
     	   });
 	    }) 
     </script>

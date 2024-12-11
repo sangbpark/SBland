@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.sbland.aop.cache.FindCache;
-import com.sbland.common.uid.UidGenerator;
+import com.sbland.common.keys.KeysGenerator;
 import com.sbland.email.dto.EmailVerifyDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class EmailBO {
 	private String StoreEmail;
 	
     private final JavaMailSender mailSender;
-    private final UidGenerator uidGenerator;
+    private final KeysGenerator uidGenerator;
 
     public void sendEmail(String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -40,13 +40,12 @@ public class EmailBO {
        
     @CachePut(value = "EmailVerifyDTO", key = "#root.args[0]")
     public EmailVerifyDTO createVerifyEmail(String email) {
-    	String uid = uidGenerator.getEmailVerifyUid();
-    	String link = "http://localhost:8080/email/verify?uid=" + uid + "&email=" + email;
-        String body = "안녕하세요! 아래 링크를 클릭하여 이메일 인증을 완료하세요:\n" + link;
+    	String key = uidGenerator.getSalt(12);
+        String body = "안녕하세요! 아래 보안번호를 입력하여 이메일 인증을 완료하세요:\n" + key;
     	sendEmail(email,"SBLAND 이메일 인증", body);
     	return EmailVerifyDTO
     			.builder()
-    			.emailUid(uid)
+    			.salt(key)
     			.build();
     }
       

@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.common.keys.KeysGenerator;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
-import com.sbland.common.uid.UidGenerator;
 import com.sbland.oderdetail.dto.OrderDetailPaymentDTO;
 import com.sbland.order.bo.OrderServiceBO;
 import com.sbland.payment.domain.Payment;
@@ -37,7 +37,7 @@ public class PaymentServiceBO {
 	private final ObjectMapper objectMapper;
 	private final ProductStockServiceBO productStockServiceBO;
 	private final ShoppingcartServiceBO shoppingcartServiceBO;
-	private final UidGenerator uidGenerator;
+	private final KeysGenerator uidGenerator;
 	
 	@Cacheable(value = "portoneTokens", key = "'portoneToken'")
 	public PortoneToken getPortoneToken() {

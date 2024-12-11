@@ -81,14 +81,12 @@ public class PermissionInterceptor implements HandlerInterceptor {
 			HttpServletResponse response, Object handler,
 			ModelAndView mav) {
 
-		log.info("[$$$$$$$$$$$ postHandle]");
 	}
 	
 	@Override
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
 			Exception ex) {
-		log.info("[############ afterCompletion]");
 	}
 
 }

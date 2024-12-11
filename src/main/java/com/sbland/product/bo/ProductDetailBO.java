@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbland.common.uid.UidGenerator;
+import com.sbland.common.keys.KeysGenerator;
 import com.sbland.product.domain.Product;
 import com.sbland.product.domain.ProductImage;
 import com.sbland.product.domain.ProductStock;
@@ -19,7 +19,7 @@ public class ProductDetailBO {
 	private final ProductBO productBO;
 	private final ProductImageBO productImageBO;
 	private final ProductStockBO productStockBO;
-	private final UidGenerator uidGenertor;
+	private final KeysGenerator uidGenertor;
 	private final ObjectMapper objectMapper;
 	
 	public ProductDetailCardDTO getProductDetailByProductId(Long id) {

@@ -24,11 +24,11 @@ public class EmailRestController {
 	}
 	
 	@GetMapping("/verify")
-	public String verifyEmail (
-			@RequestParam("uid") String uid,
+	public Response<Boolean> verifyEmail (
+			@RequestParam("salt") String salt,
 			@RequestParam("email") String email){
 				
-		return emailServiceBO.verifyEmail(uid, email).getMessage();
+		return emailServiceBO.verifyEmail(salt, email);
 	};
 	
 }

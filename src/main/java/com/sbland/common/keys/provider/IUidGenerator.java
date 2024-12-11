@@ -1,4 +1,4 @@
-package com.sbland.common.uid.provider;
+package com.sbland.common.keys.provider;
 
 public interface IUidGenerator {
 	public String createUid(String type);

@@ -14,7 +14,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmailVerifyDTO {
-	private String email;
-	private String emailUid;
-	private LocalDateTime expiredAt;
+	private String salt;
 }

@@ -37,7 +37,7 @@ public class EmailServiceBO {
 				.build();
 	}
 
-	public Response<Boolean> verifyEmail(String uid, String email) {
+	public Response<Boolean> verifyEmail(String salt, String email) {
 		EmailVerifyDTO emailVerify = emailBO.getVerifyEmail(email);
 		if (emailVerify == null) {
 			return Response
@@ -47,7 +47,7 @@ public class EmailServiceBO {
 					.data(false)
 					.build();
 		} else {
-			if (emailVerify.getEmailUid().equals(uid)) {
+			if (emailVerify.getSalt().equals(salt)) {
 				return Response
 						.<Boolean>builder()
 						.code(HttpStatusCode.OK.getCodeValue())

@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.common.keys.KeysGenerator;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
-import com.sbland.common.uid.UidGenerator;
 import com.sbland.payment.bo.PaymentAutoBO;
 import com.sbland.product.bo.ProductStockBO;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
@@ -24,7 +24,7 @@ public class ShoppingcartServiceBO {
 	private final ShoppingcartBO shoppingcartBO;
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
 	private final PaymentAutoBO paymentAutoBO;
-	private final UidGenerator uidGenerator;
+	private final KeysGenerator uidGenerator;
 	private final ObjectMapper objectMapper;
 	
 	public Response<Integer> shoppingcartEdit(Long userId, Long productId, int count) {
