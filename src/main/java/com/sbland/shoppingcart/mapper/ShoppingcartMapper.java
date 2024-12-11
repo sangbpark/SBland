@@ -16,6 +16,9 @@ public interface ShoppingcartMapper {
 	
 	public List<Shoppingcart> selectShoppingcartByUserId(Long id);
 	
+	public int deleteShoppingcartByUserIdAndProductIdList(
+			@Param("userId") Long userId, 
+            @Param("productIdList") List<Long> productIdList);
 	
 	public Shoppingcart selectShoppingcartByUserIdAndProductId(
 			@Param("userId") Long userId,

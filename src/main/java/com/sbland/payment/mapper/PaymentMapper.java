@@ -14,4 +14,6 @@ public interface PaymentMapper {
 	public Payment selectPaymentByImpUid(String impUid);
 	
 	public int insertPayment(Payment payment);
+	
+	public int updatePayment(Payment payment);
 }

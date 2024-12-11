@@ -17,10 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PortoneToken {	
-	@JsonProperty("access_token")
 	private String accessToken;
-	
-	@JsonProperty("expired_at")
 	private LocalDateTime expiredAt;
 	private LocalDateTime now;
 }

@@ -13,7 +13,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDetailPaymentDTO {
 	private Long productId;
 	private int productCount;

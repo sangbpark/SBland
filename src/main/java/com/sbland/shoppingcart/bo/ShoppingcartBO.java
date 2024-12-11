@@ -94,7 +94,9 @@ public class ShoppingcartBO {
 					.build();
 		}
 	};
-	
+	public int deleteShoppingcartByUserIdAndProductIdList(Long userId, List<Long> productIdList) {
+		return shoppingcartMapper.deleteShoppingcartByUserIdAndProductIdList(userId, productIdList);
+	}
 	public int deleteShoppingcartByUserId(Long userId) {
 		return shoppingcartMapper.deleteShoppingcartByUserId(userId);
 	}

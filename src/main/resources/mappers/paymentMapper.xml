@@ -104,5 +104,25 @@
  		)
  	
  	</insert>
+ 	<update id="updatePayment">
+ 		UPDATE `payment` 
+ 		SET
+ 			`imp_uid`       = #{impUid}
+			,`merchant_uid`  = #{merchantUid}
+			,`order_id`      = #{orderId}   
+			,`user_id`       = #{userId}  
+			,`amount`        = #{amount} 
+			,`pay_method`    = #{payMethod}
+			,`status`        = #{status}
+			,`paid_at`       = #{paidAt}
+			,`receipt_url`   = #{receiptUrl}
+			,`card_name`     = #{cardName}
+			,`cancel_reason` = #{cancelReason}
+			,`cancel_amount` = #{cancelAmount}
+			,`cancelled_at`  = #{cancelledAt}
+ 			,`updated_at`    = NOW()
+ 		WHERE
+ 			`id` = #{id}
+ 	</update>
  
  </mapper>

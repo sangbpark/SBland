@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PaymentBO {
 	private final PaymentMapper paymentMapper;
+
 	
 	public Payment getPaymentByUserId(Long userId) {
 		return paymentMapper.selectPaymentByUserId(userId);
@@ -27,4 +28,8 @@ public class PaymentBO {
 	public int addPayment(Payment payment) {
 		return paymentMapper.insertPayment(payment);
 	};
+	
+	public int updatePayment(Payment payment) {
+		return paymentMapper.updatePayment(payment);
+	}
 }

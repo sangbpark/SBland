@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -38,7 +39,6 @@ public class PaymentAutoBO {
 	public Mono<Map> getAccessToken() {
 	      return webClient.post()
 	              .uri(apiUrl + "/users/getToken")
-	              .headers(headers -> {headers.setContentType(MediaType.APPLICATION_JSON);})
 	              .bodyValue(Map.of(
 	            		  "imp_key",apiKey,
 	            		  "imp_secret",apiSecret)
@@ -50,7 +50,6 @@ public class PaymentAutoBO {
 	public Mono<Map> getAccessTokenByRefreshToken(String refreshToken) {
 		return webClient.post()
 	              .uri(apiUrl + "/token/refresh")
-	              .headers(headers -> {headers.setContentType(MediaType.APPLICATION_JSON);})
 	              .bodyValue(Map.of("refreshToken",refreshToken))
 	              .retrieve()
 	              .bodyToMono(Map.class);
@@ -64,12 +63,26 @@ public class PaymentAutoBO {
     	return webClient.get()
 					.uri(apiUrl + "/payments/" + impUid)
 					.headers(headers -> {
-						headers.setContentType(MediaType.APPLICATION_JSON);
 						headers.setBearerAuth(accessToken);}
 					)
 					.retrieve()
 			        .bodyToMono(Map.class);
 	};
+	
+	public Mono<Map> getPaymentCancel(String impUid, String merchantUid, String reason, int amount, String accessToken) {
+    	return webClient.post()
+					.uri(apiUrl + "/payments/cancel")
+					.headers(headers -> {
+						headers.setBearerAuth(accessToken);}
+					)
+					.bodyValue(Map.of(
+							"imp_uid",impUid
+							,"merchant_uid",merchantUid
+							,"reason",reason
+							,"amount",amount))
+					.retrieve()
+			        .bodyToMono(Map.class);
+	}; 
 	
 	@CachePut(value = "portoneTokens", key = "'portoneToken'")
 	public PortoneToken updatePortoneToken() {
@@ -88,5 +101,23 @@ public class PaymentAutoBO {
 	                    ZoneId.of("Asia/Seoul")
 	            ))
 	            .build();
+	}
+	
+	@Cacheable(value = "portoneTokens", key = "'portoneToken'")
+	public PortoneToken getPortoneToken() {
+		Map<String, Object> responseData = getAccessToken().block();
+		Map<String, Object> tokenMap =(Map<String, Object>) responseData.get("response");
+	    return PortoneToken
+	    		.builder()
+	    		.accessToken((String)tokenMap.get("access_token"))
+	    		.expiredAt(LocalDateTime.ofInstant(
+	    			        Instant.ofEpochSecond((Integer) tokenMap.get("expired_at")),
+	    			        ZoneId.of("Asia/Seoul"))
+	    		)
+	    		.now(LocalDateTime.ofInstant(
+	    			        Instant.ofEpochSecond((Integer) tokenMap.get("now")),
+	    			        ZoneId.of("Asia/Seoul"))
+	    		)
+	    		.build();
 	}
 }

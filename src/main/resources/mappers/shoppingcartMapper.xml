@@ -66,11 +66,23 @@
  		WHERE
  			`user_id` = #{userId} AND `product_id` = #{productId}
  	</delete>
- 	 	<delete id="deleteShoppingcartByUserId">
+ 	<delete id="deleteShoppingcartByUserId">
  		DELETE 
  		FROM
  			`shoppingcart`
  		WHERE
  			`user_id` = #{userId}
  	</delete>
+ 	<delete id="deleteShoppingcartByUserIdAndProductIdList" parameterType="map">
+    DELETE 
+    FROM 
+    	`shoppingcart`
+    WHERE 
+    	`user_id` = #{userId}
+     	 AND 
+     	 `product_id` IN
+      <foreach item="productId" collection="productIdList" open="(" separator="," close=")">
+          #{productId}
+      </foreach>
+</delete>
  </mapper>
