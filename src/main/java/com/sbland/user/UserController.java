@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sbland.common.pagination.bo.PaginationBO;
 import com.sbland.common.pagination.dto.PaginationDTO;
 import com.sbland.order.dto.OrderDTO;
+import com.sbland.user.bo.UserBO;
+import com.sbland.user.dto.UserDTO;
 import com.sbland.user.dto.UserSessionDTO;
 
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class UserController {
 	private final PaginationBO paginationBO;
+	private final UserBO userBO;
 	
 	@GetMapping("/user/user-up-view")
 	public String userSignUp() {
@@ -52,4 +55,20 @@ public class UserController {
 		session.removeAttribute("userSession");
 		return "redirect:/";
 	}
+	
+	@GetMapping("/user/protect/user-info-proxy")
+	public String userInfoProxy() {
+		return "user/userInfoProxy";
+	}
+	
+	@GetMapping("/user/protect/user-info")
+	public String userInfo(
+			HttpSession session,
+			Model model) {
+		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
+		model.addAttribute("userDTO", userBO.getUserDTObyUserId(userSession.getId()));
+		return "user/myInfo";
+	}
+		
+	
 }

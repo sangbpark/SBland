@@ -21,7 +21,7 @@
 		WHERE
 			`login_id` = #{loginId}	
  	</select>
- 	<select id="selectUserByUserIdAndPassword"
+ 	<select id="selectUserByUserLoginIdAndPassword"
  			resultType="com.sbland.user.domain.User">
  		SELECT
  			`id`
@@ -40,6 +40,45 @@
 			`login_id` = #{loginId}	AND 
 			`password` = #{password}
  	</select>
+ 	<select id="selectUserByUserIdAndPassword"
+ 			resultType="com.sbland.user.domain.User">
+  		SELECT
+ 			`id`
+			,`login_id`
+			,`email`
+			,`password`
+			,`name`
+			,`birthday`
+			,`gender`
+			,`role`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`user`
+		WHERE
+			`id` = #{id}	AND 
+			`password` = #{password}	
+ 	</select>
+ 	
+ 	 	<select id="selectUserById"
+ 			resultType="com.sbland.user.domain.User">
+  		SELECT
+ 			`id`
+			,`login_id`
+			,`email`
+			,`password`
+			,`name`
+			,`birthday`
+			,`gender`
+			,`role`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`user`
+		WHERE
+			`id` = #{id}	
+ 	</select>
+ 	
  	<insert id="insertUser">
  		INSERT INTO `user`	
  		(
@@ -66,4 +105,65 @@
  			,NOW()
  		)			
  	</insert>
+ 	<select id="selectFindUserByNameAndEmail"
+ 			resultType="com.sbland.user.domain.User">
+ 		SELECT
+ 			`id`
+			,`login_id`
+			,`email`
+			,`password`
+			,`name`
+			,`birthday`
+			,`gender`
+			,`role`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`user`
+		WHERE
+			`name` = #{name}	AND 
+			`email` = #{email}
+ 	</select>
+ 	<select id="selectUserByLoginIdAndName"
+ 			resultType="com.sbland.user.domain.User">
+ 		SELECT
+ 			`id`
+			,`login_id`
+			,`email`
+			,`password`
+			,`name`
+			,`birthday`
+			,`gender`
+			,`role`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`user`
+		WHERE
+			`name` = #{name}	AND 
+			`login_id` = #{loginId}
+ 	</select>
+ 	<update id="updateUserPasswordByUserNameAndLoginId">
+ 		UPDATE `user` 
+ 		SET
+			`password` = #{password}
+			,`updated_at` = NOW()
+		WHERE
+			`login_id` = #{loginId} AND
+			`name` = #{name}
+ 	</update>
+
+ 	<update id="updateUser"> 
+	 	 UPDATE `user` 
+	 	 SET
+ 			`login_id` = #{loginId}
+			,`email` = #{email}
+			,`password` = #{password}
+			,`name` = #{name}
+			,`birthday` = #{birthday}
+			,`gender` = #{gender}
+			,`updated_at` = NOW()
+		 WHERE
+				`id` = #{id}	
+ 	</update>
  </mapper>

@@ -47,8 +47,8 @@ public class OrderServiceBO {
 		List<OrderDTO> orderDTOList = new ArrayList<>();
 		if (orderList.isEmpty()) {
 			return Response.<List<OrderDTO>>builder()
-							.code(HttpStatusCode.OK.getCodeValue())
-							.message("주문명세서를 가져오는데 성공했습니다.")
+							.code(HttpStatusCode.FAIL.getCodeValue())
+							.message("주문명세서를 가져오는데 실패했습니다.")
 							.data(orderDTOList)
 							.build();
 		}

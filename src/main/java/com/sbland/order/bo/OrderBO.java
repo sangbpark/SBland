@@ -46,6 +46,7 @@ public class OrderBO {
 					.<List<Order>>builder()
 					.code(HttpStatusCode.FAIL.getCodeValue())
 					.message("주문번호나 유저를 확인 해주세요.")
+					.data(orderList)
 					.build();
 		} else {
 			return Response

@@ -5,7 +5,7 @@
       layout:decorate="~{layout/defaultLayout}">
 <section layout:fragment="content" class="contents">
 		<div class="shadow-box m-5">
-			<div class="d-flex justify-content-center m-5">				
+			<div class="d-flex flex-column align-items-center m-5">	
 				<form id="loginForm" action="/user/sign-in" method="post">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
@@ -23,7 +23,46 @@
 					
 					<input type="submit" class="btn btn-block btn-info" value="로그인">
 					<a class="btn btn-block btn-dark" href="/user/user-up-view">회원가입</a>
-				</form>
+				</form>	
+				<div class="pt-2">
+		       		<button type="button" class="findIdBtn btn btn-secondary btn-sm pr-3" data-toggle="modal" data-target="#idModal">아이디 찾기</button>
+		       		<button type="button" class="findPasswordBtn btn btn-secondary btn-sm" data-toggle="modal" data-target="#passwordModal">비밀번호 찾기</button>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="idModal">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content text-center">
+					<div class="py-3 d-flex">
+						<span>이름</span>
+						<input id="findIdInputUserName" type="text">
+					</div>
+					<div class="py-3 d-flex">
+						<span>이메일</span>
+						<input id="findIdInputUserEmail" type="text">
+					</div>
+					<div class="py-3">
+						<button type="button" id="findIdBtn">찾기</button>
+					</div>
+				    <div id="findIdList"></div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="passwordModal">
+			<div class="modal-dialog modal-dialog-centered modal-sm">
+				<div class="modal-content text-center">
+					<div class="py-3 d-flex">
+						<span>이름</span>
+						<input id="findPasswordInputUserName" type="text">
+					</div>
+					<div class="py-3 d-flex">
+						<span>아이디</span>
+						<input id="findPasswordInputUserLoginId" type="text">
+					</div>
+					<div class="py-3">
+						<button type="button" id="findPasswordBtn">찾기</button>
+					</div>
+				</div>
 			</div>
 		</div>
 </section>
@@ -42,7 +81,7 @@
 	    		       return;
 	    		   }
 	    		   
-	    		   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+	    		   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{8,}$/;
 	    		   if (!passwordRegex.test(password)) {
 	    		       alert("패스워드를 확인해 보세요.");
 	    		       return;
@@ -65,6 +104,74 @@
 			        alert("요청 처리 중 에러가 발생했습니다: ");		       
 				});
 			});
+			$("#findIdBtn").on("click", function() {
+				const name = $("#findIdInputUserName").val().trim();
+				const email = $("#findIdInputUserEmail").val().trim();
+				
+				const consonantRegex = /[ㄱ-ㅎ]/
+    		    const nameRegex = /^[a-zA-Z가-힣\s]{2,30}$/;
+    		    if (name.length < 2 || name.length >= 30 || !nameRegex.test(name) || consonantRegex.test(name)) {
+    		        alert("이름은 2자 이상 30자 미만이며, 특수문자 없고 자음이 없이 입력해야 합니다.");
+    		        return;
+    		    }
+    		    
+     		    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    		    if (!emailRegex.test(email)) {
+    	 	        alert("유효한 이메일 주소를 입력하세요.");
+    		        return;
+    		    }
+    		    
+    		    $.ajax({
+    		    	url: "/user/find-id"
+    		    	,data: {"name":name, "email":email}
+    		    	,success: function(data) {
+    		    		if (data.code == 200){
+    		    		    const idList = data.data; 
+    		    	        idList.forEach(function(loginId) {
+    		    	            $("#findIdList").append(`<div>${loginId}</div>`);
+    		    	        });
+    		    		} else if (data.code == 500) {
+    		    			alert("존재하지 않는 사용자 입니다.");
+    		    		}
+    		    	}
+    		    	,error: function(e) {
+    		    		alert("아이디 찾기를 실패했습니다.");
+    		    	}
+    		    })
+			})
+			
+			$("#findPasswordBtn").on("click", function() {
+				const name = $("#findPasswordInputUserName").val().trim();
+				const loginId = $("#findPasswordInputUserLoginId").val().trim();
+				
+				const consonantRegex = /[ㄱ-ㅎ]/
+    		    const nameRegex = /^[a-zA-Z가-힣\s]{2,30}$/;
+    		    if (name.length < 2 || name.length >= 30 || !nameRegex.test(name) || consonantRegex.test(name)) {
+    		        alert("이름은 2자 이상 30자 미만이며, 특수문자 없고 자음이 없이 입력해야 합니다.");
+    		        return;
+    		    }
+    		    
+    		    const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
+    		    if (!loginIdRegex.test(loginId)) {
+    		        alert("올바른 아이디를 입력하세요.");
+    		        return;
+    		    }
+   		    
+    		    $.ajax({
+    		    	url: "/user/find-password"
+    		    	,data: {"name":name, "loginId":loginId}
+    		    	,success: function(data) {
+    		    		if (data.code == 200){
+    		    			alert("가입한 이메일로 새로운 비밀번호를 보냈습니다.")
+    		    		} else if (data.code == 500) {
+    		    			alert("존재하지 않는 사용자 입니다.");
+    		    		}
+    		    	}
+    		    	,error: function(e) {
+    		    		alert("비밀번호 찾기를 실패했습니다.");
+    		    	}
+    		    })
+			})
 		});
     </script>
 </th:block>

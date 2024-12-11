@@ -3,10 +3,27 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
-<section layout:fragment="content" class="contents d-flex justify-content-center">
-		<div class="sign-up-box w-75">
-			<h1 class="m-4 font-weight-bold text-center">회원가입</h1>
-			<form id="signUpForm" method="post" action="/user/sign-up">
+<section layout:fragment="content" class="contents-mypage d-flex">
+		<div class="left-contents">
+			<nav class="mypage-menu d-flex align-items-center">
+	            <ul class="nav nav-fill w-100">
+	                <li class="nav-item w-100"><a href="/user/mypage-view" class="nav-link font-weight-bold text-dark">주문목록</a></li>
+	                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">취소/환불</a></li>
+	                <li class="nav-item w-100"><a href="/user/protect/user-info-proxy" class="nav-link font-weight-bold text-dark">정보수정</a></li>
+	                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">쿠폰</a></li>
+	            </ul>
+	        </nav>
+		</div>
+		<div class="center-contents">
+			<div>
+				<div id="nowName" th:text="${userDTO.name}"></div>
+				<div id="nowLoginId" th:text="${userDTO.loginId}"></div>
+				<div id="nowEmail" th:text="${userDTO.email}"></div>
+				<div id="nowbirthday" th:text="${userDTO.birthday}"></div>
+				<div id="nowGender" th:text="${userDTO.gender}"></div>
+			</div>
+			<h1 class="m-4 font-weight-bold text-center">정보수정</h1>
+			<form id="userEditForm" method="post" action="/user/update">
 				<span class="sign-up-subject">ID</span>
 				<div class="d-flex ml-3 mt-3">
 					<input type="text" id="loginId" name="loginId" class="form-control col-6" placeholder="ID를 입력해주세요">
@@ -67,7 +84,7 @@
 	            </div>
 				<br>
 				<div class="d-flex justify-content-center m-3">
-					<button type="submit" id="signUpBtn" class="btn btn-info">가입하기</button>
+					<button type="submit" id="userEditBtn" class="btn btn-info">수정하기</button>
 				</div>
 			</form>
 		</div>
@@ -118,7 +135,7 @@
 				});
 			});
 			
-    	   $("#signUpForm").on("submit", function(e) {
+    	   $("#userEditForm").on("submit", function(e) {
     		   e.preventDefault();
     		   const loginId = $("#loginId").val().trim();
     		   const password = $("#password").val().trim();
@@ -127,48 +144,56 @@
     		   const email = $("#email").val().trim();
     		   const birthday = $("#birthday").val().trim();
     		   const gender = $("input[name='gender']:checked").val();
-    		   
+	    		   
     		   const consonantRegex = /[ㄱ-ㅎ]/
     		   
-   			   if ($("#idCheckOk").hasClass("d-none")) {
-				   alert("아이디 중복확인을 해주세요.");
-				   return;
-			   }
-    		   
-   			   if ($("#emailCheckOk").hasClass("d-none")) {
-				   alert("이메일 인증을 해주세요.");
-				   return;
-			   }
-    		   
-    		   const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
-    		   if (!loginIdRegex.test(loginId)) {
-    		       alert("ID는 4자 이상 50자 미만이며, 특수문자와 공백 없이 입력해야 합니다.");
-    		       return;
+    		   if (loginId.length > 0) {
+	   			   if ($("#idCheckOk").hasClass("d-none")) {
+					   alert("아이디 중복확인을 해주세요.");
+					   return;
+				   }
+	   			   
+	    		   const loginIdRegex = /^[a-zA-Z0-9]{4,50}$/;
+	    		   if (!loginIdRegex.test(loginId)) {
+	    		       alert("ID는 4자 이상 50자 미만이며, 특수문자와 공백 없이 입력해야 합니다.");
+	    		       return;
+	    		   }
     		   }
     		   
-    		   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{8,}$/;
-    		   if (!passwordRegex.test(password)) {
-    		       alert("비밀번호는 영어, 숫자, 특수문자를 포함하고 8자 이상이어야 합니다.");
-    		       return;
+    		   if (email.length > 0) {
+	   			   if ($("#emailCheckOk").hasClass("d-none")) {
+					   alert("이메일 인증을 해주세요.");
+					   return;
+				   }
+	   			   
+	    		   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	    		   if (!emailRegex.test(email)) {
+	    		       alert("유효한 이메일 주소를 입력하세요.");
+	    		       return;
+	    		   }
     		   }
-
-    		   if (password !== confirmPassword) {
-    		       alert("비밀번호와 확인용 비밀번호가 일치하지 않습니다.");
-    		       return;
-    		   }
+    		  
+    		  if (password.length > 0) {
+	    		  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{8,}$/;
+	    		  if (!passwordRegex.test(password)) {
+	    		      alert("비밀번호는 영어, 숫자, 특수문자를 포함하고 8자 이상이어야 합니다.");
+	    		      return;
+	    		  }
+	
+	   		      if (password !== confirmPassword) {
+	    		      alert("비밀번호와 확인용 비밀번호가 일치하지 않습니다.");
+	    		      return;
+	    		  }
+    		  }
     		   
-    		   const nameRegex = /^[a-zA-Z가-힣\s]{2,30}$/;
-    		   if (name.length < 2 || name.length >= 30 || !nameRegex.test(name) || consonantRegex.test(name)) {
-    		       alert("이름은 2자 이상 30자 미만이며, 특수문자 없고 자음이 없이 입력해야 합니다.");
-    		       return;
-    		   }
-    		   
-    		   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    		   if (!emailRegex.test(email)) {
-    		       alert("유효한 이메일 주소를 입력하세요.");
-    		       return;
-    		   }
-    		   
+    		  if (name.length > 0) {
+	    		   const nameRegex = /^[a-zA-Z가-힣\s]{2,30}$/;
+	    		   if (name.length < 2 || name.length >= 30 || !nameRegex.test(name) || consonantRegex.test(name)) {
+	    		       alert("이름은 2자 이상 30자 미만이며, 특수문자 없고 자음이 없이 입력해야 합니다.");
+	    		       return;
+	    		   }
+    		  }
+    		    		   
     		   if (!birthday) {
     			   alert("생년월일을 입력하세요.");
     		       return;
@@ -186,8 +211,8 @@
 			   $.post(url, params) 
 				.done(function(data) { 
 					if (data.code == 200) {
-						alert("가입을 환영합니다. " + data.data + "님 로그인 해주세요.");
-						location.href = "/user/user-in-view";
+						alert("정보변경을 완료했습니다.");
+						location.reload();
 					} else {
 						alert(data.error_message);
 					}

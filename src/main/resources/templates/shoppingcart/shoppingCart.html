@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
 <section layout:fragment="content" class="contents">
-	<div id="orderList">
+	<div id="orderList" th:if="${ShoppingcartCardDTOList.size > 0}">
 		<div th:each="ShoppingcartCardDTO : ${ShoppingcartCardDTOList}" class="d-flex shoppingcartCard border">
 			<div class="col-1 border-right d-flex justify-content-center align-items-center h-100">
 			  <input type="checkbox" name="checkProduct"  th:value="${ShoppingcartCardDTO.productId}" th:data-product-total-price="${ShoppingcartCardDTO.price * ShoppingcartCardDTO.productCount}">
@@ -27,9 +27,9 @@
 				<button type="button" class="shoppingcartDelBtn btn btn-secondary" th:data-product-id="${ShoppingcartCardDTO.productId}">삭제</button>
 			</div>			
 		</div>
-	</div>
-	<div>
-		<input type="text" id="shippingAddress" class="form-controll">
+		<div>
+			<input type="text" id="shippingAddress" class="form-controll">
+		</div>
 	</div>
     <div class="recently-viewed text-center">
            <h3>주문예상금액</h3>

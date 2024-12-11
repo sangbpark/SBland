@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<section layout:fragment="content" class="contents-mypage d-flex">
+	<div class="left-contents">
+		<nav class="mypage-menu d-flex align-items-center">
+            <ul class="nav nav-fill w-100">
+                <li class="nav-item w-100"><a href="/user/mypage-view" class="nav-link font-weight-bold text-dark">주문목록</a></li>
+                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">취소/환불</a></li>
+                <li class="nav-item w-100"><a href="/user/protect/user-info-proxy" class="nav-link font-weight-bold text-dark">정보수정</a></li>
+                <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">쿠폰</a></li>
+            </ul>
+        </nav>
+	</div>
+	<div class="center-contents">
+		<span>비밀번호를 입력하세요</span>
+		<input type="password" id="userInfoProxyPassword">
+		<button type="button" id="userInfoProxyPasswordBtn" class="btn btn-secondary">검색</button>
+	</div>
+</section>
+
+<th:block layout:fragment="script">
+    <script>
+		$(document).ready(function() {
+			$("#userInfoProxyPasswordBtn").on("click", function(e) {
+				e.preventDefault();
+				const password = $("#userInfoProxyPassword").val().trim();
+				
+    		    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{8,}$/;
+    	  	    if (!passwordRegex.test(password)) {
+    		        alert("패스워드를 확인해 보세요.");
+    		        return;
+    		    }
+				$.ajax({
+					type: "POST"
+					,url : "/user/verify"
+					,data: {"password":password}
+					,success: function(data) {
+						if (data.code == 200) {
+							location.href="/user/protect/user-info";
+						} else if (data.code == 500) {
+							alert(data.message);
+						}
+					}
+					,error: function(e) {
+						alert("정보 인증에 오류가 생겼습니다.");
+					}
+				})
+			});
+		});  
+    </script>
+</th:block>

@@ -64,4 +64,8 @@ public class EmailServiceBO {
 			}
 		}
 	}
+	
+	public void sendEmail(String email, String subject ,String body) {
+		emailBO.sendEmail(email, subject, body);
+	}
 }

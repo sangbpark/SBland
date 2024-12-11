@@ -16,13 +16,13 @@ import lombok.ToString;
 @AllArgsConstructor
 public class User {
 	private Long id;
-	private String login_id;
+	private String loginId;
 	private String email;
 	private String password;
 	private String name;
 	private LocalDate birthday;
 	private String gender;
 	private String role;
-	private LocalDateTime updated_at;
-	private LocalDateTime created_at;
+	private LocalDateTime updatedAt;
+	private LocalDateTime createdAt;
 }
