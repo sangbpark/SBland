@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbland.common.reponse.Response;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.oderdetail.domain.OrderDetail;
 import com.sbland.oderdetail.dto.OrderDetailDTO;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
@@ -22,9 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderDetailServiceBO {
 	private final OrderDetailBO orderDetailBO;
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
-	private final ObjectMapper objectMapper;
 	
 	public List<OrderDetailDTO> getOrderDetailDTO(Long orderId) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		List<OrderDetail> orderDetailList = orderDetailBO.getOrderDetailByOrderId(orderId)
 				.stream()
 				.sorted((orderDetail1, orderDetail2) -> Long.compare(orderDetail1.getId(), orderDetail2.getId()))
@@ -35,7 +35,7 @@ public class OrderDetailServiceBO {
 		} else {
 			orderDetailDTOList = orderDetailList
 					.stream()
-					.map(orderDetail -> objectMapper.convertValue(orderDetail, OrderDetailDTO.class))
+					.map(orderDetail -> camelObjectMapper.convertValue(orderDetail, OrderDetailDTO.class))
 					.collect(Collectors.toList());
 			
 			orderDetailDTOList.replaceAll(orderDetailDTO -> {

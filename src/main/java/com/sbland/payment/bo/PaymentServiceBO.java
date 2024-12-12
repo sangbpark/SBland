@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.aop.payment.PaymentTransactional;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.exception.PaymentException;
@@ -30,20 +31,21 @@ public class PaymentServiceBO {
 	private final PaymentBO paymentBO;
 	private final OrderServiceBO orderServiceBO;
 	private final PaymentAutoBO paymentAutoBO;
-	private final ObjectMapper objectMapper;
 	private final ProductStockServiceBO productStockServiceBO;
 	private final ShoppingcartBO shoppingcartBO;
 	
 	@PaymentTransactional
     public Response<Boolean> addPaymentflow (String impUid, Long userId, int deliveryfee, String shippinAddress, List<OrderDetailPaymentDTO> orderDetailPaymentDTOList) {   	
-    	try {
+		ObjectMapper snakeObjectMapper = new ObjectMapperFactory().getSnakeObjectMapper();
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
+		try {
 			PortoneToken portoneToken = paymentAutoBO.getPortoneToken();
 	    	portoneToken = validateAndGetPortoneToken(portoneToken);
 	    	Map<String, Object> response = paymentAutoBO.getVerify(impUid, portoneToken.getAccessToken()).block();
 	    	if (response != null && (int) response.get("code") == 0) {
 	    		boolean productStockResult = productStockServiceBO.updateProductStock(orderDetailPaymentDTOList
 	    				.stream()
-	    				.map(orderDetailPaymentDTO -> objectMapper.convertValue(orderDetailPaymentDTO, ProductStockDTO.class))
+	    				.map(orderDetailPaymentDTO -> camelObjectMapper.convertValue(orderDetailPaymentDTO, ProductStockDTO.class))
 	    				.collect(Collectors.toList())
 	    				);
 	    		if (!productStockResult) {
@@ -51,7 +53,7 @@ public class PaymentServiceBO {
 	    		}
 	    		
 	    	    Map<String, Object> paymentData = (Map<String, Object>) response.get("response");
-	    	    Payment payment = objectMapper.convertValue(paymentData, Payment.class);
+	    	    Payment payment = snakeObjectMapper.convertValue(paymentData, Payment.class);
 	    	    Response<Long> orderResponse = orderServiceBO.addOrderAndOrderDetail(userId, payment.getMerchantUid(), payment.getAmount(), deliveryfee, "결제완료", shippinAddress, orderDetailPaymentDTOList);
 	    	    int result = paymentBO.addPayment(payment
 	    	    		.toBuilder()
@@ -87,7 +89,8 @@ public class PaymentServiceBO {
     }
 	
 	public Response<Boolean> workPaymentCancel(String impUid, String reason, int amount) {
-		Payment payment = paymentBO.getPaymentByImpUid(impUid);
+		ObjectMapper snakeObjectMapper = new ObjectMapperFactory().getSnakeObjectMapper();
+		Payment payment = paymentBO.getPaymentByImpUid(impUid);		
 		if (payment == null) {
 			log.info("[결제] 결제취소 실패 결제 내역이 없음 impUid:{}",impUid);
 			return Response
@@ -102,7 +105,7 @@ public class PaymentServiceBO {
 		Map<String, Object> response = paymentAutoBO.getPaymentCancel(impUid, reason, amount, portoneToken.getAccessToken()).block();
 		if (response != null && (int)response.get("code") == 0) {
 			Map<String, Object> responseData = (Map<String, Object>) response.get("response");
-			Payment newPayment = objectMapper.convertValue(responseData, Payment.class);
+			Payment newPayment = snakeObjectMapper.convertValue(responseData, Payment.class);
 			int result = paymentBO.updatePayment(newPayment
 	    	    		.toBuilder()
 	    	    		.orderId(payment.getOrderId())

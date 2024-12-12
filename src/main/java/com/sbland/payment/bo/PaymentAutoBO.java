@@ -1,17 +1,15 @@
 package com.sbland.payment.bo;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.payment.dto.PortoneToken;
 
 import lombok.RequiredArgsConstructor;
@@ -85,38 +83,18 @@ public class PaymentAutoBO {
 	
 	@CachePut(value = "portoneTokens", key = "'portoneToken'")
 	public PortoneToken updatePortoneToken() {
+		ObjectMapper snakeObjectMapper = new ObjectMapperFactory().getSnakeObjectMapper();
 	    Map<String, Object> responseData = getAccessToken().block();
 	    Map<String, Object> tokenMap = (Map<String, Object>) responseData.get("response");
 
-	    return PortoneToken
-	            .builder()
-	            .accessToken((String) tokenMap.get("access_token"))
-	            .expiredAt(LocalDateTime.ofInstant(
-	                    Instant.ofEpochSecond((Integer) tokenMap.get("expired_at")),
-	                    ZoneId.of("Asia/Seoul")
-	            ))
-	            .now(LocalDateTime.ofInstant(
-	                    Instant.ofEpochSecond((Integer) tokenMap.get("now")),
-	                    ZoneId.of("Asia/Seoul")
-	            ))
-	            .build();
+	    return snakeObjectMapper.convertValue(tokenMap, PortoneToken.class);
 	}
 	
 	@Cacheable(value = "portoneTokens", key = "'portoneToken'")
 	public PortoneToken getPortoneToken() {
+		ObjectMapper snakeObjectMapper = new ObjectMapperFactory().getSnakeObjectMapper();
 		Map<String, Object> responseData = getAccessToken().block();
 		Map<String, Object> tokenMap =(Map<String, Object>) responseData.get("response");
-	    return PortoneToken
-	    		.builder()
-	    		.accessToken((String)tokenMap.get("access_token"))
-	    		.expiredAt(LocalDateTime.ofInstant(
-	    			        Instant.ofEpochSecond((Integer) tokenMap.get("expired_at")),
-	    			        ZoneId.of("Asia/Seoul"))
-	    		)
-	    		.now(LocalDateTime.ofInstant(
-	    			        Instant.ofEpochSecond((Integer) tokenMap.get("now")),
-	    			        ZoneId.of("Asia/Seoul"))
-	    		)
-	    		.build();
+	    return snakeObjectMapper.convertValue(tokenMap, PortoneToken.class);
 	}
 }

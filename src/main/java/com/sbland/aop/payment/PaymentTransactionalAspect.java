@@ -42,7 +42,7 @@ public class PaymentTransactionalAspect {
 				}
 				PortoneToken portoneToken = paymentAutoBO.getPortoneToken();
 				portoneToken = PaymentServiceBO.validateAndGetPortoneToken(portoneToken);
-				paymentAutoBO.getPaymentCancel(e.getImpUid(), "쇼핑몰 오류", 0, portoneToken.getAccessToken());
+				paymentAutoBO.getPaymentCancel(e.getImpUid(), "쇼핑몰 오류", 0, portoneToken.getAccessToken()).block();
 				return Response
 						.<Boolean>builder()
 						.code(HttpStatusCode.FAIL.getCodeValue())

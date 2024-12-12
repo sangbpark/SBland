@@ -67,7 +67,7 @@ public class testController {
 	@RequestMapping("/test7")
 	public void test7() {
 		
-//			List<EbayProductDTO> ebayProductList = es.getItems("warhammer", 0)
+//			List<EbayProductDTO> ebayProductList = es.getItems("warhammer", 100)
 //		        .flatMapMany(Flux::fromIterable)
 //		        .collectList()
 //		        .block(); 

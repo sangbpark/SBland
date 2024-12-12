@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sbland.common.pagination.bo.PaginationBO;
 import com.sbland.common.pagination.dto.PaginationDTO;
-import com.sbland.product.bo.ProductBO;
 import com.sbland.product.bo.ProductDetailBO;
-import com.sbland.product.bo.ProductThumbnailCardDTOBO;
 import com.sbland.product.dto.ProductDetailCardDTO;
 import com.sbland.product.dto.ProductThumbnailCardDTO;
 
@@ -23,9 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class ProductController {
-	private final ProductBO productBO;
 	private final ProductDetailBO productDetailBO;
-	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
 	private final PaginationBO paginationBO;
 	
 	@GetMapping("/product-view/{productId}")

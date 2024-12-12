@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.common.encrypt.EncryptUtils;
 import com.sbland.common.keys.KeysGenerator;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.email.bo.EmailServiceBO;
@@ -28,7 +29,6 @@ public class UserBO {
 	private final EmailServiceBO emailServiceBO;
 	private final KeysGenerator keysGenerator;
 	private final EncryptUtils encryptUtils;
-	private final ObjectMapper objectMapper;
 	
 	public Response<Boolean> isDuplicateUserByLoginId(String loginId) {
 		User user = userMapper.selectUserByLoginId(loginId);
@@ -50,7 +50,8 @@ public class UserBO {
 	}
 	
 	public UserDTO getUserDTObyUserId(Long id) {
-		return objectMapper.convertValue(userMapper.selectUserById(id), UserDTO.class);
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
+		return camelObjectMapper.convertValue(userMapper.selectUserById(id), UserDTO.class);
 	};
 	
 	public Response<Boolean> getUserByUseIdAndPassword(Long id, String password) {
@@ -138,6 +139,7 @@ public class UserBO {
 	}
 	
 	public Response<UserSessionDTO> getUserByUserLoginIdAndPassword(String loginId, String password) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		UserSessionDTO userSessionDTO = null;
 		User user = userMapper.selectUserByLoginId(loginId);
 		if (user == null) {
@@ -149,7 +151,7 @@ public class UserBO {
 					.build();
 		}
 		if (encryptUtils.isMatchPassword(password, user.getPassword())) {
-			userSessionDTO = objectMapper.convertValue(user, UserSessionDTO.class);
+			userSessionDTO = camelObjectMapper.convertValue(user, UserSessionDTO.class);
 		}
 		if (userSessionDTO == null) {
 			return Response

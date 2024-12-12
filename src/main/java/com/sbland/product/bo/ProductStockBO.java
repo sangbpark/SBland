@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.product.domain.ProductStock;
 import com.sbland.product.dto.ProductStockDTO;
 import com.sbland.product.mapper.ProductStockMapper;
@@ -20,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ProductStockBO {
 	private final ProductStockMapper productStockMapper;
-	private final ObjectMapper objectMapper;
 
 	public void addInitialProductStockList(List<Long> productIdList) {
 		Random random = new Random();
@@ -40,9 +40,10 @@ public class ProductStockBO {
 	}
 	
 	public void addProductStockList(List<Map<String, Object>> productStockMaps) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		List<ProductStock> productStockList = productStockMaps
 				.stream()
-				.map(productStockMap -> objectMapper.convertValue(productStockMap, ProductStock.class))
+				.map(productStockMap -> camelObjectMapper.convertValue(productStockMap, ProductStock.class))
 				.collect(Collectors.toList());
 				
 		productStockMapper.insertProductStockList(productStockList);

@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 public class EbayDataBO {
     private final WebClient webClient;
     private final EbayAuthBO ebayAuthService;
-    private final ObjectMapper objectMapper;
     
     public Mono<List<EbayProductDTO>> getItems(String keyword, int offset) {
+    	ObjectMapper objectMapper = new ObjectMapper();
         return ebayAuthService.getAccessToken()
                 .flatMap(accessToken -> 
                     webClient.get()

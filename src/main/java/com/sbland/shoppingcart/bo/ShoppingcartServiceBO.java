@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.common.keys.KeysGenerator;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.payment.bo.PaymentAutoBO;
@@ -25,7 +26,6 @@ public class ShoppingcartServiceBO {
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
 	private final PaymentAutoBO paymentAutoBO;
 	private final KeysGenerator uidGenerator;
-	private final ObjectMapper objectMapper;
 	
 	public Response<Integer> shoppingcartEdit(Long userId, Long productId, int count) {
 		Integer quantity = productStockBO.getProductStockByProductId(productId).getQuantity();
@@ -51,10 +51,11 @@ public class ShoppingcartServiceBO {
 	}
 	
 	public List<ShoppingcartCardDTO> getShoppingcartByUserId(Long id) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		List<ShoppingcartCardDTO> shoppingcartCardDTOList= shoppingcartBO.getShoppingcartByUserId(id)
 				.stream()
 				.map(shoppingcart -> {
-					ShoppingcartCardDTO shoppingcartCardDTO = objectMapper.convertValue(shoppingcart, ShoppingcartCardDTO.class);
+					ShoppingcartCardDTO shoppingcartCardDTO = camelObjectMapper.convertValue(shoppingcart, ShoppingcartCardDTO.class);
 					Long productId = shoppingcart.getProductId();
 					ProductThumbnailCardDTO productThumbnailCardDTO = productThumbnailCardDTOBO.getProductThumbnailCardDTOByProductId(productId);
 					return shoppingcartCardDTO

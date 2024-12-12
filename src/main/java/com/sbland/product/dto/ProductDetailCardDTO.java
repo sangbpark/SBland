@@ -2,7 +2,6 @@ package com.sbland.product.dto;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sbland.product.domain.ProductImage;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +15,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDetailCardDTO {
 	private Long id;
 	private List<ProductImage> url;

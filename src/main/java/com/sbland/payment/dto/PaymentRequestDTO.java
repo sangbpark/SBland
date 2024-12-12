@@ -2,6 +2,7 @@ package com.sbland.payment.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sbland.oderdetail.dto.OrderDetailPaymentDTO;
 
 import lombok.AllArgsConstructor;

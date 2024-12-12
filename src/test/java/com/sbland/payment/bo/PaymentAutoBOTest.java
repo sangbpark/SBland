@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.payment.domain.Payment;
 import com.sbland.payment.dto.PortoneToken;
 
@@ -21,8 +22,7 @@ class PaymentAutoBOTest {
 	PaymentBO paymentBO;
 	@Autowired
 	PaymentServiceBO paymentServiceBO;
-	@Autowired
-	ObjectMapper objectMapper;
+
 
 	@Test
 	void 포트원v2토큰테스트() {
@@ -32,9 +32,11 @@ class PaymentAutoBOTest {
 	
 	@Test 
 	void 포트원검증테스트() {
+		ObjectMapper snakeObjectMapper = new ObjectMapperFactory().getSnakeObjectMapper();
 		PortoneToken portoneToken = paymentAutoBO.getPortoneToken();
+		portoneToken = paymentServiceBO.validateAndGetPortoneToken(portoneToken);
 		Map<String, Object> response = (Map<String, Object>) paymentAutoBO.getVerify("imp_339482206636", portoneToken.getAccessToken()).block().get("response");
-		Payment payment = objectMapper.convertValue(response, Payment.class);
+		Payment payment = snakeObjectMapper.convertValue(response, Payment.class);
 		log.info("payment:{}",payment);
 	}
 	

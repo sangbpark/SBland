@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.oderdetail.bo.OrderDetailBO;
@@ -26,11 +27,11 @@ public class OrderServiceBO {
 	private final OrderBO orderBO;
 	private final OrderDetailBO orderDetailBO;
 	private final OrderDetailServiceBO orderDetailServiceBO;
-	private final ObjectMapper objectMapper;
 	
 	public Response<OrderDTO> getOrderDTOByOrderId(Long id) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		Order order = orderBO.getOrderById(id).getData();
-		OrderDTO orderDTO = objectMapper.convertValue(order, OrderDTO.class);
+		OrderDTO orderDTO = camelObjectMapper.convertValue(order, OrderDTO.class);
 		return Response
 				.<OrderDTO>builder()
 				.code(HttpStatusCode.OK.getCodeValue())
@@ -43,6 +44,7 @@ public class OrderServiceBO {
 	}
 
 	private Response<List<OrderDTO>> getOrderDTOByOrderIdList(Long userId, int count, int offset) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		List<Order> orderList = orderBO.getOrderByUserId(userId, count, offset).getData();
 		List<OrderDTO> orderDTOList = new ArrayList<>();
 		if (orderList.isEmpty()) {
@@ -55,7 +57,7 @@ public class OrderServiceBO {
 								
 		orderDTOList = orderList
 				.stream()
-				.map(order -> objectMapper.convertValue(order, OrderDTO.class))
+				.map(order -> camelObjectMapper.convertValue(order, OrderDTO.class))
 				.collect(Collectors.toList());
 		
 		orderDTOList.replaceAll(orderDTO -> {
@@ -84,6 +86,7 @@ public class OrderServiceBO {
 	
 	public Response<Long> addOrderAndOrderDetail(Long userId, String merchantUid, int amount, int deliveryfee
 			, String status, String shippingAddress, List<OrderDetailPaymentDTO> orderDetailMapList) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		Order order = Order
 				.builder()
 				.userId(userId)
@@ -105,7 +108,7 @@ public class OrderServiceBO {
 		
 		List<OrderDetail> orderDetailList = orderDetailMapList
 				.stream()
-				.map(orderDetailMap -> objectMapper
+				.map(orderDetailMap -> camelObjectMapper
 						.convertValue(orderDetailMap, OrderDetail.class)
 						.toBuilder()
 						.orderId(response.getData())

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.category.dto.CategoryDTO;
 import com.sbland.category.entity.CategoryEntity;
 import com.sbland.category.repository.CategoryRepository;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CategoryBO {
 	private final CategoryRepository categoryRepository;
-	private final ObjectMapper objectMapper;
 	
 	@Transactional
 	public void addCategory(int depth, String name, List<Integer> parentCode) {
@@ -93,9 +93,10 @@ public class CategoryBO {
 	
 	
 	public List<CategoryDTO> getCategoryMenu() { 
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		List<CategoryDTO> categoryDTOList = categoryRepository.findAllByOrderByCode()
 				.stream()
-				.map(categoryEntity -> objectMapper.convertValue(categoryEntity, CategoryDTO.class))
+				.map(categoryEntity -> camelObjectMapper.convertValue(categoryEntity, CategoryDTO.class))
 				.collect(Collectors.toList());
 		
 		List<CategoryDTO> categoryDTOListTree = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.sbland.payment.bo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sbland.oderdetail.dto.OrderDetailDTO;
 import com.sbland.oderdetail.dto.OrderDetailPaymentDTO;
 import com.sbland.payment.PaymentRestController;
 import com.sbland.payment.dto.PortoneToken;
@@ -41,21 +41,23 @@ class PaymentServiceBOTest {
 	void 결제취소테스트() {
 		PortoneToken portoneToken = paymentAutoBO.getPortoneToken();
 		portoneToken = paymentServiceBO.validateAndGetPortoneToken(portoneToken);
-		paymentServiceBO.workPaymentCancel("imp_339482206636", "테스트", 0);
+		Map<String, Object> result = paymentAutoBO.getPaymentCancel("imp_174173326242", "테스트", 0, portoneToken.getAccessToken()).block();
+		log.info("[결제취소테스트] result:{}", result);
 	}
 	
+	@Transactional
 	@Test
 	void 결제중오류테스트() {
 		List<OrderDetailPaymentDTO> orderDetailPaymentDTOList = new ArrayList<>();
 		OrderDetailPaymentDTO orderDetailPaymentDTO = OrderDetailPaymentDTO
 				.builder()
-				.productCount(3)
+				.productCount(2)
 				.productId(19L)
 				.productPrice(0)
 				.totalPrice(0)
 				.build();
 		orderDetailPaymentDTOList.add(orderDetailPaymentDTO);
-		paymentServiceBO.addPaymentflow("imp_339482206636", 4L, 0, "결제테스트", orderDetailPaymentDTOList);
+		paymentServiceBO.addPaymentflow("imp_569910391276", 4L, 0, "결제테스트", orderDetailPaymentDTOList);
 	}
 	
 }

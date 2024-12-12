@@ -1,9 +1,5 @@
 package com.sbland.email.bo;
 
-import java.time.LocalDateTime;
-
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import com.sbland.common.reponse.HttpStatusCode;
@@ -16,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class EmailServiceBO {
 	private final EmailBO emailBO;
-	private final CacheManager cacheManager;
 	
 	public Response<Boolean> sendVerifyEmail(String email) { 
 		EmailVerifyDTO emailVerify = emailBO.createVerifyEmail(email);
