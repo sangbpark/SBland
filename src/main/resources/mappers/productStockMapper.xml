@@ -50,7 +50,7 @@
 	        SET 
 	        	`quantity` = `quantity` - #{item.productCount}
 	        WHERE 
-	        	`product_id` = #{item.productId} AND `quantity` >= #{item.productCount}
+	        	`product_id` = #{item.productId}
 	    </foreach>
  	</update>
  

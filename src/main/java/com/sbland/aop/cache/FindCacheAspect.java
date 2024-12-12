@@ -20,7 +20,7 @@ public class FindCacheAspect {
     private final CacheManager cacheManager;
 
     @Around("@annotation(FindCache)")
-    public Object handleCacheConditional(ProceedingJoinPoint joinPoint, FindCache findCache) throws Throwable {
+    public Object handleFindCache(ProceedingJoinPoint joinPoint, FindCache findCache) throws Throwable {
         String cacheName = findCache.value();
         String keyExpression = findCache.key();
         String key = resolveKey(joinPoint, keyExpression); 

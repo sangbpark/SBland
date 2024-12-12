@@ -69,7 +69,7 @@ public class PaymentAutoBO {
 			        .bodyToMono(Map.class);
 	};
 	
-	public Mono<Map> getPaymentCancel(String impUid, String merchantUid, String reason, int amount, String accessToken) {
+	public Mono<Map> getPaymentCancel(String impUid, String reason, int amount, String accessToken) {
     	return webClient.post()
 					.uri(apiUrl + "/payments/cancel")
 					.headers(headers -> {
@@ -77,7 +77,6 @@ public class PaymentAutoBO {
 					)
 					.bodyValue(Map.of(
 							"imp_uid",impUid
-							,"merchant_uid",merchantUid
 							,"reason",reason
 							,"amount",amount))
 					.retrieve()

@@ -26,7 +26,7 @@ public class PaymentRestController {
 			@RequestBody PaymentRequestDTO paymentRequestDTO,
 			HttpSession session) {
 		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");		
-		return paymentServiceBO.verifyPayment(
+		return paymentServiceBO.addPaymentflow(
 				paymentRequestDTO.getImpUid()
 				, userSession.getId()
 				, paymentRequestDTO.getDeliveryfee()
