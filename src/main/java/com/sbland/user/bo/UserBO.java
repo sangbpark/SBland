@@ -12,7 +12,7 @@ import com.sbland.common.keys.KeysGenerator;
 import com.sbland.common.objectmapper.ObjectMapperFactory;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
-import com.sbland.email.bo.EmailServiceBO;
+import com.sbland.email.bo.EmailBO;
 import com.sbland.user.domain.User;
 import com.sbland.user.dto.UserDTO;
 import com.sbland.user.dto.UserSessionDTO;
@@ -26,8 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserBO {
 	private final UserMapper userMapper;
-	private final EmailServiceBO emailServiceBO;
-	private final KeysGenerator keysGenerator;
+	private final EmailBO emailBO;
 	private final EncryptUtils encryptUtils;
 	
 	public Response<Boolean> isDuplicateUserByLoginId(String loginId) {
@@ -208,9 +207,9 @@ public class UserBO {
 					.data(false)
 					.build();
 		}
-		String newPassword = keysGenerator.getSalt(16) + "@1";
+		String newPassword = new KeysGenerator().getSalt(16) + "@1";
 		String body = "안녕하세요 SBLAND입니다.\n" + "새로운 비밀번호는: " + newPassword + "입니다.";
-		emailServiceBO.sendEmail(user.getEmail(), "[SBLAND] 비밀번호 찾기", body);
+		emailBO.sendEmail(user.getEmail(), "[SBLAND] 비밀번호 찾기", body);
 		String hashNewPassword = encryptUtils.hashedPassword(newPassword);
 		int result = userMapper.updateUserPasswordByUserNameAndLoginId(name, loginId, hashNewPassword);
 		if (result > 0) {

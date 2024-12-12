@@ -20,7 +20,6 @@ public class ProductDetailBO {
 	private final ProductBO productBO;
 	private final ProductImageBO productImageBO;
 	private final ProductStockBO productStockBO;
-	private final KeysGenerator uidGenertor;
 	
 	public ProductDetailCardDTO getProductDetailByProductId(Long id) {
 		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
@@ -32,6 +31,6 @@ public class ProductDetailBO {
 	}
 	
 	public String getMerchantUid() {
-		return uidGenertor.getMerchantUid();
+		return new KeysGenerator().getMerchantUid();
 	}
 }

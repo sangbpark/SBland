@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class EmailServiceBO {
-	private final EmailBO emailBO;
+	private final EmaiCacheBO emailCacheBO;
 	
 	public Response<Boolean> sendVerifyEmail(String email) { 
-		EmailVerifyDTO emailVerify = emailBO.createVerifyEmail(email);
+		EmailVerifyDTO emailVerify = emailCacheBO.createVerifyEmail(email);
 		if (emailVerify != null) {
 			return Response
 					.<Boolean>builder()
@@ -33,7 +33,7 @@ public class EmailServiceBO {
 	}
 
 	public Response<Boolean> verifyEmail(String salt, String email) {
-		EmailVerifyDTO emailVerify = emailBO.getVerifyEmail(email);
+		EmailVerifyDTO emailVerify = emailCacheBO.getVerifyEmail(email);
 		if (emailVerify == null) {
 			return Response
 					.<Boolean>builder()
@@ -60,7 +60,4 @@ public class EmailServiceBO {
 		}
 	}
 	
-	public void sendEmail(String email, String subject ,String body) {
-		emailBO.sendEmail(email, subject, body);
-	}
 }

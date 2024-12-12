@@ -25,7 +25,6 @@ public class ShoppingcartServiceBO {
 	private final ShoppingcartBO shoppingcartBO;
 	private final ProductThumbnailCardDTOBO productThumbnailCardDTOBO;
 	private final PaymentAutoBO paymentAutoBO;
-	private final KeysGenerator uidGenerator;
 	
 	public Response<Integer> shoppingcartEdit(Long userId, Long productId, int count) {
 		Integer quantity = productStockBO.getProductStockByProductId(productId).getQuantity();
@@ -71,7 +70,7 @@ public class ShoppingcartServiceBO {
 	}
 	
 	public String getMerchantUid () {
-		return uidGenerator.getMerchantUid();
+		return new KeysGenerator().getMerchantUid();
 	};
 	
 	public String getImpKey() {

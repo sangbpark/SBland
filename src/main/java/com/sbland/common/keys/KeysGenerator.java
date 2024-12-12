@@ -1,25 +1,20 @@
 package com.sbland.common.keys;
 
-import org.springframework.stereotype.Component;
+import com.sbland.common.keys.provider.SaltProvider;
+import com.sbland.common.keys.provider.UidProvider;
 
-import com.sbland.common.keys.component.KeysGeneratorFactory;
-
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-@Component
 public class KeysGenerator {
-	private final KeysGeneratorFactory uidGeneratorFactroy;
 	
+
 	public String getMerchantUid() {
-		return uidGeneratorFactroy.getMerchantUidProvider().createUid("order");
+		return new UidProvider().createUid("order");
 	}
 	
 	public String getEmailVerifyUid() {
-		return uidGeneratorFactroy.getMerchantUidProvider().createUid("email");
+		return new UidProvider().createUid("email");
 	}
-	
+
 	public String getSalt(int saltLength) {
-		return uidGeneratorFactroy.getSaltProvider().generateSalt(saltLength);
+		return new SaltProvider().generateSalt(saltLength);
 	}
 }
