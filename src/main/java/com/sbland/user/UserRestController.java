@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.user.bo.UserBO;
 import com.sbland.user.dto.UserSessionDTO;
@@ -69,7 +70,7 @@ public class UserRestController {
 		return userBO.changePsswordByUserNameAndUserLoginId(name,loginId);
 	}
 	
-	@PostMapping("/verify")
+	@PostMapping("/protect/verify")
 	public Response<Boolean> userInfoVerify(
 			@RequestParam("password") String password,
 			HttpSession session) {
@@ -77,7 +78,7 @@ public class UserRestController {
 		return userBO.getUserByUseIdAndPassword(userSession.getId(), password);
 	}
 
-	@PostMapping("/update")
+	@PostMapping("/protect/update")
 	public Response<Boolean> userUpdate(
 			@RequestParam("loginId") String loginId,
 			@RequestParam("password") String password,
@@ -88,6 +89,26 @@ public class UserRestController {
 			HttpSession session) {
 		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
 		return userBO.updateUser(userSession.getId(), loginId, password, name, email, birthday, gender);
+	}
+	
+	@GetMapping("/check")
+	public Response<Boolean> userCheck(
+			HttpSession session) {
+		UserSessionDTO user = (UserSessionDTO)session.getAttribute("userSession");
+		if (user == null) {
+			return Response
+					.<Boolean>builder()
+					.code(HttpStatusCode.FAIL.getCodeValue())
+					.message("로그인을 확인해주세요")
+					.data(false)
+					.build();
+		}
+		return Response
+				.<Boolean>builder()
+				.code(HttpStatusCode.OK.getCodeValue())
+				.message("로그인중")
+				.data(true)
+				.build();
 	}
 	
 	

@@ -41,7 +41,7 @@ class PaymentServiceBOTest {
 	void 결제취소테스트() {
 		PortoneToken portoneToken = paymentAutoBO.getPortoneToken();
 		portoneToken = paymentServiceBO.validateAndGetPortoneToken(portoneToken);
-		Map<String, Object> result = paymentAutoBO.getPaymentCancel("imp_174173326242", "테스트", 0, portoneToken.getAccessToken()).block();
+		Map<String, Object> result = paymentAutoBO.getPaymentCancel("imp_378013444779", "테스트", 0, portoneToken.getAccessToken()).block();
 		log.info("[결제취소테스트] result:{}", result);
 	}
 	

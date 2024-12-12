@@ -35,7 +35,7 @@
     		    }
 				$.ajax({
 					type: "POST"
-					,url : "/user/verify"
+					,url : "/user/protect/verify"
 					,data: {"password":password}
 					,success: function(data) {
 						if (data.code == 200) {

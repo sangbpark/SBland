@@ -75,6 +75,7 @@
 
 	        $('#paymentBtn').click(function () {
 	        	$("#paymentBtn").attr("disabled", true);
+	        	loginCheck();
 				const amount = parseInt($("#orderPaymentPrice").text(),10);
 				const deliveryfee = parseInt($("#deliveryfee").text(),10);
 				const merchantUid = $("#paymentBtn").data("merchant-uid");
@@ -112,7 +113,7 @@
 	                pay_method: 'card',
 	                merchant_uid: merchantUid,
 	                name: 'SBLAND 상품 결제',
-	                amount: 100,
+	                amount: amount,
 	                buyer_email: buyerEmail,
 	                buyer_name: buyerName, 
 	            }, function (rsp) {
@@ -145,6 +146,7 @@
 	                	    }
 	                	})
 	                }
+					$("#paymentBtn").attr("disabled", false);
 	            });
 	        });
 	        
@@ -224,6 +226,25 @@
 					}
 				});				
 			});
+			
+			function loginCheck() {
+			    $.ajax({
+			    	url: "/user/check"
+			    	,success: function(data) {
+			    		if (data.code == 200) {
+			    			
+			    		} else if (data.code == 500) {
+			    			alert(data.message);
+			    			location.href="user/user-in-view"
+			    		}
+			    	}
+			    	,error: function(e) {
+			    		alert("오류가 발생했습니다.")
+			    		location.reload();
+			    	}
+			    
+			    })
+			}
 		});
     </script>
 </th:block>
