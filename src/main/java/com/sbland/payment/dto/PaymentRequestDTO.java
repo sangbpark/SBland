@@ -2,7 +2,6 @@ package com.sbland.payment.dto;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sbland.oderdetail.dto.OrderDetailPaymentDTO;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PaymentRequestDTO {
     private String impUid;
+    private Long userId;
     private String merchantUid;
     private int deliveryfee;
     private String shippingAddress;

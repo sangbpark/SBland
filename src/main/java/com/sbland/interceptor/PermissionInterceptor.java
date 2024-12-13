@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbland.common.objectmapper.ObjectMapperFactory;
+import com.sbland.common.reponse.Response;
+import com.sbland.payment.dto.PaymentRequestDTO;
 import com.sbland.user.dto.UserSessionDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,13 +31,23 @@ public class PermissionInterceptor implements HandlerInterceptor {
 		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
 		
 		if (uri.startsWith("/payment") && userSession == null) {
+			ObjectMapper objectMapper = new ObjectMapperFactory().getCamelObjectMapper();
+			PaymentRequestDTO paymentRequestDTO = PaymentRequestDTO.builder().build();
+		
 			try {
-				log.info("[preHandle] login없이 payment에 들어옴 uri:{}", uri);
-				response.sendRedirect("/user/user-in-view");
+				paymentRequestDTO = objectMapper.readValue(request.getInputStream(), PaymentRequestDTO.class);
 			} catch (IOException e) {
-				log.info("[preHandle] payment리다이렉트 실패 error:{}",e.getMessage());
-			} 
-			return false;
+				log.error("[preHandle] payment 리퀘스트 에러 error:{}",e.getMessage());;
+				try {
+					response.sendRedirect("/");
+				} catch (IOException e1) {
+					log.info("[preHandle] payment리다이렉트 실패 error:{}",e1.getMessage());
+				}
+				return false;
+			}
+				
+			log.warn("[preHandle] login없이 payment에 들어옴 paymentRequestDTO:{}", paymentRequestDTO);	
+			return true;
 		}
 		
 		if (uri.startsWith("/shoppingcart") && userSession == null) {

@@ -47,6 +47,7 @@
            th:data-imp-key="${impKey}"
            th:data-buyer-name="${session.userSession.name}"
            th:data-buyer-email="${session.userSession.email}"
+           th:data-user-id="${session.userSession.id}"
            >주문하기</button>
     </div>
    	<div class="modal fade" id="modal">
@@ -81,7 +82,8 @@
 				const merchantUid = $("#paymentBtn").data("merchant-uid");
 				const shippingAddress = $("#shippingAddress").val();
 		        const buyerName = $("#paymentBtn").data("buyer-name");
-		        const buyerEmail = $("#paymentBtn").data("buyer-email")
+		        const buyerEmail = $("#paymentBtn").data("buyer-email");
+		        const userId = $("#paymentBtn").data("user-id")
 				let orderDetailMapList = [];
 				$("input[name=checkProduct]:checked").each(function() {
 			       const checkbox = $(this); 
@@ -125,6 +127,7 @@
 	                	    data: JSON.stringify({
 	                	        impUid: rsp.imp_uid,
 	                	        merchantUid: rsp.merchant_uid,
+	                	        userId: userId,
 	                	        deliveryfee: deliveryfee,
 	                	        shippingAddress: shippingAddress,
 	                	        amount: amount,
