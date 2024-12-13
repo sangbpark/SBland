@@ -49,20 +49,19 @@ public class ProductStockBO {
 		productStockMapper.insertProductStockList(productStockList);
 	}
 	
-	public ProductStock getProductStockByProductId(Long id) {
-		return productStockMapper.selectProductStockByProductId(id);
+	public ProductStock getProductStockByProductId(Long productId) {
+		return productStockMapper.selectProductStockByProductId(productId);
 	}
 	
 	public List<ProductStock> getProductStockListByProductId(List<Long> productIdList) {
 		return productStockMapper.selectProductStockListByProductId(productIdList);
 	}
 	
+	public int updateProductStockByProductId(Long productId, int quantity) {
+		return productStockMapper.updateProductStockByProductId(productId, quantity);
+	};
+	
 	public int updateProductStock(List<ProductStockDTO> productStockList) {
-		try {
 		return productStockMapper.updateProductStock(productStockList);
-		} catch (IllegalStateException e) {
-			log.info("[재고] 재고가 부족함 error:{}",e.getMessage());
-			throw e;
-		}
 	}
 }

@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sbland.common.reponse.Response;
 import com.sbland.payment.bo.PaymentServiceBO;
 import com.sbland.payment.dto.PaymentRequestDTO;
-import com.sbland.user.dto.UserSessionDTO;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

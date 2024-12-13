@@ -30,7 +30,7 @@ public class ProductThumbnailCardDTOBO {
 										.collect(Collectors.toList());
 		if (idList.isEmpty()) return null;
 		List<Product> productList = productBO.getProductByIdIn(idList);
-		List<ProductImage> productImageList = productImageBO.getProductThumbnailByproductIdIn(idList);
+		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(idList);
 		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
 			    .map(product -> {
 			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
@@ -47,7 +47,7 @@ public class ProductThumbnailCardDTOBO {
 		List<Long> idList = productList.stream()
 				.map(product -> product.getId())
 				.collect(Collectors.toList());
-		List<ProductImage> productImageList = productImageBO.getProductThumbnailByproductIdIn(idList);
+		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(idList);
 		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
 			    .map(product -> {
 			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
@@ -78,7 +78,7 @@ public class ProductThumbnailCardDTOBO {
 		List<Long> idList = productList.stream()
 				.map(product -> product.getId())
 				.collect(Collectors.toList());
-		List<ProductImage> productImageList = productImageBO.getProductThumbnailByproductIdIn(idList);
+		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(idList);
 		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
 			    .map(product -> {
 			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
@@ -95,7 +95,7 @@ public class ProductThumbnailCardDTOBO {
 	public List<ProductThumbnailCardDTO> getProductThumbnailCardDTOByProductIdToList(List<Long> productId) {
 		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
 		List<Product> productList = productBO.getProductByIdIn(productId);
-		List<ProductImage> productImageList = productImageBO.getProductThumbnailByproductIdIn(productId);
+		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(productId);
 		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
 			    .map(product -> {
 			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);

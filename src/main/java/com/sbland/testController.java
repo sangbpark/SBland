@@ -94,7 +94,7 @@ public class testController {
 //										.url((String)temp.image().get("imageUrl"))
 //										.build();
 //				ebayProductImageDTOList.add(epd2);
-//				productImageBO.addProductImage(ebayProductImageDTOList);
+//				productImageBO.addEbayProductImage(ebayProductImageDTOList);
 //			}
 		}
 	

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/adminLayout}">
+<section layout:fragment="content" class="contents">
+	<div id="productList" class="d-flex flex-wrap"> 
+        <div type="button" class="home-product-card col-3" th:each="productThumbnailCardDTO : ${productThumbnailCardDTOList}" th:data-product-id="${productThumbnailCardDTO.id}">
+          	<div class="home-product-image">
+				<img th:src="${productThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
+          	</div>
+         	<div class="productText" th:text="${productThumbnailCardDTO.name}">제목</div>
+	        <div th:text="|${productThumbnailCardDTO.price}원|">가격</div>
+	        <div>세일가격</div>
+        </div>
+	</div>
+	<div id="pagination">
+		<nav aria-label="Page navigation">
+	        <ul class="pagination justify-content-center">
+	        	<th:block th:if="${pageList.isEmpty() != true}">
+		            <li class="page-item px-1" th:if="${nowPage.page > 1}">
+		                <a class="page-link text-dark" th:href="@{/product/admin/product-list-view(page=${nowPage.page - 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=${nowPage.pageItemsCount})}" aria-label="Previous">
+		                    <span>&lt;</span>
+		                </a>
+		            </li>		    
+		            <th:block th:each="page : ${pageList}">
+		            	<th:block th:if="${page.page == nowPage.page}">        
+		            		<li class="page-item px-1"><a class="page-link text-dark font-weight-bold border border-dark" th:href="@{/product/admin/product-list-view(page=${page.page},code=${page.code},rightValue=${page.rightValue},keyword=${page.keyword},count=${nowPage.pageItemsCount})}" th:text="${page.page}">1</a></li>		            
+		            	</th:block>
+		            	<th:block th:unless="${page.page == nowPage.page}"> 
+		            		<li class="page-item px-1"><a class="page-link text-dark" th:href="@{/product/admin/product-list-view(page=${page.page},code=${page.code},rightValue=${page.rightValue},keyword=${page.keyword},ccount=${nowPage.pageItemsCount})}" th:text="${page.page}">1</a></li>		            
+		            	</th:block>
+		            </th:block>
+		            <li class="page-item px-1" th:if="${nowPage.page < maxSize}">
+		                <a class="page-link text-dark" th:href="@{/product/admin/product-list-view(page=${nowPage.page + 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=${nowPage.pageItemsCount})}" aria-label="Next">
+		                    <span>&gt;</span>
+		                </a>
+		            </li>
+	            </th:block>
+	        </ul>
+	    </nav>
+	</div>
+</section>
+
+<th:block layout:fragment="script">
+    <script>
+	    $(document).ready(function() {
+	    	initializeHeaderEvent();
+	    	
+			$(".home-product-card").on("click",function() {
+				const productId = $(this).data("product-id");
+				location.href="/product/admin/product-update-view/" + productId;
+			})
+		});
+    </script>
+</th:block>

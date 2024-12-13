@@ -55,22 +55,12 @@
  	<update id="updateProductById">
  		UPDATE `product` 
  		SET
- 			<if test="name != null">
  			`name` = #{name}
- 			</if>
- 			<if test="description != null">
-			`description` = #{description}
-			</if>
-			<if test="price != null">
-			`price` = #{price}
-			</if>
-			<if test="status != null">
-			`status` = #{status}
-			</if>
-			<if test="categoryCode != null">
-			`category_code` = #{categoryCode}
-			</if>
-			`updated_at` = NOW()
+			,`description` = #{description}
+			,`price` = #{price}
+			,`status` = #{status}
+			,`category_code` = #{categoryCode}
+			,`updated_at` = NOW()
 		WHERE
 			`id` = #{id}		
  	</update>

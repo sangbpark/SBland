@@ -25,6 +25,26 @@
 	 		)	
  		</foreach>	
  	</insert>
+ 	 	<insert id="insertProductImage">
+ 		INSERT INTO `product_image`
+ 		(
+			`product_id`
+			,`url`
+			,`is_thumbnail`
+			,`position`
+			,`updated_at`
+			,`created_at`
+ 		)
+ 		VALUES
+ 		(
+ 			#{productId}
+ 			,#{url}
+ 			,#{isThumbnail}
+ 			,#{position}
+ 			,NOW()
+ 			,NOW()
+ 		)	
+ 	</insert>
  	<delete id="deleteProductImageById">
  		DELETE
  		FROM
@@ -32,13 +52,20 @@
  		WHERE
  			id = #{id}
  	</delete>
- 	
+ 	<delete id="deleteProductNotThumbnailImageByProductId">
+ 		DELETE
+ 		FROM
+ 			`product_image`
+ 		WHERE
+ 			`product_id` = #{productId} AND 
+ 			`is_thumbnail` = false
+ 	</delete>
  	<delete id="deleteProductImageByUrlIsNull">
  		DELETE
  		FROM
  			`product_image`
  		WHERE 
- 			url IS NULL
+ 			`url` IS NULL
  	</delete>
  	<select id="findProductImageIsNull">
  		SELECT
@@ -46,7 +73,7 @@
  		FROM
  			`product_image`
  		WHERE
- 			url IS NULL AND is_thumbnail = 1
+ 			`url` IS NULL AND `is_thumbnail` = true
  	</select>
  	<select id="selectProductThumbnailByproductIdIn" resultType="com.sbland.product.domain.ProductImage">
  		SELECT
@@ -79,6 +106,37 @@
 			`product_image`
 		WHERE
 			`product_id` = #{id}
+		ORDER BY `position`
+ 	</select>
+ 	<select id="selectProductThumbnailImageByPorductId" resultType="com.sbland.product.domain.ProductImage">
+ 		SELECT
+ 			`id`
+			,`product_id`
+			,`url`
+			,`is_thumbnail`
+			,`position`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product_image`
+		WHERE
+			`product_id` = #{id} AND 
+			`is_thumbnail` = true
+ 	</select>
+ 	<select id="selectProductNotThumbnailImageByProductId" resultType="com.sbland.product.domain.ProductImage">
+ 		SELECT
+ 			`id`
+			,`product_id`
+			,`url`
+			,`is_thumbnail`
+			,`position`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`product_image`
+		WHERE
+			`product_id` = #{id} AND
+			`is_thumbnail` = false
 		ORDER BY `position`
  	</select>
  </mapper>

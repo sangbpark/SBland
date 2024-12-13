@@ -42,7 +42,7 @@
 	 		<foreach collection="list" item="id" open="(" separator="," close=")">
  				#{id}
  			</foreach>
- 	</select>
+ 	</select>	
  	<update id="updateProductStock" parameterType="list">
 	    <foreach item="item" index="index" collection="list" separator=";">
 	        UPDATE 
@@ -52,6 +52,14 @@
 	        WHERE 
 	        	`product_id` = #{item.productId}
 	    </foreach>
+ 	</update>
+ 	<update id="updateProductStockByProductId">
+	        UPDATE 
+	        	`product_stock`
+	        SET 
+	        	`quantity` = `quantity` + #{quantity}
+	        WHERE 
+	        	`product_id` = #{productId}
  	</update>
  
  </mapper>

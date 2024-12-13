@@ -3,8 +3,6 @@ package com.sbland.user.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
