@@ -23,12 +23,10 @@ public class PaymentRestController {
 	
 	@PostMapping("/verify")
 	public Response<Boolean> paymentVerify(
-			@RequestBody PaymentRequestDTO paymentRequestDTO,
-			HttpSession session) {
-		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");		
+			@RequestBody PaymentRequestDTO paymentRequestDTO) {
 		return paymentServiceBO.addPaymentflow(
 				paymentRequestDTO.getImpUid()
-				, userSession.getId()
+				, paymentRequestDTO.getUserId()
 				, paymentRequestDTO.getDeliveryfee()
 				, paymentRequestDTO.getShippingAddress()
 				, paymentRequestDTO.getOrderDetailMapList()
