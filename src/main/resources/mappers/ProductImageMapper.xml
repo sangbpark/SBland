@@ -108,7 +108,7 @@
 			`product_id` = #{id}
 		ORDER BY `position`
  	</select>
- 	<select id="selectProductThumbnailImageByPorductId" resultType="com.sbland.product.domain.ProductImage">
+ 	<select id="selectProductThumbnailImageByProductId" resultType="com.sbland.product.domain.ProductImage">
  		SELECT
  			`id`
 			,`product_id`

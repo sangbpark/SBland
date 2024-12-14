@@ -30,7 +30,8 @@
  		DELETE 
  		FROM
  			`product`
- 		WHERE id In 
+ 		WHERE 
+ 			`id` In 
  			<foreach collection="list" item="id" open="(" separator="," close=")">
  				#{id}
  			</foreach>
@@ -169,4 +170,12 @@
 			MATCH(`name`, `description`) AGAINST(#{keyword} IN BOOLEAN MODE);
 			</if> 		
  	</select>
+ 	
+ 	<delete id="deleteProductById">
+ 		DELETE 
+ 		FROM
+ 			`product`
+ 		WHERE 
+ 			`id` = #{id}
+ 	</delete>
  </mapper>

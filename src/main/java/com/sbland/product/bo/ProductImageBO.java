@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sbland.common.file.FileManager;
@@ -21,6 +23,7 @@ public class ProductImageBO {
 	private final ProductImageMapper productImageMapper;
 	private final FileManager fileManager;
 	
+	@Transactional(propagation = Propagation.NESTED)
 	public int addEbayProductImage(List<EbayProductImageDTO> ebayProductImageDTOList) {
 
 		List<ProductImage> list = new ArrayList<>();
@@ -58,7 +61,7 @@ public class ProductImageBO {
 							.builder()
 							.productId(productId)
 							.url(fileManager.uploadFile(imageFile, name, "product"))
-							.isThumbnail(false)
+							.isThumbnail(true)
 							.position(0)
 							.build());
 	}

@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sbland.category.bo.CategoryBO;
 import com.sbland.category.entity.CategoryEntity;
@@ -42,6 +43,7 @@ public class ProductBO {
 		return productMapper.deleteProductListById(idList);
 	}
 	
+	@Transactional
 	public int updateProduct (Long id, String name, String description, Integer price, String status, Integer categoryCode ) {
 		return productMapper.updateProductById(id, name, description, price, status, categoryCode);
 	}
@@ -82,9 +84,11 @@ public class ProductBO {
 	public List<Product> getProductBySearch(Integer code, Integer rightValue, String keyword, int count, Integer offset) {
 		return productMapper.selectProductBySearch(code, rightValue, keyword, count, offset);
 	}
+	
 	public int getProductSizeBySearch(Integer code, Integer rightValue, String keyword) {
 		return productMapper.selectProductSizeBySearch(code, rightValue, keyword);
 	}
+	
 	public Product getProductById(Long id) {
 		return productMapper.selectProductById(id);
 	}
@@ -103,5 +107,9 @@ public class ProductBO {
 				.map(product -> product.getId())
 				.collect(Collectors.toList());
 		return productId;
+	}
+	
+	public int deleteProductById(Long id) {
+		return productMapper.deleteProductById(id);
 	}
 }

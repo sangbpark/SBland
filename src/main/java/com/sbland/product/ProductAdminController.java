@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sbland.common.pagination.bo.PaginationBO;
 import com.sbland.common.pagination.dto.PaginationDTO;
-import com.sbland.product.bo.ProductAdminServiceBO;
 import com.sbland.product.bo.ProductBO;
 import com.sbland.product.dto.ProductThumbnailCardDTO;
 
@@ -23,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class ProductAdminController {
 	private final PaginationBO paginationBO;
 	private final ProductBO productBO;
-	private final ProductAdminServiceBO productAdminServiceBO;
 	
 	@GetMapping("/product-update-view/{productId}")
 	public String productView(
@@ -31,6 +29,11 @@ public class ProductAdminController {
 			@PathVariable(name="productId") Long id) {
 		model.addAttribute("product",productBO.getProductById(id));
 		return "admin/adminProductUpdate";
+	}
+	
+	@GetMapping("/product-insert-view")
+	public String productInsertView() {
+		return "admin/adminAddProduct";
 	}
 	
 	@GetMapping("/product-list-view")

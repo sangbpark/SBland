@@ -9,6 +9,7 @@
 	                    <div th:if="${session.userSession != null}" class="d-flex">
 	                    	<div th:text="|${session.userSession.name}님|"class="d-flex align-items-center"></div>
 							<a href="/user/user-out" class="btn">로그아웃</a>
+							<a href="/admin" class="btn" th:if="${session.userSession.role  == 'ADMIN'}">관리자</a>
 						</div>
 						<div th:unless="${session.userSession != null}">
 							<a href="/user/user-in-view" class="btn">로그인</a>

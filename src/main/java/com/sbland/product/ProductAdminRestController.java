@@ -35,7 +35,31 @@ public class ProductAdminRestController {
 		
 		return productAdminServiceBO.updateProductById(productId, name, categoryCode
 				, status, description.orElse(""), price
-				, quantity.orElse(-1), thumbnailImage, images);
+				, quantity.orElse(0), thumbnailImage, images);
+	}
+	
+	@PostMapping("/insert")
+	public Response<Boolean> addProduct(
+            @RequestParam("name") String name,
+            @RequestParam("categoryCode") int categoryCode,
+            @RequestParam("status") String status,
+            @RequestParam("description") Optional<String> description,
+            @RequestParam("price") int price,
+            @RequestParam("quantity") Optional<Integer> quantity,
+            @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage, 
+            @RequestParam(value = "images", required = false) List<MultipartFile> images 
+			) {
+		
+		return productAdminServiceBO.addProductAll(name, categoryCode
+				, status, description.orElse(""), price
+				, quantity.orElse(0), thumbnailImage, images);
+	}
+	
+	@PostMapping("/delete")
+	public Response<Boolean> deleteProduct(
+			@RequestParam("productId") Long productId) {
+		
+		return productAdminServiceBO.deleteProductAllById(productId);
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.sbland.product.bo;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -30,11 +31,19 @@ public class ProductThumbnailCardDTOBO {
 										.collect(Collectors.toList());
 		if (idList.isEmpty()) return null;
 		List<Product> productList = productBO.getProductByIdIn(idList);
+		List<ProductStock> productStockList = productStockBO.getProductStockListByProductId(idList);
 		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(idList);
 		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
 			    .map(product -> {
 			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
-			    	return dto.toBuilder().thumbnailImage(productImageList.get(productList.indexOf(product)).getUrl()).build();			    	 
+			    	return dto.toBuilder()
+				    			.thumbnailImage(
+				    				Optional.ofNullable(productList.indexOf(product))
+					    		    .filter(index -> index != -1 && index < productImageList.size())
+					    		    .map(index -> productImageList.get(index).getUrl())
+					    		    .orElse(null))
+				    			.quantity(productStockList.get(productList.indexOf(product)).getQuantity())
+				    			.build();			    	 
 			    })
 			    .collect(Collectors.toList());
 		return productThumbnailCardDTOList;
@@ -47,11 +56,19 @@ public class ProductThumbnailCardDTOBO {
 		List<Long> idList = productList.stream()
 				.map(product -> product.getId())
 				.collect(Collectors.toList());
+		List<ProductStock> productStockList = productStockBO.getProductStockListByProductId(idList);
 		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(idList);
 		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
 			    .map(product -> {
 			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
-			    	return dto.toBuilder().thumbnailImage(productImageList.get(productList.indexOf(product)).getUrl()).build();			    	 
+			    	return dto.toBuilder()
+				    			.thumbnailImage(
+				    				Optional.ofNullable(productList.indexOf(product))
+					    		    .filter(index -> index != -1 && index < productImageList.size())
+					    		    .map(index -> productImageList.get(index).getUrl())
+					    		    .orElse(null))
+				    			.quantity(productStockList.get(productList.indexOf(product)).getQuantity())
+				    			.build();			    	 
 			    })
 			    .collect(Collectors.toList());
 		return productThumbnailCardDTOList;
@@ -65,7 +82,7 @@ public class ProductThumbnailCardDTOBO {
 				.stream()
 				.filter(findProductImage -> findProductImage.isThumbnail())
 				.findFirst()
-				.orElse(null);
+				.orElse(ProductImage.builder().build());
 		ProductStock productStock = productStockBO.getProductStockByProductId(productId);
 		ProductThumbnailCardDTO ProductThumbnailCardDTO = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
 		return ProductThumbnailCardDTO.toBuilder().thumbnailImage(productImage.getUrl()).quantity(productStock.getQuantity()).build();
@@ -78,11 +95,19 @@ public class ProductThumbnailCardDTOBO {
 		List<Long> idList = productList.stream()
 				.map(product -> product.getId())
 				.collect(Collectors.toList());
+		List<ProductStock> productStockList = productStockBO.getProductStockListByProductId(idList);
 		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(idList);
 		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
 			    .map(product -> {
 			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
-			    	return dto.toBuilder().thumbnailImage(productImageList.get(productList.indexOf(product)).getUrl()).build();			    	 
+			    	return dto.toBuilder()
+				    			.thumbnailImage(
+				    				Optional.ofNullable(productList.indexOf(product))
+					    		    .filter(index -> index != -1 && index < productImageList.size())
+					    		    .map(index -> productImageList.get(index).getUrl())
+					    		    .orElse(null))
+				    			.quantity(productStockList.get(productList.indexOf(product)).getQuantity())
+				    			.build();			    	 
 			    })
 			    .collect(Collectors.toList());
 		return productThumbnailCardDTOList;
@@ -92,16 +117,4 @@ public class ProductThumbnailCardDTOBO {
 		return productBO.getProductSizeBySearch(code, rightValue, keyword);
 	}
 	
-	public List<ProductThumbnailCardDTO> getProductThumbnailCardDTOByProductIdToList(List<Long> productId) {
-		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
-		List<Product> productList = productBO.getProductByIdIn(productId);
-		List<ProductImage> productImageList = productImageBO.getProductThumbnailByProductIdIn(productId);
-		List<ProductThumbnailCardDTO> productThumbnailCardDTOList = productList.stream()
-			    .map(product -> {
-			    	ProductThumbnailCardDTO dto = camelObjectMapper.convertValue(product, ProductThumbnailCardDTO.class);
-			    	return dto.toBuilder().thumbnailImage(productImageList.get(productList.indexOf(product)).getUrl()).build();			    	 
-			    })
-			    .collect(Collectors.toList());
-		return productThumbnailCardDTOList;
-	}
 }

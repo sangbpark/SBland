@@ -5,13 +5,18 @@
       layout:decorate="~{layout/adminLayout}">
 <section layout:fragment="content" class="contents">
 	<div id="productList" class="d-flex flex-wrap"> 
-        <div type="button" class="home-product-card col-3" th:each="productThumbnailCardDTO : ${productThumbnailCardDTOList}" th:data-product-id="${productThumbnailCardDTO.id}">
-          	<div class="home-product-image">
+        <div class="home-product-card col-3" th:each="productThumbnailCardDTO : ${productThumbnailCardDTOList}">
+          	<div class="home-product-image" th:data-product-id="${productThumbnailCardDTO.id}">
 				<img th:src="${productThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
           	</div>
          	<div class="productText" th:text="${productThumbnailCardDTO.name}">제목</div>
-	        <div th:text="|${productThumbnailCardDTO.price}원|">가격</div>
-	        <div>세일가격</div>
+         	<div class="d-flex">
+	         	<div>
+			        <div th:text="|${productThumbnailCardDTO.price}원|">가격</div>
+			        <div>세일가격</div>
+		        </div>
+		        <button type="button" class="productDelBtn btn btn-danger" th:data-product-id="${productThumbnailCardDTO.id}">삭제</button>
+	        </div>
         </div>
 	</div>
 	<div id="pagination">
@@ -47,9 +52,30 @@
 	    $(document).ready(function() {
 	    	initializeHeaderEvent();
 	    	
-			$(".home-product-card").on("click",function() {
+			$(".home-product-image").on("click",function() {
 				const productId = $(this).data("product-id");
 				location.href="/product/admin/product-update-view/" + productId;
+			})
+			
+			$(".productDelBtn").on("click",function() {
+				const productId = $(this).data("product-id");
+				$.ajax({
+					type: "POST"
+					,url: "/product/admin/delete"
+					,data: {"productId":productId}
+					,success: function(data) {
+						if (data.code == 200){
+							alert("성공");
+							location.reload();
+						} else if (data.code == 500) {
+							alert("실패");
+							location.reload();
+						}
+					}
+					,error: function(e) {
+						alert("에러발생");
+					}
+				})
 			})
 		});
     </script>

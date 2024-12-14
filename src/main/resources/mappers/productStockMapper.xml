@@ -16,6 +16,23 @@
  				(#{stock.productId}, #{stock.quantity}, NOW(), NOW())
  			</foreach>
  	</insert>
+ 	
+ 	 <insert id="insertProductStock">
+ 		INSERT INTO `product_stock` 
+ 		(
+ 			`product_id`
+			,`quantity`
+			,`updated_at`
+			,`created_at`
+ 		)
+ 		VALUES
+ 		(	#{productId}
+ 			,#{quantity}
+ 			, NOW()
+ 			, NOW()
+ 		)
+ 	</insert>
+ 	
  	<select id="selectProductStockByProductId"
  			resultType="com.sbland.product.domain.ProductStock">
 	 	SELECT
@@ -50,16 +67,24 @@
 	        SET 
 	        	`quantity` = `quantity` - #{item.productCount}
 	        WHERE 
-	        	`product_id` = #{item.productId}
+	        	`product_id` = #{item.productId} 
 	    </foreach>
  	</update>
  	<update id="updateProductStockByProductId">
 	        UPDATE 
 	        	`product_stock`
 	        SET 
-	        	`quantity` = `quantity` + #{quantity}
+	        	`quantity` = GREATEST(`quantity` + #{quantity}, 0)
 	        WHERE 
-	        	`product_id` = #{productId}
+	        	`product_id` = #{productId} 
  	</update>
+ 	
+ 	<delete id="deleteProductStock">
+ 		    DELETE 
+ 		    FROM
+	        	`product_stock`
+	        WHERE 
+	        	`product_id` = #{productId} 
+ 	</delete>
  
  </mapper>

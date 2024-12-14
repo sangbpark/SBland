@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbland.common.objectmapper.ObjectMapperFactory;
@@ -49,6 +50,10 @@ public class ProductStockBO {
 		productStockMapper.insertProductStockList(productStockList);
 	}
 	
+	public int addProductStock(Long productId, int quantity) {
+		return productStockMapper.insertProductStock(productId, quantity);
+	}
+	
 	public ProductStock getProductStockByProductId(Long productId) {
 		return productStockMapper.selectProductStockByProductId(productId);
 	}
@@ -57,11 +62,17 @@ public class ProductStockBO {
 		return productStockMapper.selectProductStockListByProductId(productIdList);
 	}
 	
+	@Transactional
 	public int updateProductStockByProductId(Long productId, int quantity) {
 		return productStockMapper.updateProductStockByProductId(productId, quantity);
 	};
 	
+	@Transactional
 	public int updateProductStock(List<ProductStockDTO> productStockList) {
 		return productStockMapper.updateProductStock(productStockList);
+	}
+	
+	public int deleteProductStock(Long productId) {
+		return productStockMapper.deleteProductStock(productId);
 	}
 }

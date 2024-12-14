@@ -43,4 +43,6 @@ public interface ProductMapper {
 			@Param("rightValue") Integer rightValue,
 			@Param("keyword") String keyword
 			);
+	
+	public int deleteProductById(Long id);
 }
