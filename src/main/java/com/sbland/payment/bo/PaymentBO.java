@@ -25,6 +25,10 @@ public class PaymentBO {
 		return paymentMapper.selectPaymentByImpUid(impUid);
 	};
 	
+	public Payment getPaymentByOrderId(Long orderId) {
+		return paymentMapper.selectPaymentByOrderId(orderId);
+	};
+	
 	public int addPayment(Payment payment) {
 		return paymentMapper.insertPayment(payment);
 	};

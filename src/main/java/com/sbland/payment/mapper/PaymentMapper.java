@@ -13,6 +13,8 @@ public interface PaymentMapper {
 	
 	public Payment selectPaymentByImpUid(String impUid);
 	
+	public Payment selectPaymentByOrderId(Long orderId);
+	
 	public int insertPayment(Payment payment);
 	
 	public int updatePayment(Payment payment);

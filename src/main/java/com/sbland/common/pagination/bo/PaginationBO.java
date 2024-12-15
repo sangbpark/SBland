@@ -63,6 +63,23 @@ public class PaginationBO {
 		return pageList;
 	}
 	
+	private List<PageDTO> getPageList(String status, int count) {
+		List<PageDTO> pageList = new ArrayList<>();
+		int size = orderBO.getOrderListSizeByStatus(status);
+		if (size == 0) return pageList;
+		int pageCount = (int)Math.ceil((double)size / count);
+		if (pageCount == 0 || pageCount == 1) return pageList;
+		for (int i = 1; i <= pageCount; i++) {
+			PageDTO pageDTO = PageDTO
+					.builder()
+					.page(i)
+					.pageItemsCount(count)
+					.build();
+			pageList.add(pageDTO);					
+		}
+		return pageList;
+	}
+	
 	public PaginationDTO<ProductThumbnailCardDTO> getPaging(Integer page, Integer code, Integer rightValue, String keyword, int count) {
 		String plusKeyword = "";
 		Set<String> stopword = new HashSet<>( List.of("a", "about", "an", "are", "as", "at", "be", "by"
@@ -115,6 +132,29 @@ public class PaginationBO {
 		}
 		
 		List<OrderDTO> orderDTOList = orderServiceBO.getResponseOrderDTOListByUserId(userId, count, offset).getData();
+		PageDTO nowPageDTO = PageDTO
+				.builder()
+				.page(page)
+				.pageItemsCount(count)			
+				.build();			
+		return  getPaginationDTO(orderDTOList, pageDTOList, nowPageDTO);
+	}
+	
+	public PaginationDTO<OrderDTO> getPaging(String status, Integer page, int count) {
+		List<PageDTO> pageDTOList = getPageList(status, count);
+		Integer offset = (page - 1) * count;	
+		if (pageDTOList.size() > 0) {
+			if (pageDTOList.size() < page) {
+				PageDTO nowPageDTO = pageDTOList.get(pageDTOList.size() - 1);
+				List<OrderDTO> orderDTOList = orderServiceBO.getResponseOrderDTOListByStatus(status, count, offset).getData();
+				return getPaginationDTO(orderDTOList, pageDTOList, nowPageDTO);
+			} 
+			List<OrderDTO> orderDTOList = orderServiceBO.getResponseOrderDTOListByStatus(status, count, offset).getData();
+			PageDTO nowPageDTO = pageDTOList.get(page - 1);
+			return getPaginationDTO(orderDTOList, pageDTOList, nowPageDTO);
+		}
+		
+		List<OrderDTO> orderDTOList = orderServiceBO.getResponseOrderDTOListByStatus(status, count, offset).getData();
 		PageDTO nowPageDTO = PageDTO
 				.builder()
 				.page(page)

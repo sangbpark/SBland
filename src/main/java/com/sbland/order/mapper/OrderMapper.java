@@ -17,10 +17,26 @@ public interface OrderMapper {
 			@Param("count") int count,
 			@Param("offset") int offset);
 	
+	public List<Order> selectOrderByStatus(
+			@Param("status") String status,
+			@Param("count") int count,
+			@Param("offset") int offset);
+	
 	public Order selectOrderById(Long id);
+	
+	public Order selectOrderByIdAndUserId(
+			@Param("id") Long id, 
+			@Param("userId") Long userId);
+	
+	public int updateOrderStatus(
+			@Param("id") Long id, 
+			@Param("userId") Long userId,
+			@Param("status") String status);
 	
 	public int deleteOrderByOrderId(Long id);
 	
 	public int selectOrderListSizeByUserId(Long userId);
+	
+	public int selectOrderListSizeByStatus(String status);
 	
 }

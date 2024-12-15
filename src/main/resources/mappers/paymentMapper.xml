@@ -41,7 +41,7 @@
 				,`card_name`
 				,`cancel_reason`
 				,`created_at`
-				,`updated_at
+				,`updated_at`
 			FROM
 				`payment`
 			WHERE
@@ -63,11 +63,33 @@
 				,`card_name`
 				,`cancel_reason`
 				,`created_at`
-				,`updated_at
+				,`updated_at`
 			FROM
 				`payment`
 			WHERE
 				`user_id` = #{userId}	
+ 	</select>
+ 	<select id="selectPaymentByOrderId"
+ 			resultType="com.sbland.payment.domain.Payment">
+ 			SELECT
+ 				`id`
+				,`imp_uid`
+				,`merchant_uid`
+				,`order_id`
+				,`user_id`
+				,`amount`
+				,`pay_method`
+				,`status`
+				,`paid_at`
+				,`receipt_url`
+				,`card_name`
+				,`cancel_reason`
+				,`created_at`
+				,`updated_at`
+			FROM
+				`payment`
+			WHERE
+				`order_id` = #{orderId}	
  	</select>
  	<insert id="insertPayment">
  		INSERT INTO `payment` 

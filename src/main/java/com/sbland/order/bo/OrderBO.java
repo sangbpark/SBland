@@ -55,8 +55,31 @@ public class OrderBO {
 		}
 	};
 	
+	public Response<List<Order>> getOrderByStatus(String status, int count, int offset) {
+		List<Order> orderList = orderMapper.selectOrderByStatus(status, count, offset);
+		if (orderList.isEmpty()) {
+			return Response
+					.<List<Order>>builder()
+					.code(HttpStatusCode.FAIL.getCodeValue())
+					.message("주문번호나 유저를 확인 해주세요.")
+					.data(orderList)
+					.build();
+		} else {
+			return Response
+			.<List<Order>>builder()
+			.code(HttpStatusCode.OK.getCodeValue())
+			.message("주문 조회 성공.")
+			.data(orderList)
+			.build();
+		}
+	};
+	
 	public int getOrderListSizeByUserId(Long userId) {
 		return orderMapper.selectOrderListSizeByUserId(userId);
+	}
+	
+	public int getOrderListSizeByStatus(String status) {
+		return orderMapper.selectOrderListSizeByStatus(status);
 	}
 
 	public Response<Long> addOrder(Order order) {	
@@ -79,4 +102,30 @@ public class OrderBO {
 					.build();
 		}
 	};
+	
+	public Response<Boolean> updateOrderStatus(Long orderId, Long userId, String status) {
+		Order order = orderMapper.selectOrderByIdAndUserId(orderId, userId);
+		if (order == null) {
+			return Response
+					.<Boolean>builder()
+					.code(HttpStatusCode.FAIL.getCodeValue())
+					.message("주문이 없습니다.")
+					.build();
+		} else {
+			int result = orderMapper.updateOrderStatus(orderId, userId, status);
+			if (result > 0) {
+				return Response
+						.<Boolean>builder()
+						.code(HttpStatusCode.OK.getCodeValue())
+						.message("주문취소 신청 완료.")
+						.build();
+			} else {
+				return Response
+						.<Boolean>builder()
+						.code(HttpStatusCode.FAIL.getCodeValue())
+						.message("주문취소 신청 실패.")
+						.build();
+			}
+		}
+	}
 }

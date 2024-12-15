@@ -24,6 +24,46 @@
 			OFFSET #{offset}			
  	</select>
  	
+ 	<select id="selectOrderByStatus"
+ 			resultType="com.sbland.order.domain.Order">
+ 		SELECT
+ 			`id`
+ 			,`merchant_uid`
+			,`user_id`
+			,`amount`
+			,`deliveryfee`
+			,`status`
+			,`shipping_address`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`order`
+		WHERE
+			`status` = #{status} 
+			ORDER BY `created_at` DESC 
+			Limit #{count} 
+			OFFSET #{offset}			
+ 	</select>
+ 	
+ 	<select id="selectOrderByIdAndUserId"
+ 			resultType="com.sbland.order.domain.Order">
+ 		SELECT
+ 			`id`
+ 			,`merchant_uid`
+			,`user_id`
+			,`amount`
+			,`deliveryfee`
+			,`status`
+			,`shipping_address`
+			,`updated_at`
+			,`created_at`
+		FROM
+			`order`
+		WHERE
+			`user_id` = #{userId} AND
+			`id` = #{id}			
+ 	</select>
+ 	
  	<select id="selectOrderListSizeByUserId"
  			resultType="int">
  		SELECT
@@ -32,6 +72,16 @@
 			`order`
 		WHERE
 			`user_id` = #{userId}
+ 	</select>
+ 	
+ 	<select id="selectOrderListSizeByStatus"
+ 			resultType="int">
+ 		SELECT
+ 			COUNT(1)
+		FROM
+			`order`
+		WHERE
+			`status` = #{status}
  	</select>
  	
  	<select id="selectOrderById"
@@ -76,5 +126,15 @@
  			,NOW()
  		)		
  	</insert>
+ 	
+ 	<update id="updateOrderStatus">
+ 		UPDATE	`order`
+ 		SET
+ 			`status` = #{status}
+ 			,`updated_at` = NOW()
+ 		WHERE
+ 			`user_id` = #{userId} AND
+ 			`id` = #{id} 	
+ 	</update>
  
  </mapper>

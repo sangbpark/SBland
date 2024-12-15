@@ -79,9 +79,50 @@ public class OrderServiceBO {
 				.data(orderDTOList)
 				.build();
 	}
+	
+	private Response<List<OrderDTO>> getOrderDTOByStatusList(String status, int count, int offset) {
+		ObjectMapper camelObjectMapper = new ObjectMapperFactory().getCamelObjectMapper();
+		List<Order> orderList = orderBO.getOrderByStatus(status, count, offset).getData();
+		List<OrderDTO> orderDTOList = new ArrayList<>();
+		if (orderList.isEmpty()) {
+			return Response.<List<OrderDTO>>builder()
+							.code(HttpStatusCode.FAIL.getCodeValue())
+							.message("주문명세서를 가져오는데 실패했습니다.")
+							.data(orderDTOList)
+							.build();
+		}
+								
+		orderDTOList = orderList
+				.stream()
+				.map(order -> camelObjectMapper.convertValue(order, OrderDTO.class))
+				.collect(Collectors.toList());
+		
+		orderDTOList.replaceAll(orderDTO -> {
+								return orderDTO
+										.toBuilder()
+										.orderDetailDTOList(orderDetailServiceBO.getOrderDetailDTO(orderDTO.getId()))
+										.build();
+								});
+		
+		orderDTOList.stream()
+					.sorted((orderDTO1, orderDTO2) 
+							-> orderDTO2.getCreatedAt().compareTo(orderDTO1.getCreatedAt()))
+					.collect(Collectors.toList());
+		
+		return Response
+				.<List<OrderDTO>>builder()
+				.code(HttpStatusCode.OK.getCodeValue())
+				.message("주문명세서를 가져오는데 성공했습니다.")
+				.data(orderDTOList)
+				.build();
+	}
 		
 	public Response<List<OrderDTO>> getResponseOrderDTOListByUserId(Long userId, int count, int offset) {
 		return getOrderDTOByOrderIdList(userId, count, offset);
+	}
+	
+	public Response<List<OrderDTO>> getResponseOrderDTOListByStatus(String status, int count, int offset) {
+		return getOrderDTOByStatusList(status, count, offset);
 	}
 	
 	public Response<Long> addOrderAndOrderDetail(Long userId, String merchantUid, int amount, int deliveryfee
@@ -133,5 +174,5 @@ public class OrderServiceBO {
 					.build();
 		}
 	}
-	
+
 }

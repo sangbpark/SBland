@@ -3,12 +3,90 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/adminLayout}">
-<section layout:fragment="content">
-
+<section layout:fragment="content" class="contents">
+		<div id="orderList">
+			<div class="orderCard p-3 border" th:each="orderDTO : ${orderDTOList}">
+				<h2 th:text="|주문번호: ${orderDTO.id} 주문날짜: ${#temporals.format(orderDTO.createdAt, 'yyyy-MM-dd')} ${orderDTO.status}|"></h2>
+				<div class="orderDetail d-flex border" th:each="orderDetailDTO : ${orderDTO.orderDetailDTOList}">
+					<div class="orderDetailImage">
+						<img th:src="${orderDetailDTO.url}" alt="상품썸네일">
+					</div>
+					<div>
+						<div class="p-2 orderProductNameWrap">
+							<span class="orderProductName" th:text="${orderDetailDTO.name}"></span>
+						</div>
+						<div class="p-2 d-flex align-items-end">
+							<span th:text="|${orderDetailDTO.totalPrice}원 ${orderDetailDTO.productCount}개|"></span>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-between">
+					<div>
+						<div class="d-flex">
+							<div>배송지: </div>
+							<div class="px-1" th:text="${orderDTO.shippingAddress}"></div>
+						</div>
+						<div th:text="|금액: ${orderDTO.amount - orderDTO.deliveryfee}원 배송비: ${orderDTO.deliveryfee} 총금액: ${orderDTO.amount + orderDTO.deliveryfee}원|"></div>
+					</div>
+					<div class="pt-2">
+						<button class="cancelBtn btn btn-success" th:data-order-id="${orderDTO.id}">결제취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="pagination">
+			<nav aria-label="Page navigation">
+		        <ul class="pagination justify-content-center">
+		        	<th:block th:if="${pageList.isEmpty() != true}">
+			            <li class="page-item px-1" th:if="${nowPage.page > 1}">
+			                <a class="page-link text-dark" th:href="@{/admin/payment-view(page=${nowPage.page - 1})}" aria-label="Previous">
+			                    <span>&lt;</span>
+			                </a>
+			            </li>		    
+			            <th:block th:each="page : ${pageList}">
+			            	<th:block th:if="${page.page == nowPage.page}">        
+			            		<li class="page-item px-1"><a class="page-link text-dark font-weight-bold border border-dark" th:href="@{/admin/payment-view(page=${page.page})}" th:text="${page.page}">1</a></li>		            
+			            	</th:block>
+			            	<th:block th:unless="${page.page == nowPage.page}"> 
+			            		<li class="page-item px-1"><a class="page-link text-dark" th:href="@{/admin/payment-view(page=${page.page})}" th:text="${page.page}">1</a></li>		            
+			            	</th:block>
+			            </th:block>
+			            <li class="page-item px-1" th:if="${nowPage.page < maxSize}">
+			                <a class="page-link text-dark" th:href="@{/admin/payment-view(page=${nowPage.page + 1})}" aria-label="Next">
+			                    <span>&gt;</span>
+			                </a>
+			            </li>
+		            </th:block>
+		        </ul>
+		    </nav>
+		</div>
 </section>
 
 <th:block layout:fragment="script">
     <script>
-
+		$(document).ready(function() {
+			$(".cancelBtn").on("click", function() {
+				const orderId = $(".cancelBtn").data("order-id");
+				
+				$.ajax({
+					type: "POST"
+					,url: "/payment/admin/cancel"
+					, data: {"orderId":orderId}
+					, success: function(data) {
+						if (data.code == 200) {
+							alert(data.message);
+							location.reload();
+						} else if (data.code == 500) {
+							alert(data.message);
+							location.reload();
+						}
+					}
+					, error: function(e) {
+						alert("결제취소중 에러가 발생했습니다.")
+						location.reload();
+					}
+				})
+			})
+		});
     </script>
 </th:block>
