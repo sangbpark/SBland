@@ -16,7 +16,7 @@ import com.sbland.product.dto.ProductThumbnailCardDTO;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/product/admin")
+@RequestMapping("/admin/product")
 @RequiredArgsConstructor
 @Controller
 public class ProductAdminController {

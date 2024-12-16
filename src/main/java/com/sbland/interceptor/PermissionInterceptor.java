@@ -28,6 +28,14 @@ public class PermissionInterceptor implements HandlerInterceptor {
 		
 		HttpSession session = request.getSession();
 		UserSessionDTO userSession = (UserSessionDTO)session.getAttribute("userSession");
+		if (uri.startsWith("/admin") && (userSession == null || !"ADMIN".equals(userSession.getRole()))) {
+			try {
+				response.sendRedirect("/");
+			} catch (IOException e) {
+				log.info("[preHandle] admin리다이렉트 실패 error:{}",e.getMessage());
+			}			
+			return false;
+		}
 		
 		if (uri.startsWith("/payment") && userSession == null) {
 			ObjectMapper objectMapper = new ObjectMapperFactory().getCamelObjectMapper();

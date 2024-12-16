@@ -14,7 +14,7 @@ import com.sbland.product.bo.ProductAdminServiceBO;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/product/admin")
+@RequestMapping("/admin/product")
 @RequiredArgsConstructor
 @RestController
 public class ProductAdminRestController {

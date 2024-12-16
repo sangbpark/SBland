@@ -27,10 +27,13 @@ header {
     overflow: hidden;
 }
 
+.banner-images {
+    display: flex;
+    transition: transform 0.5s ease;
+}
 .banner-image {
     width: 100%;
-    height: 400px;
-    display: block;
+    flex-shrink: 0;
 }
 
 .left-button, .right-button {

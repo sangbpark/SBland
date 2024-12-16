@@ -24,4 +24,10 @@ public class HomepageAdminController {
 		model.addAttribute("recentProductThumbnailCardDTOList", recentProductThumbnailCardDTOList);
 		return "admin/adminHomepage";
 	}
+	
+	@GetMapping("/admin/hompage-update-view")
+	public String productBannerUpdateView() {
+		return "admin/adminHomePageUdate";
+	}
+
 }

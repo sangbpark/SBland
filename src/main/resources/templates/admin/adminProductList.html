@@ -24,7 +24,7 @@
 	        <ul class="pagination justify-content-center">
 	        	<th:block th:if="${pageList.isEmpty() != true}">
 		            <li class="page-item px-1" th:if="${nowPage.page > 1}">
-		                <a class="page-link text-dark" th:href="@{/product/admin/product-list-view(page=${nowPage.page - 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=${nowPage.pageItemsCount})}" aria-label="Previous">
+		                <a class="page-link text-dark" th:href="@{/admin/product/product-list-view(page=${nowPage.page - 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=${nowPage.pageItemsCount})}" aria-label="Previous">
 		                    <span>&lt;</span>
 		                </a>
 		            </li>		    
@@ -33,11 +33,11 @@
 		            		<li class="page-item px-1"><a class="page-link text-dark font-weight-bold border border-dark" th:href="@{/product/admin/product-list-view(page=${page.page},code=${page.code},rightValue=${page.rightValue},keyword=${page.keyword},count=${nowPage.pageItemsCount})}" th:text="${page.page}">1</a></li>		            
 		            	</th:block>
 		            	<th:block th:unless="${page.page == nowPage.page}"> 
-		            		<li class="page-item px-1"><a class="page-link text-dark" th:href="@{/product/admin/product-list-view(page=${page.page},code=${page.code},rightValue=${page.rightValue},keyword=${page.keyword},ccount=${nowPage.pageItemsCount})}" th:text="${page.page}">1</a></li>		            
+		            		<li class="page-item px-1"><a class="page-link text-dark" th:href="@{/admin/product/product-list-view(page=${page.page},code=${page.code},rightValue=${page.rightValue},keyword=${page.keyword},ccount=${nowPage.pageItemsCount})}" th:text="${page.page}">1</a></li>		            
 		            	</th:block>
 		            </th:block>
 		            <li class="page-item px-1" th:if="${nowPage.page < maxSize}">
-		                <a class="page-link text-dark" th:href="@{/product/admin/product-list-view(page=${nowPage.page + 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=${nowPage.pageItemsCount})}" aria-label="Next">
+		                <a class="page-link text-dark" th:href="@{/admin/product/product-list-view(page=${nowPage.page + 1},code=${nowPage.code},rightValue=${nowPage.rightValue},keyword=${nowPage.keyword},count=${nowPage.pageItemsCount})}" aria-label="Next">
 		                    <span>&gt;</span>
 		                </a>
 		            </li>
@@ -61,7 +61,7 @@
 				const productId = $(this).data("product-id");
 				$.ajax({
 					type: "POST"
-					,url: "/product/admin/delete"
+					,url: "/admin/product/delete"
 					,data: {"productId":productId}
 					,success: function(data) {
 						if (data.code == 200){

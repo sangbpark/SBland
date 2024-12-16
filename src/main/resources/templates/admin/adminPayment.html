@@ -70,7 +70,7 @@
 				
 				$.ajax({
 					type: "POST"
-					,url: "/payment/admin/cancel"
+					,url: "/admin/payment/cancel"
 					, data: {"orderId":orderId}
 					, success: function(data) {
 						if (data.code == 200) {

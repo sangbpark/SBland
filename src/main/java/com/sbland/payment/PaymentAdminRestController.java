@@ -10,7 +10,7 @@ import com.sbland.payment.bo.PaymentServiceBO;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/payment/admin")
+@RequestMapping("/admin/payment")
 @RequiredArgsConstructor
 @RestController
 public class PaymentAdminRestController {

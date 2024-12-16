@@ -5,9 +5,16 @@
       layout:decorate="~{layout/adminLayout}">
 <section layout:fragment="content">
     <div class="banner">
-        <img src="https://via.placeholder.com/1440x400" alt="배너 이미지" class="banner-image">
+        <div class="banner-images">
+            <img src="https://via.placeholder.com/1440x400/FF0000/FFFFFF" alt="배너 이미지 1" class="banner-image">
+            <img src="https://via.placeholder.com/1440x400/00FF00/FFFFFF" alt="배너 이미지 2" class="banner-image">
+            <img src="https://via.placeholder.com/1440x400/0000FF/FFFFFF" alt="배너 이미지 3" class="banner-image">
+        </div>
         <button class="btn left-button">&lt;</button>
         <button class="btn right-button">&gt;</button>
+    </div>
+    <div>
+    	<a href="/admin/hompage-update-view">홈페이지 수정</a>
     </div>
     <section class="contents bg-warning">
          <div class="home-product bg-danger">
@@ -71,9 +78,32 @@
 <th:block layout:fragment="script">
     <script>
 		$(document).ready(function() {
+            const bannerImages = $('.banner-images');
+            const images = $('.banner-image');
+            const imageWidth = images.first().width();
+            const totalImages = images.length;
+            let currentIndex = 0;
+
+            function updateSliderPosition() {
+                const offset = -currentIndex * imageWidth;
+                bannerImages.css('transform', `translateX(${offset}px)`);
+            }
+
+            $('.left-button').click(function () {
+                currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                updateSliderPosition();
+            });
+
+            $('.right-button').click(function () {
+                currentIndex = (currentIndex + 1) % totalImages;
+                updateSliderPosition();
+            });
+
+            updateSliderPosition();
+            
 			$(".home-product-card").on("click",function() {
 				const productId = $(this).data("product-id");
-				location.href="/product/product-view/" + productId;
+				location.href="/admin/product/product-update-view/" + productId;
 			})
 		});
     </script>

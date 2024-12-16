@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class OrderAdminController {
 	private final PaginationBO paginationBO;
 	
-	@GetMapping("/order/admin/payment-view")
+	@GetMapping("/admin/order/payment-view")
 	public String myPage(
 			@RequestParam("page") Optional<Integer> page,
 			Model model) {
