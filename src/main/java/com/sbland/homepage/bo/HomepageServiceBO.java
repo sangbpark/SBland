@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sbland.category.bo.CategoryBO;
 import com.sbland.common.file.FileManager;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class HomepageServiceBO {
 	private final HomepageBO homepageBannerBO;
 	private final FileManager fileManager;
+	private final CategoryBO categoryBO;
 	
 	public List<Banner> getBannerList() {
 		return homepageBannerBO.getHomepageBanner();
@@ -42,7 +44,7 @@ public class HomepageServiceBO {
 				.builder()
 				.title(title)
 				.positon(position)
-				.categoryCode(categoryCode)
+				.category(categoryBO.getCategoryByCode(categoryCode))
 				.imageUrl(fileManager.uploadFile(bannerImage
 						, title, "banner")
 				)

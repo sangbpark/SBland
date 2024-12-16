@@ -96,6 +96,56 @@
 					}
 				});
 			})
+			
+			$("#mdProductEditBtn").on("click", function() {
+				const mdProductId1 = Number($("#mdProductId1").val());
+				const mdProductId2 = Number($("#mdProductId2").val());
+				const mdProductId3 = Number($("#mdProductId3").val());
+
+				
+				if (!mdProductId1) {
+					alert("상품 아이디를 입력하세요.")
+					return;
+				}
+				
+				if (!mdProductId2) {
+					alert("상품 아이디를 입력하세요.")
+					return;
+				}
+							
+				if (!mdProductId3) {
+					alert("상품 아이디를 입력하세요.")
+					return;
+				}
+				
+			    const mdProductIds = [
+			    	mdProductId1,
+			    	mdProductId2,
+			    	mdProductId3
+			    ];
+				
+				let formData = new FormData();
+				for (let i = 0; i < mdProductIds.length; i++) {
+				    formData.append("mdProductId", mdProductIds[i]);
+				}
+				$.ajax({
+					type:"POST"
+					, url:"/admin/homepage/mdproduct-update"
+					, data: formData
+				    ,contentType: false 
+				    ,processData: false 
+					, success:function(data) {
+						if(data.code == 200) {
+							alert(data.message);
+						} else if (data.code == 500){
+							alert(data.message);
+						} 						
+					}
+					, error:function(e) {
+						alert("오류 발생");
+					}
+				});
+			})
 		});
     </script>
 </th:block>

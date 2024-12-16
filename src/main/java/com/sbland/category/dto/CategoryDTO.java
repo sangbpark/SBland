@@ -17,7 +17,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class CategoryDTO {
 	private String name;
 	private int code;

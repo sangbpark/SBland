@@ -1,5 +1,7 @@
 package com.sbland.homepage;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,5 +26,11 @@ public class HomepageAdminRestController {
 			@RequestParam("categoryCode") int categoryCode,
 			@RequestParam("bannerImage") MultipartFile bannerImage) {
 		return homepageServiceBO.updateBanner(title, position, categoryCode,bannerImage);
+	}
+	
+	@PostMapping("/mdproduct-update")
+	public Response<Boolean> updateMdProduct(
+			@RequestParam("mdProductId") List<Long> mdProductId) {
+		return homepageServiceBO.updateMdProductId(mdProductId);
 	}
 }

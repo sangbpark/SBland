@@ -1,5 +1,7 @@
 package com.sbland.homepage.domain;
 
+import com.sbland.category.entity.CategoryEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +16,6 @@ import lombok.ToString;
 public class Banner {
 	private String title;
 	private Integer positon;
-	private int categoryCode;
+	private CategoryEntity category;
 	private String imageUrl;
 }

@@ -6,9 +6,7 @@
 <section layout:fragment="content">
     <div class="banner">
         <div class="banner-images">
-            <img src="https://via.placeholder.com/1440x400/FF0000/FFFFFF" alt="배너 이미지 1" class="banner-image">
-            <img src="https://via.placeholder.com/1440x400/00FF00/FFFFFF" alt="배너 이미지 2" class="banner-image">
-            <img src="https://via.placeholder.com/1440x400/0000FF/FFFFFF" alt="배너 이미지 3" class="banner-image">
+         	<img th:each="banner : ${bannerList}" th:src="${banner.imageUrl}" alt="배너 이미지 1" class="banner-image" th:data-category-code="${banner.category.code}" th:data-category-right="${banner.category.rightValue}">
         </div>
         <button class="btn left-button">&lt;</button>
         <button class="btn right-button">&gt;</button>
@@ -16,8 +14,8 @@
     <div>
     	<a href="/admin/hompage-update-view">홈페이지 수정</a>
     </div>
-    <section class="contents bg-warning">
-         <div class="home-product bg-danger">
+    <section class="contents">
+         <div class="home-product">
              <h1>인기상품</h1>
 	         <div class="d-flex">           
 	              <div type="button" th:each="bestProductThumbnailCardDTO : ${bestProductThumbnailCardDTOList}" class="home-product-card col-4" th:data-product-id="${bestProductThumbnailCardDTO.id}">
@@ -30,7 +28,7 @@
 	              </div>        
             </div>
          </div>
-         <div class="home-product bg-danger">
+         <div class="home-product">
              <h1>신상품</h1>
              <div class="d-flex">
 	             <div type="button" th:each="recentProductThumbnailCardDTO : ${recentProductThumbnailCardDTOList}" class="home-product-card col-4" th:data-product-id="${recentProductThumbnailCardDTO.id}">
@@ -43,34 +41,18 @@
 	         	</div>
 	         </div>
          </div>
-         <div class="home-product bg-danger">
+         <div class="home-product">
              <h1>MD추천</h1>
              <div class="d-flex">
-              <div class="home-product-card col-4">
-              	<div class="home-product-image">
-				<img src="" alt="상품 썸네일">	                	
-              	</div>
-              	<div>제목</div>
-              	<div>가격</div>
-              	<div>세일가격</div>
-              </div>
-                 <div class="home-product-card col-4">
-              	<div class="home-product-image">
-				<img src="" alt="상품 썸네일">	                	
-              	</div>
-              	<div>제목</div>
-              	<div>가격</div>
-              	<div>세일가격</div>
-              </div>
-                 <div class="home-product-card col-4">
-              	<div class="home-product-image">
-				<img src="" alt="상품 썸네일">	                	
-              	</div>
-              	<div>제목</div>
-              	<div>가격</div>
-              	<div>세일가격</div>
-              </div>
-            </div>
+	             <div type="button" th:each="mdProductThumbnailCardDTO : ${mdProductThumbnailCardDTOList}" class="home-product-card col-4" th:data-product-id="${mdProductThumbnailCardDTO.id}">
+	              	<div class="home-product-image d-flex justify-content-center">
+					<img th:src="${mdProductThumbnailCardDTO.thumbnailImage}" alt="상품 썸네일">	                	
+	              	</div>
+	              	<div class="productText" th:text="${mdProductThumbnailCardDTO.name}">제목</div>
+	              	<div th:text="${mdProductThumbnailCardDTO.price}">가격</div>
+	              	<div>세일가격</div>
+	         	</div>
+	         </div>
          </div>
 	</section>
 </section>
