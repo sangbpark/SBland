@@ -14,6 +14,7 @@ import com.sbland.common.reponse.Response;
 import com.sbland.user.bo.UserBO;
 import com.sbland.user.dto.UserSessionDTO;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -54,6 +55,7 @@ public class UserRestController {
 		return response;
 	}
 	
+	@Operation(summary = "유저 로그인아이디 찾기", description = "이름과 이메일을 입력하면 DB에서 해당 user의 로그인 아이디를 뒷자리 2개를 가린채 모달창에 보여줍니다.")
 	@GetMapping("/find-id")
 	public Response<List<String>> userFindId(
 			@RequestParam("name") String name,
@@ -61,7 +63,8 @@ public class UserRestController {
 		
 		return userBO.getFindUserByNameAndEmail(name,email);
 	}
-	
+
+	@Operation(summary = "유저 비밀번호 찾기", description = "이름과 로그인아이디를 입력하면 DB에서 해당 user를 찾아 12자 salt + '@1'로 새로운 패스워드를 생성해 가입할 때 인증한 이메일로 보냅니다.")
 	@GetMapping("/find-password")
 	public Response<Boolean> userFindPassword(
 			@RequestParam("name") String name,
