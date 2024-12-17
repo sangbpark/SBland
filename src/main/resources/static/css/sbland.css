@@ -131,6 +131,10 @@ img {
 
 
 #productDetailHeader {
+	min-height: 310px;
+}
+
+.productDetailThumbnailImage {
 	height: 310px;
 }
 

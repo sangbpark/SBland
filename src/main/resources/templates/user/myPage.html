@@ -7,7 +7,7 @@
 	<div class="left-contents">
 		<nav class="mypage-menu d-flex align-items-center">
             <ul class="nav nav-fill w-100">
-                <li class="nav-item w-100"><a href="/user/mypage-view" class="nav-link font-weight-bold text-dark">주문목록</a></li>
+                <li class="nav-item w-100"><a href="/user/protect/mypage-view" class="nav-link font-weight-bold text-dark">주문목록</a></li>
                 <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">취소/환불</a></li>
                 <li class="nav-item w-100"><a href="/user/protect/user-info-proxy" class="nav-link font-weight-bold text-dark">정보수정</a></li>
                 <li class="nav-item w-100"><a href="#" class="nav-link font-weight-bold text-dark">쿠폰</a></li>
@@ -39,7 +39,7 @@
 						</div>
 						<div th:text="|금액: ${orderDTO.amount - orderDTO.deliveryfee}원 배송비: ${orderDTO.deliveryfee} 총금액: ${orderDTO.amount + orderDTO.deliveryfee}원|"></div>
 					</div>
-					<div class="pt-2">
+					<div class="pt-2" th:if="${orderDTO.status != '취소'}">
 						<button class="cancelBtn btn btn-success" th:data-order-id="${orderDTO.id}">취소요청</button>
 					</div>
 				</div>
