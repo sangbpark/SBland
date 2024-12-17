@@ -26,7 +26,7 @@
 							<div>배송지: </div>
 							<div class="px-1" th:text="${orderDTO.shippingAddress}"></div>
 						</div>
-						<div th:text="|금액: ${orderDTO.amount - orderDTO.deliveryfee}원 배송비: ${orderDTO.deliveryfee} 총금액: ${orderDTO.amount + orderDTO.deliveryfee}원|"></div>
+						<div th:text="|금액: ${orderDTO.amount - orderDTO.deliveryfee}원 배송비: ${orderDTO.deliveryfee} 총금액: ${orderDTO.amount}원|"></div>
 					</div>
 					<div class="pt-2">
 						<button class="cancelBtn btn btn-success" th:data-order-id="${orderDTO.id}">결제취소</button>

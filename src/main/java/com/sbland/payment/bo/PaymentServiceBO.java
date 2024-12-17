@@ -183,6 +183,7 @@ public class PaymentServiceBO {
 			Payment newPayment = snakeObjectMapper.convertValue(responseData, Payment.class);
 			int result = paymentBO.updatePayment(newPayment
 	    	    		.toBuilder()
+	    	    		.id(payment.getId())
 	    	    		.orderId(payment.getOrderId())
 	    	    		.userId(payment.getUserId())
 	    	    		.build());
