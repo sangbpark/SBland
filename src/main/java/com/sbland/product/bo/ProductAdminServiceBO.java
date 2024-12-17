@@ -1,5 +1,7 @@
 package com.sbland.product.bo;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,9 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
+import com.sbland.ebay.bo.EbayDataBO;
+import com.sbland.exrate.bo.ExRateBO;
 import com.sbland.product.domain.ProductImage;
+import com.sbland.product.dto.EbayProductDTO;
+import com.sbland.product.dto.EbayProductImageDTO;
 
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
 
 
 
@@ -20,6 +27,8 @@ public class ProductAdminServiceBO {
 	private final ProductBO productBO;
 	private final ProductImageBO productImageBO;
 	private final ProductStockBO productStockBO;
+	private final EbayDataBO ebayDataBO;
+	private final ExRateBO exRateBO;
 
 	@Transactional
 	public Response<Boolean> updateProductById(Long productId, String name, int categoryCode, String status
@@ -106,5 +115,37 @@ public class ProductAdminServiceBO {
 				.message("상품 삭제 성공")
 				.data(true)
 				.build();
+	}
+	
+	public void getEbayProduct(int count) {
+		List<EbayProductDTO> ebayProductList = ebayDataBO.getItems("warhammer", count)
+        .flatMapMany(Flux::fromIterable)
+        .collectList()
+        .block(); 
+		for (EbayProductDTO temp : ebayProductList) {
+			Long id = productBO.addProduct((String)temp.title()
+					, null, exRateBO.calculateExRate(new BigDecimal ((String)temp.price().get("value"))
+					, (String) temp.price().get("currency")), "판매중", null);
+			List<EbayProductImageDTO> ebayProductImageDTOList = new ArrayList<>();
+			EbayProductImageDTO epd = EbayProductImageDTO
+									.builder()
+									.productId(id)
+									.isThumbnail(true)
+									.position(0)
+									.productName((String)temp.title())
+									.url((String)temp.thumbnailImages().get(0).get("imageUrl"))
+									.build();
+			ebayProductImageDTOList.add(epd);
+			EbayProductImageDTO epd2 = EbayProductImageDTO
+									.builder()
+									.productId(id)
+									.isThumbnail(false)
+									.position(1)
+									.productName((String)temp.title())
+									.url((String)temp.image().get("imageUrl"))
+									.build();
+			ebayProductImageDTOList.add(epd2);
+			productImageBO.addEbayProductImage(ebayProductImageDTOList);
+		}
 	}
 }
