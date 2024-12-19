@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PaymentTransactionalAspect {
 	private final TransactionTemplate transactionTemplate;
 	private final PaymentAutoBO paymentAutoBO;
-	private final PaymentServiceBO PaymentServiceBO;
+	private final PaymentServiceBO paymentServiceBO;
     
 	@Around("@annotation(PaymentTransactional)")
     public Object handlePaymentTransactional(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -41,7 +41,7 @@ public class PaymentTransactionalAspect {
 							.build();
 				}
 				PortoneToken portoneToken = paymentAutoBO.getPortoneToken();
-				portoneToken = PaymentServiceBO.validateAndGetPortoneToken(portoneToken);
+				portoneToken = paymentServiceBO.validateAndGetPortoneToken(portoneToken);
 				paymentAutoBO.getPaymentCancel(e.getImpUid(), "쇼핑몰 오류", 0, portoneToken.getAccessToken()).block();
 				return Response
 						.<Boolean>builder()

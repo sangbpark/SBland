@@ -18,7 +18,8 @@ public class FileManager  {
 	private final FileManagerIf fileManagerIf;
 	private final WebClient webClient;
 	
-	public static final String FILE_UPLOAD_PATH = "C:\\Users\\qkrtk\\Desktop\\SBLAND\\sbland-workspace\\images\\";
+//	public static final String FILE_UPLOAD_PATH = "C:\\Users\\qkrtk\\Desktop\\SBLAND\\sbland-workspace\\images\\";
+	public static final String FILE_UPLOAD_PATH = "/home/ec2-user/images/";
 	
 	public String uploadFile(MultipartFile file, String name, String folder) {
 		return fileManagerIf.uploadFile(file, name, FILE_UPLOAD_PATH, folder);

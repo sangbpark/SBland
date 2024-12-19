@@ -1,5 +1,6 @@
 package com.sbland.homepage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -7,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sbland.homepage.bo.HomepageServiceBO;
-import com.sbland.homepage.domain.Banner;
 import com.sbland.product.bo.ProductThumbnailCardDTOBO;
 import com.sbland.product.dto.ProductThumbnailCardDTO;
 
@@ -23,12 +23,12 @@ public class HomepageController {
 	public String Homepage(Model model) {
 		List<ProductThumbnailCardDTO> bestProductThumbnailCardDTOList = productThumbnailCardDTOBO.getBestProductTop3();
 		List<ProductThumbnailCardDTO> recentProductThumbnailCardDTOList = productThumbnailCardDTOBO.getRecentProductTop3();
-		List<ProductThumbnailCardDTO> mdProductThumbnailCardDTOList = productThumbnailCardDTOBO.getMdProductTop3();
-		List<Banner> bannerList = homepageServiceBO.getBannerList();
+//		List<ProductThumbnailCardDTO> mdProductThumbnailCardDTOList = productThumbnailCardDTOBO.getMdProductTop3();
+//		List<Banner> bannerList = homepageServiceBO.getBannerList();
 		model.addAttribute("bestProductThumbnailCardDTOList", bestProductThumbnailCardDTOList);
 		model.addAttribute("recentProductThumbnailCardDTOList", recentProductThumbnailCardDTOList);
-		model.addAttribute("mdProductThumbnailCardDTOList", mdProductThumbnailCardDTOList);
-		model.addAttribute("bannerList", bannerList);
+		model.addAttribute("mdProductThumbnailCardDTOList", new ArrayList<>());
+		model.addAttribute("bannerList", new ArrayList<>());
 		return "homepage/homepage";
 	}
 }
