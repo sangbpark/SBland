@@ -1,5 +1,6 @@
 package com.sbland.homepage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -23,12 +24,12 @@ public class HomepageAdminController {
 	public String Homepage(Model model) {
 		List<ProductThumbnailCardDTO> bestProductThumbnailCardDTOList = productThumbnailCardDTOBO.getBestProductTop3();
 		List<ProductThumbnailCardDTO> recentProductThumbnailCardDTOList = productThumbnailCardDTOBO.getRecentProductTop3();
-		List<ProductThumbnailCardDTO> mdProductThumbnailCardDTOList = productThumbnailCardDTOBO.getMdProductTop3();
-		List<Banner> bannerList = homepageServiceBO.getBannerList();
+//		List<ProductThumbnailCardDTO> mdProductThumbnailCardDTOList = productThumbnailCardDTOBO.getMdProductTop3();
+//		List<Banner> bannerList = homepageServiceBO.getBannerList();
 		model.addAttribute("bestProductThumbnailCardDTOList", bestProductThumbnailCardDTOList);
 		model.addAttribute("recentProductThumbnailCardDTOList", recentProductThumbnailCardDTOList);
-		model.addAttribute("mdProductThumbnailCardDTOList", mdProductThumbnailCardDTOList);
-		model.addAttribute("bannerList", bannerList);
+		model.addAttribute("mdProductThumbnailCardDTOList", new ArrayList<>());
+		model.addAttribute("bannerList", new ArrayList<>());
 		return "admin/adminHomepage";
 	}
 	
