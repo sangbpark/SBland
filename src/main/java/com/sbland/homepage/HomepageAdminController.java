@@ -24,12 +24,12 @@ public class HomepageAdminController {
 	public String Homepage(Model model) {
 		List<ProductThumbnailCardDTO> bestProductThumbnailCardDTOList = productThumbnailCardDTOBO.getBestProductTop3();
 		List<ProductThumbnailCardDTO> recentProductThumbnailCardDTOList = productThumbnailCardDTOBO.getRecentProductTop3();
-//		List<ProductThumbnailCardDTO> mdProductThumbnailCardDTOList = productThumbnailCardDTOBO.getMdProductTop3();
-//		List<Banner> bannerList = homepageServiceBO.getBannerList();
+		List<ProductThumbnailCardDTO> mdProductThumbnailCardDTOList = productThumbnailCardDTOBO.getMdProductTop3();
+		List<Banner> bannerList = homepageServiceBO.getBannerList();
 		model.addAttribute("bestProductThumbnailCardDTOList", bestProductThumbnailCardDTOList);
 		model.addAttribute("recentProductThumbnailCardDTOList", recentProductThumbnailCardDTOList);
-		model.addAttribute("mdProductThumbnailCardDTOList", new ArrayList<>());
-		model.addAttribute("bannerList", new ArrayList<>());
+		model.addAttribute("mdProductThumbnailCardDTOList", mdProductThumbnailCardDTOList);
+		model.addAttribute("bannerList",bannerList);
 		return "admin/adminHomepage";
 	}
 	

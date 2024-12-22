@@ -23,7 +23,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
   data:
     redis:
-      host: redis-cache.kruisx.ng.0001.apn2.cache.amazonaws.com
+      host: 172.31.14.33
       port: 6379
   mail:
     host: smtp.gmail.com
