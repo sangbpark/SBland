@@ -30,7 +30,7 @@ jobs:
         
     - name: Create api.yml from Secrets
       run: |
-        echo "${{ secrets.API_YML_CONTENT }}" > api.yml
+        echo "${{ secrets.API_YML_CONTENT }}" > src/main/resources/api.yml
     - name: Build with Gradle
       run: |
         chmod +x gradlew
