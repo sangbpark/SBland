@@ -12,9 +12,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -26,7 +24,6 @@ public class FindCacheAspect {
         String cacheName = findCache.value();
         String keyExpression = findCache.key();
         String key = resolveKey(joinPoint, keyExpression); 
-        log.info("#############[테스트aop] cacheName:{}",cacheName);
         Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
             Cache.ValueWrapper valueWrapper = cache.get(key);
