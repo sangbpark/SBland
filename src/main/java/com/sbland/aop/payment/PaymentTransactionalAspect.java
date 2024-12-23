@@ -27,6 +27,7 @@ public class PaymentTransactionalAspect {
     
 	@Around("@annotation(PaymentTransactional)")
     public Object handlePaymentTransactional(ProceedingJoinPoint joinPoint) throws Throwable {
+	//
 		return transactionTemplate.execute(status -> {
 			try {
 				return joinPoint.proceed();
