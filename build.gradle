@@ -56,3 +56,10 @@ tasks.named('test') {
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-parameters"
 }
+
+tasks.jar {
+    // api.yml 파일을 JAR에 포함
+    from('api.yml') {
+        into('resources/') // JAR 파일의 루트에 복사
+    }
+}
