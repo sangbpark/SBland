@@ -59,6 +59,7 @@ tasks.withType(JavaCompile) {
 
 tasks.jar {
     // src/main/resources 폴더에 있는 api.yml 파일을 JAR에 포함
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from('src/main/resources/api.yml') {
         into('/') // JAR 파일의 루트에 추가
     }
