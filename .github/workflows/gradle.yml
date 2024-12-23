@@ -28,9 +28,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Create api.yml from Secrets
-      run: |
-        echo "${{ secrets.API_YML_CONTENT }}" > src/main/resources/api.yml
     - name: Build with Gradle
       run: |
         chmod +x gradlew
