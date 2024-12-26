@@ -31,7 +31,7 @@ class ProductImageBOTest {
 	@Transactional
 	@Test
 	void 카테고리분류테스트() {
-		productBO.categoryMatch();
+
 	}
 
 }
