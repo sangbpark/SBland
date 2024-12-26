@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class FindCacheAspect {
     private final CacheManager cacheManager;
 
-    @Around("@annotation(FindCache)")
+    @Around("@annotation(findCache)")
     public Object handleFindCache(ProceedingJoinPoint joinPoint, FindCache findCache) throws Throwable {
         String cacheName = findCache.value();
         String keyExpression = findCache.key();

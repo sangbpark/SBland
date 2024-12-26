@@ -48,29 +48,8 @@ public class ProductBO {
 		return productMapper.updateProductById(id, name, description, price, status, categoryCode);
 	}
 	
-	public void categoryMatch() {
-		List<Product> productList = productMapper.selectProductByCategoryCodeIsNull();
-		Set<String> rootCategory = new HashSet<>(List.of("toy", "warhammer 40k", "book", "warhammer age of sigmar"));
-		Map<String, Integer> categoryMap = categoryBO
-				.getCategoryAll()
-				.stream()
-				.filter(categoryEntity -> rootCategory.contains(categoryEntity.getName().toLowerCase()))
-				.collect(Collectors.toMap( CategoryEntity -> CategoryEntity.getName().toLowerCase(), CategoryEntity::getCode));
-		for (Product product : productList) {
-			int categoryCode = categoryMap
-								.entrySet()
-								.stream()
-								.filter(category -> product.getName().toLowerCase().contains(category.getKey()) && !category.getKey().equals("space marine"))
-								.map(Map.Entry::getValue)
-								.findFirst()
-								.orElseGet(() -> {
-									 if (product.getName().toLowerCase().contains("space marine")) {
-							                return categoryMap.get("space marine");
-							            }
-									return categoryMap.get("etc");
-									});
-			updateProduct(product.getId(),null,null,null,null,categoryCode);
-		}
+	public List<Product> getProductByCategoryCodeIsNull() {
+		return productMapper.selectProductByCategoryCodeIsNull();
 	}
 	
 	public List<Product> getProductByIdIn(List<Long> idList) {
