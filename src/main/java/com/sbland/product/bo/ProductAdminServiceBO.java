@@ -2,16 +2,23 @@ package com.sbland.product.bo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sbland.category.bo.CategoryBO;
+import com.sbland.category.entity.CategoryEntity;
 import com.sbland.common.reponse.HttpStatusCode;
 import com.sbland.common.reponse.Response;
 import com.sbland.ebay.bo.EbayDataBO;
 import com.sbland.exrate.bo.ExRateBO;
+import com.sbland.product.domain.Product;
 import com.sbland.product.domain.ProductImage;
 import com.sbland.product.dto.EbayProductDTO;
 import com.sbland.product.dto.EbayProductImageDTO;
@@ -29,6 +36,7 @@ public class ProductAdminServiceBO {
 	private final ProductStockBO productStockBO;
 	private final EbayDataBO ebayDataBO;
 	private final ExRateBO exRateBO;
+	private final CategoryBO categoryBO;
 
 	@Transactional
 	public Response<Boolean> updateProductById(Long productId, String name, int categoryCode, String status
@@ -146,6 +154,31 @@ public class ProductAdminServiceBO {
 									.build();
 			ebayProductImageDTOList.add(epd2);
 			productImageBO.addEbayProductImage(ebayProductImageDTOList);
+		}
+	}
+	
+	public void categoryMatch() {
+		List<Product> productList = productBO.getProductByCategoryCodeIsNull();
+		Set<String> rootCategory = new HashSet<>(List.of("toy", "warhammer 40k", "book", "warhammer age of sigmar"));
+		Map<String, Integer> categoryMap = categoryBO
+				.getCategoryAll()
+				.stream()
+				.filter(categoryEntity -> rootCategory.contains(categoryEntity.getName().toLowerCase()))
+				.collect(Collectors.toMap( CategoryEntity -> CategoryEntity.getName().toLowerCase(), CategoryEntity::getCode));
+		for (Product product : productList) {
+			int categoryCode = categoryMap
+								.entrySet()
+								.stream()
+								.filter(category -> product.getName().toLowerCase().contains(category.getKey()) && !category.getKey().equals("space marine"))
+								.map(Map.Entry::getValue)
+								.findFirst()
+								.orElseGet(() -> {
+									 if (product.getName().toLowerCase().contains("space marine")) {
+							                return categoryMap.get("space marine");
+							            }
+									return categoryMap.get("etc");
+									});
+			productBO.updateProduct(product.getId(),null,null,null,null,categoryCode);
 		}
 	}
 }
